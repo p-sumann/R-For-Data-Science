@@ -1,0 +1,366 @@
+---
+title: "**Project 1: Unit 1**"
+author: "**Suman Paudel**"
+date: "2024-02-26"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+## Code Execution and Output/Interpretation of Session 4
+
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+
+```{r}
+# column vector 
+x <- c(1:30)
+y <- x^3
+plot(x,y,)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+
+```{r}
+# store the current working using following command:
+initial.dir <- getwd()
+initial.dir
+```
+
+***Interpretation***:
+
+-   **initial.dir** object will be assigned the current working directory.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+
+```{r}
+# to change the working directory custom directory
+setwd("C:/Users/SumanPaudel/Desktop/R For Data Science")
+```
+
+***Interpretation***:
+
+-   **setwd()** function will change the working directory to given path.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+
+```{r}
+# loading the necessary packages
+library(magrittr)
+```
+
+***Interpretation***:
+
+-   In R, the **library()** function will load and attach the required packages.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+
+```{r eval=FALSE}
+# to set the output file and bypass the output of R console and R Studio
+sink('session4.out')
+```
+
+***Interpretation***:
+
+-   In R, the **sink()** function will set the output file and bypass the output of R console and R Studio.
+- until closed, now all the output will be saved in the session4.out file rather than display on.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+
+```{r}
+# load the dataset from the working directory set earlier
+iris <- read.csv('iris.csv')
+```
+
+***Interpretation***:
+
+- load the iris dataset from csv file using module **read.csv()** function.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+
+```{r,eval=FALSE}
+# plot the iris dataset to do some analysis
+plot(iris)
+```
+
+***Interpretation***:
+
+- plot a scatter plot from the iris dataset.
+- since we have used **sink()** function earlier now the given output will be saved to session4.out
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+
+```{r,eval=FALSE}
+# summary of iris dataset
+summary(iris)
+```
+
+***Interpretation***:
+
+- In R, **summary** summary is a generic function used to produce result summaries of the results of various model fitting functions.
+- since we have used **sink()** function earlier now the given output will be saved to session4.out
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+
+```{r}
+# to close the output file
+sink()
+```
+
+***Interpretation***:
+
+- Closes the output file that was writing output to it.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+
+```{r}
+# unloading the loaded library
+detach("package:magrittr")
+```
+
+***Interpretation***:
+
+- Unloads the previous loaded package **magrittr**. 
+- Usually use to unload or remove the path of R objects, packages which was attached by using **library()**.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+
+```{r}
+# to change back to original directory
+setwd(initial.dir)
+```
+
+***Interpretation***:
+
+- change back to the directory path which initial.dir object holds.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+
+```{r}
+# load the iris data from UCI machine learning repo (internet archive)
+iris <- read.csv(url('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'),header=FALSE)
+```
+
+***Interpretation***:
+
+- fetch the data from online repo using url then convert the obtained into dataframe from it.
+- `header = FALSE` will not set the header for dataframe. Often done when we want to explicitly define column names ourselves
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+
+```{r}
+# look first few values of data
+head(iris)
+```
+
+***Interpretation***:
+
+- fetch the first few records from the iris dataframe
+- since in previous line of code we did `header = FALSE` our column name is defined as V1, V2, V3, V4, V5.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+```{r}
+# add column names for V1, V2, V3, V4, V5 columns to iris dataframe
+names(iris) <- c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width", "Species")
+```
+
+***Interpretation***:
+
+- set the name of columns in the iris dataframe `Sepal.Length`, `Sepal.Width`, `Petal.Length`, `Petal.Width`, and `Species`
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+```{r}
+# saving the downloaded file to csv in local system
+# write.csv(dataframe_name, "path\file_name.csv", row.names=FALSE)
+write.csv(iris,'iris.csv')
+```
+
+***Interpretation***:
+
+- writes the csv file in the current working directory as `iris.csv` from iris dataframe
+- Also we can set the to another path like this `write.csv(dataframe_name,filepath)
+- for example: `write.csv(iris,'C:/Users/SumanPaudel/Desktop/suman.csv')`
+
+\
+
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+```{r}
+# check working directory using
+getwd()
+```
+
+***Interpretation***:
+
+- returns the current working directory in the console.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+```{r}
+# Using forward pipe operator/s in R
+# for using pipes in R we need magrittr library
+# Hotkey for pipe i.e. is Ctrl + Shift + M in windows and for MacOS CMD + Shift + M
+library(magrittr)
+iris$Sepal.Length.SQRT <- iris$Sepal.Length %>% sqrt()
+```
+
+***Interpretation***:
+
+- computes the square root of `iris$Sepal.Length` and assign it to the new variable `iris$Sepal.Length.SQRT`
+- forward pip are very helpful when forwarding and object into function or call the expression
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+```{r}
+# The assignment pipe, %<>%, is used to update a value by first piping it into one or more rhs expressions,  and then assigning the result.
+iris$Sepal.Length %<>% sqrt
+```
+
+***Interpretation***:
+
+- computes the square root of `iris$Sepal.Length` and assign computed value to itself.
+- while using assignment pipe `%<>%`, we must be careful as original data will be lost.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+```{r}
+# random seed
+set.seed(123)
+```
+
+***Interpretation***:
+
+- sets random seed to generate random number that can be reproduced
+- widely used when dealing with classification problems in machine learning
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+```{r error=TRUE}
+# rnorm generated the random value from normal distribution
+rnorm(200) %>% 
+  matrix(ncol = 2) %>% 
+  plot %>% 
+  colSums
+```
+
+***Interpretation***:
+
+- `rnom(200` generates 200 random number from a normal distribution
+- then generated values are converted to matrix with 100 * 2 size.
+- then plots the values into scatter plot
+- when using `colSums` throws an error because code wont get computed after using plot because it won't return anything except the figure or plot.
+- To work around this problem, we can use the “tee” pipe.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+```{r}
+# rnorm generated the random value from normal distribution
+rnorm(200) %>% 
+  matrix(ncol = 2) %T>% 
+  plot %>% 
+  colSums
+```
+
+***Interpretation***:
+
+- `rnom(200` generates 200 random number from a normal distribution
+- then generated values are converted to matrix with 100 * 2 size.
+- then plots the values into scatter plot
+- when using `colSums` throws an error because code wont get computed after using plot because it won't return anything except the figure or plot.
+- To work around this problem, we can use the “tee” pipe.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+```{r}
+# The exposing pipe operator “%$%”
+iris %>% 
+  subset(Sepal.Length > mean(Sepal.Length)) %$% 
+  cor(Sepal.Length, Sepal.Width)
+```
+
+***Interpretation***:
+
+- `rnom(200` generates 200 random number from a normal distribution
+- then generated values are converted to matrix with 100 * 2 size.
+- then plots the values into scatter plot
+- when using `colSums` throws an error because code wont get computed after using plot because it won't return anything except the figure or plot.
+- To work around this problem, we can use the “tee” pipe.
+
+\
+
+##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+```{r}
+# The exposing pipe operator “%$%”
+cor(iris$Sepal.Length, iris$Sepal.Width)
+```
+
+***Interpretation***:
+
+- `rnom(200` generates 200 random number from a normal distribution
+- then generated values are converted to matrix with 100 * 2 size.
+- then plots the values into scatter plot
+- when using `colSums` throws an error because code wont get computed after using plot because it won't return anything except the figure or plot.
+- To work around this problem, we can use the “tee” pipe.
+
+\
+
+### When Not to Use the Pipe
+
+The pipe (`%>%`) is a powerful tool in R, but it's not always the best choice for every situation. Here are some scenarios where we might want to consider alternative approaches:
+
+-   If pipes involves more than ten steps, consider breaking it down into smaller chunks with meaningful intermediate objects. This makes debugging easier and improves code readability.
+
+-   Pipes work best when transforming a single primary object. If you're dealing with multiple inputs or combining several outputs, the pipe may not be the most suitable tool.
+
+-   When your code starts resembling a directed graph with intricate dependencies, using pipes can lead to confusing and convoluted code.
+-   When developing internal packages pipe might not be the best go to tool.
+
+### Final Notes
+
+- `%>%` are use widely in R
+- `%<>%` used when assignment of variables are required
+- `%T%` and %$% use when required explicitly on rare occasion. 
+
+\
+
+## Code Execution and Output/Interpretation of Session 5
