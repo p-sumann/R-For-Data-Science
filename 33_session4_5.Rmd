@@ -7,13 +7,16 @@ output:
   pdf_document: default
 ---
 
-## Code Execution and Output/Interpretation of Session 4
 
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+## <span style="color:#d30000"> <b> Code Execution and Output/Interpretation of Session 4</b></span>
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
 
 ```{r}
-# column vector 
+# vector 
 x <- c(1:30)
 y <- x^3
 plot(x,y,)
@@ -21,13 +24,13 @@ plot(x,y,)
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
+-   x is vector having elements 1 to 30.\
 -   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   plot is a generic function in R to plot, by default in R scatter plot is plotted.
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 2</b></span>
 
 ```{r}
 # store the current working using following command:
@@ -41,7 +44,7 @@ initial.dir
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 3</b></span>
 
 ```{r}
 # to change the working directory custom directory
@@ -54,7 +57,7 @@ setwd("C:/Users/SumanPaudel/Desktop/R For Data Science")
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 4</b></span>
 
 ```{r}
 # loading the necessary packages
@@ -67,7 +70,7 @@ library(magrittr)
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 5</b></span>
 
 ```{r eval=FALSE}
 # to set the output file and bypass the output of R console and R Studio
@@ -81,7 +84,7 @@ sink('session4.out')
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 6</b></span>
 
 ```{r}
 # load the dataset from the working directory set earlier
@@ -94,7 +97,7 @@ iris <- read.csv('iris.csv')
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 7</b></span>
 
 ```{r,eval=FALSE}
 # plot the iris dataset to do some analysis
@@ -108,7 +111,7 @@ plot(iris)
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 8</b></span>
 
 ```{r,eval=FALSE}
 # summary of iris dataset
@@ -122,7 +125,7 @@ summary(iris)
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 9</b></span>
 
 ```{r}
 # to close the output file
@@ -135,7 +138,7 @@ sink()
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 10</b></span>
 
 ```{r}
 # unloading the loaded library
@@ -149,7 +152,7 @@ detach("package:magrittr")
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 11</b></span>
 
 ```{r}
 # to change back to original directory
@@ -162,7 +165,7 @@ setwd(initial.dir)
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 12</b></span>
 
 ```{r}
 # load the iris data from UCI machine learning repo (internet archive)
@@ -176,7 +179,7 @@ iris <- read.csv(url('https://archive.ics.uci.edu/ml/machine-learning-databases/
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 13</b></span>
 
 ```{r}
 # look first few values of data
@@ -190,7 +193,7 @@ head(iris)
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 14</b></span>
 ```{r}
 # add column names for V1, V2, V3, V4, V5 columns to iris dataframe
 names(iris) <- c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width", "Species")
@@ -202,7 +205,7 @@ names(iris) <- c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width", "
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 15</b></span>
 ```{r}
 # saving the downloaded file to csv in local system
 # write.csv(dataframe_name, "path\file_name.csv", row.names=FALSE)
@@ -218,7 +221,7 @@ write.csv(iris,'iris.csv')
 \
 
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 16</b></span>
 ```{r}
 # check working directory using
 getwd()
@@ -230,7 +233,7 @@ getwd()
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 17</b></span>
 ```{r}
 # Using forward pipe operator/s in R
 # for using pipes in R we need magrittr library
@@ -246,7 +249,7 @@ iris$Sepal.Length.SQRT <- iris$Sepal.Length %>% sqrt()
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 18</b></span>
 ```{r}
 # The assignment pipe, %<>%, is used to update a value by first piping it into one or more rhs expressions,  and then assigning the result.
 iris$Sepal.Length %<>% sqrt
@@ -259,7 +262,7 @@ iris$Sepal.Length %<>% sqrt
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 19</b></span>
 ```{r}
 # random seed
 set.seed(123)
@@ -272,7 +275,7 @@ set.seed(123)
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 20</b></span>
 ```{r error=TRUE}
 # rnorm generated the random value from normal distribution
 rnorm(200) %>% 
@@ -291,7 +294,7 @@ rnorm(200) %>%
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 21</b></span>
 ```{r}
 # rnorm generated the random value from normal distribution
 rnorm(200) %>% 
@@ -310,7 +313,7 @@ rnorm(200) %>%
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 22</b></span>
 ```{r}
 # The exposing pipe operator “%$%”
 iris %>% 
@@ -328,7 +331,7 @@ iris %>%
 
 \
 
-##### <span style="color:#cc3300"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 23</b></span>
 ```{r}
 # The exposing pipe operator “%$%”
 cor(iris$Sepal.Length, iris$Sepal.Width)
@@ -357,10 +360,354 @@ The pipe (`%>%`) is a powerful tool in R, but it's not always the best choice fo
 
 ### Final Notes
 
-- `%>%` are use widely in R
+- `%>%` are used widely in R
 - `%<>%` used when assignment of variables are required
-- `%T%` and %$% use when required explicitly on rare occasion. 
+- `%T%` and `%$%` used when required explicitly on rare occasion. 
 
 \
 
-## Code Execution and Output/Interpretation of Session 5
+## <span style="color:#d30000"> <b> Code Execution and Output/Interpretation of Session 5</b></span>
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+```{r}
+roll <- function() {
+  die <- 1:6
+  dice <- sample(die, size = 2, replace = TRUE)
+  cat("Dice Rolled:", dice,'\n')
+  sum(dice)
+}
+```
+```{r}
+# first roll()
+cat('First Roll:', roll())
+
+# second roll()
+cat('Second Roll:', roll())
+
+# third roll()
+cat('Third Roll:', roll())
+```
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 2</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 3</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 4</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 5</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 6</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 7</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 8</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 9</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 10</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 11</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 12</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 13</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 14</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 15</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 16</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 17</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 18</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 19</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 20</b></span>
+
+```{r}
+# column vector 
+round(3.14)
+round(3.14, digits = 2)
+```
+
+***Interpretation***:
+
+-   x is column vector having elements 1 to 30.\
+-   y is also vector having elements of x exponentiated of 3.\
+-   plot is a generic function in R to plot, by default scatter plot is plotted.
+
+\
+
+
