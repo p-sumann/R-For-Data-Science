@@ -6,8 +6,7 @@ output:
   html_document: default
   pdf_document: default
 ---
-
-
+[GitHub Repository](https://github.com/sumanpaudel1997/R-For-Data-Science/tree/main)
 
 ## <span style="color:#d30000"> <b> Code Execution and Output/Interpretation of Session 4</b></span>
 
@@ -370,6 +369,23 @@ The pipe (`%>%`) is a powerful tool in R, but it's not always the best choice fo
 
 \
 
+##### **Naming Convention In R**
+
+lllowercase
+- `adjustcolor` \
+period.separated
+- `plot.new`  
+underscore_separated
+- `numeric_version` \
+lowerCamelCase
+- `addTaskCallback` \
+UpperCamelCase
+- `SignatureMethod` 
+
+The link https://www.r-bloggers.com/2014/07/consistent-naming-conventions-in-r/ suggest to use underscore sperated variable name as it provides better readbility of code.
+
+\
+
 ##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
 
 ```{r}
@@ -380,93 +396,107 @@ round(3.14, digits = 2)
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   `round(3.14)` rounds the value 3.14.
+-   `round(3.14, digits = 2)` to nearest 2 digits.
 
 \
 
 ```{r}
-roll <- function() {
-  die <- 1:6
-  dice <- sample(die, size = 2, replace = TRUE)
-  cat("Dice Rolled:", dice,'\n')
-  sum(dice)
-}
+# factorial of 3
+factorial(3)
+# factorial of 3*2
+factorial(2*3)
 ```
-```{r}
-# first roll()
-cat('First Roll:', roll())
 
-# second roll()
-cat('Second Roll:', roll())
+***Interpretation***:
 
-# third roll()
-cat('Third Roll:', roll())
-```
+-   `factorial(3)` gives the factorial of 3 which is 6.
+-   `factorial(3)` gives the factorial of `2*3` which is 720.    
+
 \
 
 ##### <span style="color:#7b9a26"> <b> Code Sample 2</b></span>
 
 ```{r}
-# column vector 
-round(3.14)
-round(3.14, digits = 2)
+# mean of sequence 1:6
+mean(1:6)
+# mean of vector 1 to 30
+mean(c(1:30))
 ```
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   `mean(1:6)` computes the mean of sequenec 1:6
+-   `mean(c(1:6)` computes the mean of vector 1:30
 
 \
 
 ##### <span style="color:#7b9a26"> <b> Code Sample 3</b></span>
 
 ```{r}
-# column vector 
-round(3.14)
-round(3.14, digits = 2)
+# random sampling without and with replacement in R using sample function
+# sample size 1 without replacement
+die <- 1:6
+sample(x = die, size = 1)
+# sample size 1 without replacement
+sample(x = die, size = 1)
+# sample size 1 with replacement
+sample(x = die, size = 1, replace = TRUE)
 ```
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   `sample(x = die, size = 1)` samples the size of 1 from die without replacement. without replacement means each element can only be selected once. 
+-   `sample(x = die, size = 1, replace = TRUE)` samples the size of 1 from die with replacement. with replacement means elements can be selected more than once.
+
+\
+
+```{r}
+# sample size 2 without replacement
+sample(x = die, size = 2)
+# sample size 2 without replacement
+sample(x = die, size = 2)
+# sample size 2 with replacement
+sample(x = die, size = 2, replace = TRUE)
+```
+
+***Interpretation***:
+
+-   `sample(x = die, size = 2)` samples the size of 2 from die without replacement. without replacement means each element can only be selected once.
+-   `sample(x = die, size = 2, replace = TRUE)` samples the size of 2 from die with replacement. with replacement means elements can be selected more than once.
 
 \
 
 ##### <span style="color:#7b9a26"> <b> Code Sample 4</b></span>
 
 ```{r}
-# column vector 
-round(3.14)
-round(3.14, digits = 2)
+# load the iris dataset from current working directory
+iris <- read.csv('iris.csv')
+set.seed(123)
 ```
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   `iris <- read.csv('iris.csv')` load the iris dataset from current working directory to iris object.
+-   `set.seed(123)` generates the random number which can be reproduced again.
 
 \
 
 ##### <span style="color:#7b9a26"> <b> Code Sample 5</b></span>
 
 ```{r}
-# column vector 
-round(3.14)
-round(3.14, digits = 2)
+# training testing sample
+tt.sample <- sample(c(TRUE, FALSE), nrow(iris), replace=T, prob=c(0.7,0.3))
+train <- iris[tt.sample,]
+test <- iris[!tt.sample,]
 ```
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   `tt.sample <- sample(c(TRUE, FALSE), nrow(iris), replace=T)` samples the value given TRUE or FALSE for FALSE number of rows on iris dataset with replacement also with probability weights 0.7 for TRUE and 0.3 for FALSE and store to tt.sample variable.
+-   train holds traning sample that are subsetted values from tt.sample in iris dataset. Rows corresponding to TRUE in tt.sample are selected 
+-   test holds test sample that are subsetted values which are not TRUE for training set. Rows corresponding to not TRUE in tt.sample are selected
+- `!` alters the outcome like `TRUE` becomes `FALSE`.
 
 \
 
