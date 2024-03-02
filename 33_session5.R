@@ -80,11 +80,6 @@ roll2 <- function(dice = 1:6) {
 # first roll()
 cat('First Roll:', roll2())
 
-# # second roll()
-# cat('Second Roll:', roll())
-# 
-# # third roll()
-# cat('Third Roll:', roll())
 
 # User-defined function 3: roll3(data)
 # function with one required argument 
