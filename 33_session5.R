@@ -12,11 +12,11 @@ SignatureMethod <- TRUE # UpperCamelCase
 
 # rounding of numbers
 round(3.1415)
-round(3.1415,digits = 2)
+round(3.1415, digits = 2)
 
 # factorial
 factorial(3)
-factorial(2*3)
+factorial(2 * 3)
 
 # mean
 mean(1:6)
@@ -25,29 +25,33 @@ mean(c(1:30))
 
 # random sampling without and with replacement in R using sample function
 die <- 1:6
+
 # sample size 1
-sample(x=die,size=1)
-sample(x=die,size=1)
-sample(x=die,size=1,replace = TRUE)
+sample(x = die, size = 1)
+sample(x = die, size = 1)
+sample(x = die, size = 1, replace = TRUE)
 
 # sample size 2
-sample(x=die,size=2)
-sample(x=die,size=2)
-sample(x=die,size=2,replace = TRUE)
+sample(x = die, size = 2)
+sample(x = die, size = 2)
+sample(x = die, size = 2, replace = TRUE)
 
 # load the iris dataset from current working directory
-
 iris <- read.csv('iris.csv')
 set.seed(123)
+
 # training testing sample
-tt.sample <- sample(c(TRUE, FALSE), nrow(iris), replace=T, prob=c(0.7,0.3))
-train <- iris[tt.sample,]
-test <- iris[!tt.sample,]
+tt.sample <-
+  sample(c(TRUE, FALSE),
+         nrow(iris),
+         replace = T,
+         prob = c(0.7, 0.3))
+train <- iris[tt.sample, ]
+test <- iris[!tt.sample, ]
 
 
 # user defined function in R
-
-my_function <- function(){
+my_function <- function() {
   ## my function which does nothing
 }
 
@@ -59,6 +63,7 @@ roll <- function() {
   cat("Dice Rolled:", dice, '\n')
   sum(dice)
 }
+
 # first roll()
 cat('First Roll:', roll())
 
@@ -82,7 +87,7 @@ cat('First Roll:', roll2())
 
 
 # User-defined function 3: roll3(data)
-# function with one required argument 
+# function with one required argument
 # when calling the function the argument must be provided
 roll3 <- function(dice) {
   dice <- sample(dice, size = 2, replace = TRUE)
@@ -115,12 +120,13 @@ best_practice[-6]
 # for (variable in collection) {
 #   do things with variable
 # }
+
 print_words <- function(sentence) {
   for (word in sentence) {
     print(word)
   }
 }
-  
+
 print_words(best_practice)
 print_words(best_practice[-6])
 
@@ -141,14 +147,17 @@ check.y <- function(y) {
 }
 check.y(10)
 check.y(30)
+
 # binary variables using `ifelse`
 y <- 1:40
-ifelse(y<20, 'Too low', 'Too high')
-# logical 
-ifelse(y<20, TRUE, FALSE)
-# binary 
+ifelse(y < 20, 'Too low', 'Too high')
+
+# logical
+ifelse(y < 20, TRUE, FALSE)
+
+# binary
 y <- 1:40
-ifelse(y<20, 1, 0)
+ifelse(y < 20, 1, 0)
 
 # multiple if else conditions
 if (this) {
@@ -161,12 +170,12 @@ if (this) {
   # remaining
 }
 
-check.x <- function(x=1:99){
-  if (x<20){
+check.x <- function(x = 1:99) {
+  if (x < 20) {
     print("Less than 20")
   }
   else {
-    if (x < 40){
+    if (x < 40) {
       print("20-39")
     }
     else {
@@ -180,16 +189,15 @@ check.x(30)
 check.x(45)
 
 x <- 1:99
-x1 <- ifelse(x<20, 1,0) 
-x2.1 <- ifelse(x<20, '<20', '20+')
+x1 <- ifelse(x < 20, 1, 0)
+x2.1 <- ifelse(x < 20, '<20', '20+')
 
-x3 <- ifelse(x<20,1,ifelse(x<40,2,3))
+x3 <- ifelse(x < 20, 1, ifelse(x < 40, 2, 3))
 x3
+
 # represents the frequency distribution of categorical data.
 # It essentially counts the occurrences of unique values within a dataset and presents the result in a tabular format.
 table(x3)
-
-
 
 # Petal. Length categories is created from Petal. Length variable of iris data frame using within
 # within Evaluate an Expression in a Data Environment like list or dataframe
@@ -202,9 +210,11 @@ iris <- within(iris, {
   Petal.cat[Petal.Length >= 5.1] <- "Large"
 })
 
+# load the iris category column
 iris$Petal.cat
-table(iris$Petal.cat)
 
+# load the frequency table
+table(iris$Petal.cat)
 
 # Multiple Conditions: If, else if, else if, else if
 temp <- function(x) {
