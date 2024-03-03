@@ -1,7 +1,7 @@
 ---
 title: "**Project 1: Unit 1**"
 author: "**Suman Paudel**"
-date: "2024-02-26"
+date: "3/2/2024"
 output:
   html_document: default
   pdf_document: default
@@ -66,6 +66,7 @@ library(magrittr)
 ***Interpretation***:
 
 -   In R, the **library()** function will load and attach the required packages.
+-   `magrittr` package is loaded.
 
 \
 
@@ -92,7 +93,7 @@ iris <- read.csv('iris.csv')
 
 ***Interpretation***:
 
-- load the iris dataset from csv file using module **read.csv()** function.
+- load the iris dataset from csv file using module **read.csv()** function from current working directory.
 
 \
 
@@ -214,7 +215,7 @@ write.csv(iris,'iris.csv')
 ***Interpretation***:
 
 - writes the csv file in the current working directory as `iris.csv` from iris dataframe
-- Also we can set the to another path like this `write.csv(dataframe_name,filepath)
+- Also we can set the to another path like this `write.csv(dataframe_name,filepath)`
 - for example: `write.csv(iris,'C:/Users/SumanPaudel/Desktop/suman.csv')`
 
 \
@@ -307,8 +308,7 @@ rnorm(200) %>%
 - `rnom(200` generates 200 random number from a normal distribution
 - then generated values are converted to matrix with 100 * 2 size.
 - then plots the values into scatter plot
-- when using `colSums` throws an error because code wont get computed after using plot because it won't return anything except the figure or plot.
-- To work around this problem, we can use the “tee” pipe.
+- As we have used `%T%` operator, now both plot and after plot `colSums` also will get computed. 
 
 \
 
@@ -322,27 +322,21 @@ iris %>%
 
 ***Interpretation***:
 
-- `rnom(200` generates 200 random number from a normal distribution
-- then generated values are converted to matrix with 100 * 2 size.
-- then plots the values into scatter plot
-- when using `colSums` throws an error because code wont get computed after using plot because it won't return anything except the figure or plot.
-- To work around this problem, we can use the “tee” pipe.
+- `%$%` allows us to extract variables from a data frame or list and use them directly in subsequent expressions.
+- In the code above, it is used to extract the Sepal.Length and Sepal.Width columns from the iris data frame.
+- `iris %>% subset(Sepal.Length > mean(Sepal.Length))` filters the rows of the iris data frame, keeping only those where the Sepal.Length is greater than the mean Sepal.Length. The result is a subset of the original iris data frame.
+- `%$% cor(Sepal.Length, Sepal.Width)` after extracting the subset, calculates the correlation coefficient between Sepal.Length and Sepal.Width for which sepal length is greater than it;s mean.
 
 \
 
 ##### <span style="color:#7b9a26"> <b> Code Sample 23</b></span>
 ```{r}
-# The exposing pipe operator “%$%”
 cor(iris$Sepal.Length, iris$Sepal.Width)
 ```
 
 ***Interpretation***:
 
-- `rnom(200` generates 200 random number from a normal distribution
-- then generated values are converted to matrix with 100 * 2 size.
-- then plots the values into scatter plot
-- when using `colSums` throws an error because code wont get computed after using plot because it won't return anything except the figure or plot.
-- To work around this problem, we can use the “tee” pipe.
+- gives the correlation of sepal length and sepal width on the entire iris data frame. 
 
 \
 
@@ -477,8 +471,8 @@ set.seed(123)
 
 ***Interpretation***:
 
--   `iris <- read.csv('iris.csv')` load the iris dataset from current working directory to iris object.
--   `set.seed(123)` generates the random number which can be reproduced again.
+-   `iris <- read.csv('iris.csv')` load the iris dataset from current working directory to iris object variable.
+-   `set.seed(123)` generates the random number which can be reproduced again. random seed is very useful when in machine learning problems.
 
 \
 
@@ -486,17 +480,21 @@ set.seed(123)
 
 ```{r}
 # training testing sample
-tt.sample <- sample(c(TRUE, FALSE), nrow(iris), replace=T, prob=c(0.7,0.3))
+tt.sample <-
+  sample(c(TRUE, FALSE),
+         nrow(iris),
+         replace = T,
+         prob = c(0.7, 0.3))
 train <- iris[tt.sample,]
 test <- iris[!tt.sample,]
 ```
 
 ***Interpretation***:
 
--   `tt.sample <- sample(c(TRUE, FALSE), nrow(iris), replace=T)` samples the value given TRUE or FALSE for FALSE number of rows on iris dataset with replacement also with probability weights 0.7 for TRUE and 0.3 for FALSE and store to tt.sample variable.
+-   `tt.sample <- sample(c(TRUE, FALSE), nrow(iris), replace=T)` samples the value given TRUE or FALSE for given number of rows `nrow` on iris dataset with replacement also with probability weights 0.7 for TRUE and 0.3 for FALSE and store to tt.sample variable.
 -   train holds traning sample that are subsetted values from tt.sample in iris dataset. Rows corresponding to TRUE in tt.sample are selected 
 -   test holds test sample that are subsetted values which are not TRUE for training set. Rows corresponding to not TRUE in tt.sample are selected
-- `!` alters the outcome like `TRUE` becomes `FALSE`.
+- `!` alters the outcome, like `TRUE` becomes `FALSE`.
 
 \
 
@@ -512,9 +510,9 @@ my_function <- function(){
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   R way to define user defined function using `function()`.
+-   Here, `my_function` is name of the function, `function()` creates the function, inside parenthesis `{}` some expression is evaluated, and last function returns some expression as well.
+- A function can take arguments or no arguments it depends upon the situation.
 
 \
 
@@ -529,19 +527,7 @@ roll <- function() {
   cat("Dice Rolled:", dice, '\n')
   sum(dice)
 }
-```
 
-***Interpretation***:
-
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
-
-\
-
-##### <span style="color:#7b9a26"> <b> Code Sample 8</b></span>
-
-```{r}
 # first roll()
 cat('First Roll:', roll())
 
@@ -554,13 +540,15 @@ cat('Third Roll:', roll())
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   The function is named roll with no arguments
+-   die variable has sequence 1:6 as a die has 6 faces, and sampling is done with sample size two and also with replacement and stored in dice variable.
+-   the sum function sums the values obtained in dice
+-   cat just concatenate the values and string just for output.
+-   After calling the roll function 3 times we can see two dices rolled and their sums.
 
 \
 
-##### <span style="color:#7b9a26"> <b> Code Sample 9</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 8</b></span>
 
 ```{r}
 roll2 <- function(dice = 1:6) {
@@ -568,65 +556,51 @@ roll2 <- function(dice = 1:6) {
   cat("Dice Rolled:", dice, '\n')
   sum(dice)
 }
-```
 
-***Interpretation***:
-
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
-
-\
-
-##### <span style="color:#7b9a26"> <b> Code Sample 10</b></span>
-
-```{r}
-# first roll()
+# calling roll2()
 cat('First Roll:', roll2())
 ```
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   The function is named roll2 with arguments dice having default value of sequence `1:6`.
+-   dice variable has default sequence 1:6, and sampling is done with sample size two and also with replacement and stored in dice variable.
+-   the sum function sums the values obtained in dice
+-   cat just concatenate the values and string just for output.
+-   After calling the roll2 function we can see two dices rolled and their sums.
 
 \
 
-##### <span style="color:#7b9a26"> <b> Code Sample 11</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 9</b></span>
 
 ```{r}
 roll3 <- function(dice) {
   dice <- sample(dice, size = 2, replace = TRUE)
   sum(dice)
 }
-```
 
-***Interpretation***:
-
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
-
-\
-
-##### <span style="color:#7b9a26"> <b> Code Sample 12</b></span>
-
-```{r}
+# roll3 function call 1
 roll3(dice = 1:6)
+# roll3 function call 2. but not correct
 roll3(dice = 1:12)
+# roll3 function call 3. but not correct
 roll3(dice = 1:24)
 ```
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   The function is named roll3 with arguments dice which is parametric.
+-   After the input dice is passed into the function, sampling is done with sample size two and also with replacement and stored in dice variable.
+-   the sum function sums the values obtained in dice
+-   cat just concatenate the values and string just for output.
+-   `roll3(dice = 1:6)` function will pass the value of dice as 1:6 and results will be computed.
+-   `roll3(dice = 1:12)` function will pass the value of dice as 1:6 and results will be computed but since we are computing the rolls of dice and a die has only 6 faces, for values 7:12 it returns GIGO.
+-   `roll3(dice = 1:24)` function will pass the value of dice as 1:6 and results will be computed but since we are computing the rolls of dice and a die has only 6 faces, for values 7:24 it returns GIGO.
+-   we should be wary when we are passing arguments without knowing context.
 
 \
 
-##### <span style="color:#7b9a26"> <b> Code Sample 13</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 10</b></span>
 
 ```{r}
 # Function in R: Continued...
@@ -641,19 +615,7 @@ print_words <- function(sentence) {
   print(sentence[5])
   print(sentence[6])
 }
-```
 
-***Interpretation***:
-
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
-
-\
-
-##### <span style="color:#7b9a26"> <b> Code Sample 14</b></span>
-
-```{r}
 print_words(best_practice)
 print_words(best_practice[-6])
 best_practice[-6]
@@ -661,13 +623,16 @@ best_practice[-6]
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   best_practice is variable vector of characters.
+-   print_words is function which takes sentence as argument and it prints the value at certain index of sentence argument.
+-   `print_words(best_practice)` calls the function and prints all of the words present in the best_practice using index.
+-   print_words(best_practice[-6]) calls the function and prints all of the words present in the best_practice using index except the last one which gives NA since `[-6]` removes the last value of best_practice
+-   `best_practice[-6]` removes the last from the vector.
+-   this is a very bad use of function as it consumes more memory because of multiple function calls also what if the size of vector or list changes, in that case after 6th index this function won't work properly.
 
 \
 
-##### <span style="color:#7b9a26"> <b> Code Sample 15</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 11</b></span>
 
 ```{r}
 # for loops in R
@@ -679,36 +644,44 @@ print_words <- function(sentence) {
     print(word)
   }
 }
-```
 
-***Interpretation***:
-
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
-
-\
-
-##### <span style="color:#7b9a26"> <b> Code Sample 16</b></span>
-
-```{r}
 print_words(best_practice)
 print_words(best_practice[-6])
 ```
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
-
+-   The previous problem can be solved using loops.
+-   print_words is function which prints the word in a sentence which is a argument for the print_words function.
+-   After calling `print_words(best_practice)` it prints each word in sentence.
+-   `print_words(best_practice[-6])` prints each word in sentence except the value at `[6]` index as [-6] removes the value at that index
+-   However, in R we should not used loops whenever possible as it is not efficient way to iterate.
+-   Using `apply`, `sapply`, `vapply` and `lapply` is an very good alternative of for loops in R.
 \
 
-##### <span style="color:#7b9a26"> <b> Code Sample 17</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 12</b></span>
 
 ```{r eval=FALSE}
 # Conditionals in R
-if (y < 20) {
+
+if (condition) {
+  #code executed when condition is TRUE
+} else {
+  #code executed when condition is FALSE
+}
+```
+
+***Interpretation***:
+
+- Simple if else conditional syntax in R which computer
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 13</b></span>
+
+```{r eval=FALSE}
+# Conditionals in R
+if (y1 < 20) {
   x <- "Too low"
 } else {
   x <- "Too high"
@@ -717,13 +690,12 @@ if (y < 20) {
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+- Simple if else condition syntax when y < 20 the x is 'Too low' else x is 'Too High'.
+- However, this code will throw error as y is not defined.
 
 \
 
-##### <span style="color:#7b9a26"> <b> Code Sample 18</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 14</b></span>
 
 ```{r}
 # if else in R
@@ -741,34 +713,36 @@ check.y(30)
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   Simple function `check.y` which checks values of y.
+-   If `y < 20` prints 'Too Low' else prints 'Too high'.
+-   check.y(10) prints 'Too Low' as it satisfies the if condition.
+-   check.y(10) prints 'Too High' as it satisfies the else condition.
 
 \
 
-##### <span style="color:#7b9a26"> <b> Code Sample 19</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 15</b></span>
 
 ```{r}
 # binary variables using `ifelse`
 y <- 1:40
-ifelse(y<20, 'Too low', 'Too high')
-# logical 
-ifelse(y<20, TRUE, FALSE)
-# binary 
+ifelse(y < 20, 'Too low', 'Too high')
+# logical
+ifelse(y < 20, TRUE, FALSE)
+# binary
 y <- 1:40
-ifelse(y<20, 1, 0)
+ifelse(y < 20, 1, 0)
 ```
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
-
+-   y is vector of sequence 1:40
+-   `ifelse` is very useful for binary values,  `ifelse(y<20, 'Too low', 'Too high')` gives 'Too Low' for all values of y less than 20 and gives 'Too High' for all values of y greater than 20.
+-   `ifelse(y<20, TRUE, FALSE)` gives TRUE for all values of y less than 20 and gives FALSE for all values of y greater than 20.
+-   `ifelse(y<20, 1, 0)` gives 1 for all values of y less than 20 and gives 0 for all values of y greater than 20.
+-   very useful when creating categorical variable given some condition.
 \
 
-##### <span style="color:#7b9a26"> <b> Code Sample 20</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 16</b></span>
 
 ```{r eval=FALSE}
 # multiple if else conditions
@@ -785,14 +759,11 @@ if (this) {
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+- simple syntax for multiple if else condition in R
 
 \
 
-
-##### <span style="color:#7b9a26"> <b> Code Sample 20</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 17</b></span>
 
 ```{r}
 check.x <- function(x=1:99){
@@ -816,18 +787,19 @@ check.x(45)
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   check.x is function that checks the value of x of given condition.
+-   `check.x(15)` prints 'Less than 20' as it satisfies x < 20.
+-   `check.x(30)` prints '20-39' as it satisfies x < 40 in else block.
+-   `check.x(45)` prints '40-99' as it satisfies else condition in root else block which is x between 40 to 99.
 
 \
 
-##### <span style="color:#7b9a26"> <b> Code Sample 20</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 18</b></span>
 
 ```{r}
 x <- 1:99
-x1 <- ifelse(x<20, 1,0) 
-x2.1 <- ifelse(x<20, '<20', '20+')
+x1 <- ifelse(x < 20, 1, 0)
+x2.1 <- ifelse(x < 20, '<20', '20+')
 
 x
 x1
@@ -836,27 +808,29 @@ x2.1
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   `x <- 1:99` creates a sequence x containing integers from 1 to 99.
+-   `x1 <- ifelse(x<20, 1, 0)`, here we use the ifelse function. If the value of x is less than 20, x1 is assigned the value 1; otherwise, it’s assigned 0.
+-   `x2.1 <- ifelse(x<20, '<20', '20+')`, here also we use the ifelse function. x2.1 is assigned the string ‘<20’ if x is less than 20; otherwise, it’s assigned ‘20+’.
 
 \
 
-##### <span style="color:#7b9a26"> <b> Code Sample 20</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 19</b></span>
 
 ```{r}
-x3 <- ifelse(x<20,1,ifelse(x<40,2,3))
+x3 <- ifelse(x < 20, 1, ifelse(x < 40, 2, 3))
 x3
 # represents the frequency distribution of categorical  data.
-# It essentially counts the occurrences of unique values within a dataset and presents the result in a tabular format.
+# It essentially counts the occurrences of unique values within a dataset and presents the result in a tabular format often knowns as frequency table.
 table(x3)
 ```
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+- `x3 <- ifelse(x<20, 1, ifelse(x<40, 2, 3))` In this line, we use nested `ifelse` statements to create a new vector x3
+  - If the value of x is less than 20, x3 is assigned the value 1.
+  - Otherwise, if the value of x is less than 40, x3 is assigned the value 2.
+  - If neither condition is met (i.e., x is greater than or equal to 40), x3 is assigned the value 3.
+-   `table(x3)` generates a frequency table for the values in x3, showing how many times each value appears.
 
 \
 
@@ -877,13 +851,16 @@ table(iris$Petal.cat)
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   `iris <- within(iris, { ... })` modifies the iris dataset by adding a new variable called Petal.cat. The within function allows us to create or modify variables within a data frame in this case, the iris data frame.
+-   `Petal.cat[Petal.Length < 1.6] <- "Small" `if the Petal.Length is less than 1.6, assign the category “Small” to Petal.cat.
+-   `Petal.cat[Petal.Length >= 1.6 & Petal.Length < 5.1] <- "Medium"` if the Petal.Length is between 1.6 (inclusive) and 5.1 (exclusive), assign the category “Medium” to Petal.cat.
+-   `Petal.cat[Petal.Length >= 5.1] <- "Large" if the Petal.Length` is greater than or equal to 5.1, assign the category “Large” to Petal.cat.
+- `iris$Petal.cat` displays the values of the newly created Petal.cat variable for each observation(Small, Medium, Large) in the iris dataset.
+- `table(iris$Petal.cat)1 generates a frequency table showing how many times each category appears in the Petal.cat variable.
 
 \
 
-##### <span style="color:#7b9a26"> <b> Code Sample 20</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 21</b></span>
 
 ```{r eval=FALSE}
 if (temp <= 0) {
@@ -905,17 +882,15 @@ else {
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
+-   Throws an error as temp object is not defined.
 
 \
 
-##### <span style="color:#7b9a26"> <b> Code Sample 20</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 22</b></span>
 
 ```{r}
 # Multiple Conditions: If, else if, else if, else if
-temp <- function(x) {
+x <- function(temp) {
   if (temp <= 0) {
     "freezing"
   }
@@ -936,9 +911,11 @@ temp <- function(x) {
 
 ***Interpretation***:
 
--   x is column vector having elements 1 to 30.\
--   y is also vector having elements of x exponentiated of 3.\
--   plot is a generic function in R to plot, by default scatter plot is plotted.
-
-\
+- as temp was not defined. I created a function x which takes temp as input.
+- Inside the function, there are several conditions for temp statements (using if and else if):
+    - if the value of temp is less than or equal to 0, the result is “freezing.”
+    - if the value of temp is between 0 (exclusive) and 10 (inclusive), the result is “cold.”
+    - if the value of temp is between 10 (exclusive) and 20 (inclusive), the result is “cool.”
+    - if the value of temp is between 20 (exclusive) and 30 (inclusive), the result is “warm.”
+    - if none of the above conditions are met (i.e., temp is greater than 30), the result is “hot.”
 

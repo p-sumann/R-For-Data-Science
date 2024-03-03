@@ -11,7 +11,6 @@
 
 <meta name="author" content="Suman Paudel" />
 
-<meta name="date" content="2024-02-26" />
 
 <title>Project 1: Unit 1</title>
 
@@ -352,7 +351,7 @@ display: none;
 
 <h1 class="title toc-ignore"><strong>Project 1: Unit 1</strong></h1>
 <h4 class="author"><strong>Suman Paudel</strong></h4>
-<h4 class="date">2024-02-26</h4>
+<h4 class="date">3/2/2024</h4>
 
 </div>
 
@@ -417,6 +416,7 @@ library(magrittr)</code></pre>
 <ul>
 <li>In R, the <strong>library()</strong> function will load and attach
 the required packages.</li>
+<li><code>magrittr</code> package is loaded.</li>
 </ul>
 <p><br />
 </p>
@@ -442,7 +442,8 @@ iris &lt;- read.csv(&#39;iris.csv&#39;)</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
 <li>load the iris dataset from csv file using module
-<strong>read.csv()</strong> function.</li>
+<strong>read.csv()</strong> function from current working
+directory.</li>
 </ul>
 <p><br />
 </p>
@@ -569,7 +570,7 @@ write.csv(iris,&#39;iris.csv&#39;)</code></pre>
 <li>writes the csv file in the current working directory as
 <code>iris.csv</code> from iris dataframe</li>
 <li>Also we can set the to another path like this
-`write.csv(dataframe_name,filepath)</li>
+<code>write.csv(dataframe_name,filepath)</code></li>
 <li>for example:
 <code>write.csv(iris,&#39;C:/Users/SumanPaudel/Desktop/suman.csv&#39;)</code></li>
 </ul>
@@ -673,10 +674,8 @@ distribution</li>
 <li>then generated values are converted to matrix with 100 * 2
 size.</li>
 <li>then plots the values into scatter plot</li>
-<li>when using <code>colSums</code> throws an error because code wont
-get computed after using plot because it won’t return anything except
-the figure or plot.</li>
-<li>To work around this problem, we can use the “tee” pipe.</li>
+<li>As we have used <code>%T%</code> operator, now both plot and after
+plot <code>colSums</code> also will get computed.</li>
 </ul>
 <p><br />
 </p>
@@ -690,35 +689,29 @@ iris %&gt;%
 <pre><code>## [1] 0.3365679</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li><code>rnom(200</code> generates 200 random number from a normal
-distribution</li>
-<li>then generated values are converted to matrix with 100 * 2
-size.</li>
-<li>then plots the values into scatter plot</li>
-<li>when using <code>colSums</code> throws an error because code wont
-get computed after using plot because it won’t return anything except
-the figure or plot.</li>
-<li>To work around this problem, we can use the “tee” pipe.</li>
+<li><code>%$%</code> allows us to extract variables from a data frame or
+list and use them directly in subsequent expressions.</li>
+<li>In the code above, it is used to extract the Sepal.Length and
+Sepal.Width columns from the iris data frame.</li>
+<li><code>iris %&gt;% subset(Sepal.Length &gt; mean(Sepal.Length))</code>
+filters the rows of the iris data frame, keeping only those where the
+Sepal.Length is greater than the mean Sepal.Length. The result is a
+subset of the original iris data frame.</li>
+<li><code>%$% cor(Sepal.Length, Sepal.Width)</code> after extracting the
+subset, calculates the correlation coefficient between Sepal.Length and
+Sepal.Width for which sepal length is greater than it;s mean.</li>
 </ul>
 <p><br />
 </p>
 </div>
 <div id="code-sample-23" class="section level5">
 <h5><span style="color:#7b9a26"> <b> Code Sample 23</b></span></h5>
-<pre class="r"><code># The exposing pipe operator “%$%”
-cor(iris$Sepal.Length, iris$Sepal.Width)</code></pre>
+<pre class="r"><code>cor(iris$Sepal.Length, iris$Sepal.Width)</code></pre>
 <pre><code>## [1] -0.114702</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li><code>rnom(200</code> generates 200 random number from a normal
-distribution</li>
-<li>then generated values are converted to matrix with 100 * 2
-size.</li>
-<li>then plots the values into scatter plot</li>
-<li>when using <code>colSums</code> throws an error because code wont
-get computed after using plot because it won’t return anything except
-the figure or plot.</li>
-<li>To work around this problem, we can use the “tee” pipe.</li>
+<li>gives the correlation of sepal length and sepal width on the entire
+iris data frame.</li>
 </ul>
 <p><br />
 </p>
@@ -871,9 +864,10 @@ set.seed(123)</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
 <li><code>iris &lt;- read.csv(&#39;iris.csv&#39;)</code> load the iris dataset
-from current working directory to iris object.</li>
+from current working directory to iris object variable.</li>
 <li><code>set.seed(123)</code> generates the random number which can be
-reproduced again.</li>
+reproduced again. random seed is very useful when in machine learning
+problems.</li>
 </ul>
 <p><br />
 </p>
@@ -881,22 +875,27 @@ reproduced again.</li>
 <div id="code-sample-5-1" class="section level5">
 <h5><span style="color:#7b9a26"> <b> Code Sample 5</b></span></h5>
 <pre class="r"><code># training testing sample
-tt.sample &lt;- sample(c(TRUE, FALSE), nrow(iris), replace=T, prob=c(0.7,0.3))
+tt.sample &lt;-
+  sample(c(TRUE, FALSE),
+         nrow(iris),
+         replace = T,
+         prob = c(0.7, 0.3))
 train &lt;- iris[tt.sample,]
 test &lt;- iris[!tt.sample,]</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
 <li><code>tt.sample &lt;- sample(c(TRUE, FALSE), nrow(iris), replace=T)</code>
-samples the value given TRUE or FALSE for FALSE number of rows on iris
-dataset with replacement also with probability weights 0.7 for TRUE and
-0.3 for FALSE and store to tt.sample variable.</li>
+samples the value given TRUE or FALSE for given number of rows
+<code>nrow</code> on iris dataset with replacement also with probability
+weights 0.7 for TRUE and 0.3 for FALSE and store to tt.sample
+variable.</li>
 <li>train holds traning sample that are subsetted values from tt.sample
 in iris dataset. Rows corresponding to TRUE in tt.sample are
 selected</li>
 <li>test holds test sample that are subsetted values which are not TRUE
 for training set. Rows corresponding to not TRUE in tt.sample are
 selected</li>
-<li><code>!</code> alters the outcome like <code>TRUE</code> becomes
+<li><code>!</code> alters the outcome, like <code>TRUE</code> becomes
 <code>FALSE</code>.</li>
 </ul>
 <p><br />
@@ -911,12 +910,14 @@ my_function &lt;- function(){
 }</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+<li>R way to define user defined function using
+<code>function()</code>.</li>
+<li>Here, <code>my_function</code> is name of the function,
+<code>function()</code> creates the function, inside parenthesis
+<code>{}</code> some expression is evaluated, and last function returns
+some expression as well.</li>
+<li>A function can take arguments or no arguments it depends upon the
+situation.</li>
 </ul>
 <p><br />
 </p>
@@ -930,22 +931,9 @@ roll &lt;- function() {
   dice &lt;- sample(die, size = 2, replace = TRUE)
   cat(&quot;Dice Rolled:&quot;, dice, &#39;\n&#39;)
   sum(dice)
-}</code></pre>
-<p><strong><em>Interpretation</em></strong>:</p>
-<ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
-</ul>
-<p><br />
-</p>
-</div>
-<div id="code-sample-8-1" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 8</b></span></h5>
-<pre class="r"><code># first roll()
+}
+
+# first roll()
 cat(&#39;First Roll:&#39;, roll())</code></pre>
 <pre><code>## Dice Rolled: 3 6 
 ## First Roll: 9</code></pre>
@@ -959,93 +947,88 @@ cat(&#39;Third Roll:&#39;, roll())</code></pre>
 ## Third Roll: 7</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+<li>The function is named roll with no arguments</li>
+<li>die variable has sequence 1:6 as a die has 6 faces, and sampling is
+done with sample size two and also with replacement and stored in dice
+variable.</li>
+<li>the sum function sums the values obtained in dice</li>
+<li>cat just concatenate the values and string just for output.</li>
+<li>After calling the roll function 3 times we can see two dices rolled
+and their sums.</li>
+</ul>
+<p><br />
+</p>
+</div>
+<div id="code-sample-8-1" class="section level5">
+<h5><span style="color:#7b9a26"> <b> Code Sample 8</b></span></h5>
+<pre class="r"><code>roll2 &lt;- function(dice = 1:6) {
+  dice &lt;- sample(dice, size = 2, replace = TRUE)
+  cat(&quot;Dice Rolled:&quot;, dice, &#39;\n&#39;)
+  sum(dice)
+}
+
+# calling roll2()
+cat(&#39;First Roll:&#39;, roll2())</code></pre>
+<pre><code>## Dice Rolled: 6 6 
+## First Roll: 12</code></pre>
+<p><strong><em>Interpretation</em></strong>:</p>
+<ul>
+<li>The function is named roll2 with arguments dice having default value
+of sequence <code>1:6</code>.</li>
+<li>dice variable has default sequence 1:6, and sampling is done with
+sample size two and also with replacement and stored in dice
+variable.</li>
+<li>the sum function sums the values obtained in dice</li>
+<li>cat just concatenate the values and string just for output.</li>
+<li>After calling the roll2 function we can see two dices rolled and
+their sums.</li>
 </ul>
 <p><br />
 </p>
 </div>
 <div id="code-sample-9-1" class="section level5">
 <h5><span style="color:#7b9a26"> <b> Code Sample 9</b></span></h5>
-<pre class="r"><code>roll2 &lt;- function(dice = 1:6) {
+<pre class="r"><code>roll3 &lt;- function(dice) {
   dice &lt;- sample(dice, size = 2, replace = TRUE)
-  cat(&quot;Dice Rolled:&quot;, dice, &#39;\n&#39;)
   sum(dice)
-}</code></pre>
+}
+
+# roll3 function call 1
+roll3(dice = 1:6)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code># roll3 function call 2. but not correct
+roll3(dice = 1:12)</code></pre>
+<pre><code>## [1] 11</code></pre>
+<pre class="r"><code># roll3 function call 3. but not correct
+roll3(dice = 1:24)</code></pre>
+<pre><code>## [1] 40</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+<li>The function is named roll3 with arguments dice which is
+parametric.</li>
+<li>After the input dice is passed into the function, sampling is done
+with sample size two and also with replacement and stored in dice
+variable.</li>
+<li>the sum function sums the values obtained in dice</li>
+<li>cat just concatenate the values and string just for output.</li>
+<li><code>roll3(dice = 1:6)</code> function will pass the value of dice
+as 1:6 and results will be computed.</li>
+<li><code>roll3(dice = 1:12)</code> function will pass the value of dice
+as 1:6 and results will be computed but since we are computing the rolls
+of dice and a die has only 6 faces, for values 7:12 it returns
+GIGO.</li>
+<li><code>roll3(dice = 1:24)</code> function will pass the value of dice
+as 1:6 and results will be computed but since we are computing the rolls
+of dice and a die has only 6 faces, for values 7:24 it returns
+GIGO.</li>
+<li>we should be wary when we are passing arguments without knowing
+context.</li>
 </ul>
 <p><br />
 </p>
 </div>
 <div id="code-sample-10-1" class="section level5">
 <h5><span style="color:#7b9a26"> <b> Code Sample 10</b></span></h5>
-<pre class="r"><code># first roll()
-cat(&#39;First Roll:&#39;, roll2())</code></pre>
-<pre><code>## Dice Rolled: 6 6 
-## First Roll: 12</code></pre>
-<p><strong><em>Interpretation</em></strong>:</p>
-<ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
-</ul>
-<p><br />
-</p>
-</div>
-<div id="code-sample-11-1" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 11</b></span></h5>
-<pre class="r"><code>roll3 &lt;- function(dice) {
-  dice &lt;- sample(dice, size = 2, replace = TRUE)
-  sum(dice)
-}</code></pre>
-<p><strong><em>Interpretation</em></strong>:</p>
-<ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
-</ul>
-<p><br />
-</p>
-</div>
-<div id="code-sample-12-1" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 12</b></span></h5>
-<pre class="r"><code>roll3(dice = 1:6)</code></pre>
-<pre><code>## [1] 5</code></pre>
-<pre class="r"><code>roll3(dice = 1:12)</code></pre>
-<pre><code>## [1] 11</code></pre>
-<pre class="r"><code>roll3(dice = 1:24)</code></pre>
-<pre><code>## [1] 40</code></pre>
-<p><strong><em>Interpretation</em></strong>:</p>
-<ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
-</ul>
-<p><br />
-</p>
-</div>
-<div id="code-sample-13-1" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 13</b></span></h5>
 <pre class="r"><code># Function in R: Continued...
 
 # function which prints the chunk of given character vector best_practice
@@ -1057,22 +1040,9 @@ print_words &lt;- function(sentence) {
   print(sentence[4])
   print(sentence[5])
   print(sentence[6])
-}</code></pre>
-<p><strong><em>Interpretation</em></strong>:</p>
-<ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
-</ul>
-<p><br />
-</p>
-</div>
-<div id="code-sample-14-1" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 14</b></span></h5>
-<pre class="r"><code>print_words(best_practice)</code></pre>
+}
+
+print_words(best_practice)</code></pre>
 <pre><code>## [1] &quot;Let&quot;
 ## [1] &quot;the&quot;
 ## [1] &quot;computer&quot;
@@ -1090,18 +1060,27 @@ plotted.</li>
 <pre><code>## [1] &quot;Let&quot;      &quot;the&quot;      &quot;computer&quot; &quot;do&quot;       &quot;the&quot;</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+<li>best_practice is variable vector of characters.</li>
+<li>print_words is function which takes sentence as argument and it
+prints the value at certain index of sentence argument.</li>
+<li><code>print_words(best_practice)</code> calls the function and
+prints all of the words present in the best_practice using index.</li>
+<li>print_words(best_practice[-6]) calls the function and prints all of
+the words present in the best_practice using index except the last one
+which gives NA since <code>[-6]</code> removes the last value of
+best_practice</li>
+<li><code>best_practice[-6]</code> removes the last from the
+vector.</li>
+<li>this is a very bad use of function as it consumes more memory
+because of multiple function calls also what if the size of vector or
+list changes, in that case after 6th index this function won’t work
+properly.</li>
 </ul>
 <p><br />
 </p>
 </div>
-<div id="code-sample-15-1" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 15</b></span></h5>
+<div id="code-sample-11-1" class="section level5">
+<h5><span style="color:#7b9a26"> <b> Code Sample 11</b></span></h5>
 <pre class="r"><code># for loops in R
 # for (variable in collection) {
 #   do things with variable
@@ -1110,22 +1089,9 @@ print_words &lt;- function(sentence) {
   for (word in sentence) {
     print(word)
   }
-}</code></pre>
-<p><strong><em>Interpretation</em></strong>:</p>
-<ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
-</ul>
-<p><br />
-</p>
-</div>
-<div id="code-sample-16-1" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 16</b></span></h5>
-<pre class="r"><code>print_words(best_practice)</code></pre>
+}
+
+print_words(best_practice)</code></pre>
 <pre><code>## [1] &quot;Let&quot;
 ## [1] &quot;the&quot;
 ## [1] &quot;computer&quot;
@@ -1140,38 +1106,57 @@ plotted.</li>
 ## [1] &quot;the&quot;</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
+<li>The previous problem can be solved using loops.</li>
+<li>print_words is function which prints the word in a sentence which is
+a argument for the print_words function.</li>
+<li>After calling <code>print_words(best_practice)</code> it prints each
+word in sentence.</li>
+<li><code>print_words(best_practice[-6])</code> prints each word in
+sentence except the value at <code>[6]</code> index as [-6] removes the
+value at that index</li>
+<li>However, in R we should not used loops whenever possible as it is
+not efficient way to iterate.</li>
+<li>Using <code>apply</code>, <code>sapply</code>, <code>vapply</code>
+and <code>lapply</code> is an very good alternative of for loops in
+R.<br />
 </li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+</ul>
+</div>
+<div id="code-sample-12-1" class="section level5">
+<h5><span style="color:#7b9a26"> <b> Code Sample 12</b></span></h5>
+<pre class="r"><code># Conditionals in R
+
+if (condition) {
+  #code executed when condition is TRUE
+} else {
+  #code executed when condition is FALSE
+}</code></pre>
+<p><strong><em>Interpretation</em></strong>:</p>
+<ul>
+<li>Simple if else conditional syntax in R which computer</li>
 </ul>
 <p><br />
 </p>
 </div>
-<div id="code-sample-17-1" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 17</b></span></h5>
+<div id="code-sample-13-1" class="section level5">
+<h5><span style="color:#7b9a26"> <b> Code Sample 13</b></span></h5>
 <pre class="r"><code># Conditionals in R
-if (y &lt; 20) {
+if (y1 &lt; 20) {
   x &lt;- &quot;Too low&quot;
 } else {
   x &lt;- &quot;Too high&quot;
 }</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+<li>Simple if else condition syntax when y &lt; 20 the x is ‘Too low’
+else x is ‘Too High’.</li>
+<li>However, this code will throw error as y is not defined.</li>
 </ul>
 <p><br />
 </p>
 </div>
-<div id="code-sample-18-1" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 18</b></span></h5>
+<div id="code-sample-14-1" class="section level5">
+<h5><span style="color:#7b9a26"> <b> Code Sample 14</b></span></h5>
 <pre class="r"><code># if else in R
 check.y &lt;- function(y) {
   if (y &lt; 20) {
@@ -1187,21 +1172,21 @@ check.y(10)</code></pre>
 <pre><code>## [1] &quot;Too High&quot;</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+<li>Simple function <code>check.y</code> which checks values of y.</li>
+<li>If <code>y &lt; 20</code> prints ‘Too Low’ else prints ‘Too
+high’.</li>
+<li>check.y(10) prints ‘Too Low’ as it satisfies the if condition.</li>
+<li>check.y(10) prints ‘Too High’ as it satisfies the else
+condition.</li>
 </ul>
 <p><br />
 </p>
 </div>
-<div id="code-sample-19-1" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 19</b></span></h5>
+<div id="code-sample-15-1" class="section level5">
+<h5><span style="color:#7b9a26"> <b> Code Sample 15</b></span></h5>
 <pre class="r"><code># binary variables using `ifelse`
 y &lt;- 1:40
-ifelse(y&lt;20, &#39;Too low&#39;, &#39;Too high&#39;)</code></pre>
+ifelse(y &lt; 20, &#39;Too low&#39;, &#39;Too high&#39;)</code></pre>
 <pre><code>##  [1] &quot;Too low&quot;  &quot;Too low&quot;  &quot;Too low&quot;  &quot;Too low&quot;  &quot;Too low&quot;  &quot;Too low&quot; 
 ##  [7] &quot;Too low&quot;  &quot;Too low&quot;  &quot;Too low&quot;  &quot;Too low&quot;  &quot;Too low&quot;  &quot;Too low&quot; 
 ## [13] &quot;Too low&quot;  &quot;Too low&quot;  &quot;Too low&quot;  &quot;Too low&quot;  &quot;Too low&quot;  &quot;Too low&quot; 
@@ -1209,31 +1194,36 @@ ifelse(y&lt;20, &#39;Too low&#39;, &#39;Too high&#39;)</code></pre>
 ## [25] &quot;Too high&quot; &quot;Too high&quot; &quot;Too high&quot; &quot;Too high&quot; &quot;Too high&quot; &quot;Too high&quot;
 ## [31] &quot;Too high&quot; &quot;Too high&quot; &quot;Too high&quot; &quot;Too high&quot; &quot;Too high&quot; &quot;Too high&quot;
 ## [37] &quot;Too high&quot; &quot;Too high&quot; &quot;Too high&quot; &quot;Too high&quot;</code></pre>
-<pre class="r"><code># logical 
-ifelse(y&lt;20, TRUE, FALSE)</code></pre>
+<pre class="r"><code># logical
+ifelse(y &lt; 20, TRUE, FALSE)</code></pre>
 <pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 ## [13]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
 ## [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ## [37] FALSE FALSE FALSE FALSE</code></pre>
-<pre class="r"><code># binary 
+<pre class="r"><code># binary
 y &lt;- 1:40
-ifelse(y&lt;20, 1, 0)</code></pre>
+ifelse(y &lt; 20, 1, 0)</code></pre>
 <pre><code>##  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ## [39] 0 0</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
+<li>y is vector of sequence 1:40</li>
+<li><code>ifelse</code> is very useful for binary values,
+<code>ifelse(y&lt;20, &#39;Too low&#39;, &#39;Too high&#39;)</code> gives ‘Too Low’ for
+all values of y less than 20 and gives ‘Too High’ for all values of y
+greater than 20.</li>
+<li><code>ifelse(y&lt;20, TRUE, FALSE)</code> gives TRUE for all values
+of y less than 20 and gives FALSE for all values of y greater than
+20.</li>
+<li><code>ifelse(y&lt;20, 1, 0)</code> gives 1 for all values of y less
+than 20 and gives 0 for all values of y greater than 20.</li>
+<li>very useful when creating categorical variable given some
+condition.<br />
 </li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
 </ul>
-<p><br />
-</p>
 </div>
-<div id="code-sample-20-1" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 20</b></span></h5>
+<div id="code-sample-16-1" class="section level5">
+<h5><span style="color:#7b9a26"> <b> Code Sample 16</b></span></h5>
 <pre class="r"><code># multiple if else conditions
 if (this) {
   # do that
@@ -1246,18 +1236,13 @@ if (this) {
 }</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+<li>simple syntax for multiple if else condition in R</li>
 </ul>
 <p><br />
 </p>
 </div>
-<div id="code-sample-20-2" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 20</b></span></h5>
+<div id="code-sample-17-1" class="section level5">
+<h5><span style="color:#7b9a26"> <b> Code Sample 17</b></span></h5>
 <pre class="r"><code>check.x &lt;- function(x=1:99){
   if (x&lt;20){
     print(&quot;Less than 20&quot;)
@@ -1280,21 +1265,23 @@ check.x(15)</code></pre>
 <pre><code>## [1] &quot;40-99&quot;</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+<li>check.x is function that checks the value of x of given
+condition.</li>
+<li><code>check.x(15)</code> prints ‘Less than 20’ as it satisfies x
+&lt; 20.</li>
+<li><code>check.x(30)</code> prints ‘20-39’ as it satisfies x &lt; 40 in
+else block.</li>
+<li><code>check.x(45)</code> prints ‘40-99’ as it satisfies else
+condition in root else block which is x between 40 to 99.</li>
 </ul>
 <p><br />
 </p>
 </div>
-<div id="code-sample-20-3" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 20</b></span></h5>
+<div id="code-sample-18-1" class="section level5">
+<h5><span style="color:#7b9a26"> <b> Code Sample 18</b></span></h5>
 <pre class="r"><code>x &lt;- 1:99
-x1 &lt;- ifelse(x&lt;20, 1,0) 
-x2.1 &lt;- ifelse(x&lt;20, &#39;&lt;20&#39;, &#39;20+&#39;)
+x1 &lt;- ifelse(x &lt; 20, 1, 0)
+x2.1 &lt;- ifelse(x &lt; 20, &#39;&lt;20&#39;, &#39;20+&#39;)
 
 x</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
@@ -1317,42 +1304,50 @@ x</code></pre>
 ## [97] &quot;20+&quot; &quot;20+&quot; &quot;20+&quot;</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+<li><code>x &lt;- 1:99</code> creates a sequence x containing integers
+from 1 to 99.</li>
+<li><code>x1 &lt;- ifelse(x&lt;20, 1, 0)</code>, here we use the ifelse
+function. If the value of x is less than 20, x1 is assigned the value 1;
+otherwise, it’s assigned 0.</li>
+<li><code>x2.1 &lt;- ifelse(x&lt;20, &#39;&lt;20&#39;, &#39;20+&#39;)</code>, here also
+we use the ifelse function. x2.1 is assigned the string ‘&lt;20’ if x is
+less than 20; otherwise, it’s assigned ‘20+’.</li>
 </ul>
 <p><br />
 </p>
 </div>
-<div id="code-sample-20-4" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 20</b></span></h5>
-<pre class="r"><code>x3 &lt;- ifelse(x&lt;20,1,ifelse(x&lt;40,2,3))
+<div id="code-sample-19-1" class="section level5">
+<h5><span style="color:#7b9a26"> <b> Code Sample 19</b></span></h5>
+<pre class="r"><code>x3 &lt;- ifelse(x &lt; 20, 1, ifelse(x &lt; 40, 2, 3))
 x3</code></pre>
 <pre><code>##  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
 ## [39] 2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
 ## [77] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3</code></pre>
 <pre class="r"><code># represents the frequency distribution of categorical  data.
-# It essentially counts the occurrences of unique values within a dataset and presents the result in a tabular format.
+# It essentially counts the occurrences of unique values within a dataset and presents the result in a tabular format often knowns as frequency table.
 table(x3)</code></pre>
 <pre><code>## x3
 ##  1  2  3 
 ## 19 20 60</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+<li><code>x3 &lt;- ifelse(x&lt;20, 1, ifelse(x&lt;40, 2, 3))</code> In
+this line, we use nested <code>ifelse</code> statements to create a new
+vector x3
+<ul>
+<li>If the value of x is less than 20, x3 is assigned the value 1.</li>
+<li>Otherwise, if the value of x is less than 40, x3 is assigned the
+value 2.</li>
+<li>If neither condition is met (i.e., x is greater than or equal to
+40), x3 is assigned the value 3.</li>
+</ul></li>
+<li><code>table(x3)</code> generates a frequency table for the values in
+x3, showing how many times each value appears.</li>
 </ul>
 <p><br />
 </p>
 </div>
-<div id="code-sample-20-5" class="section level5">
+<div id="code-sample-20-1" class="section level5">
 <h5><span style="color:#7b9a26"> <b> Code Sample 20</b></span></h5>
 <pre class="r"><code>iris &lt;- within(iris, {
   Petal.cat &lt;- NA
@@ -1388,18 +1383,30 @@ iris$Petal.cat</code></pre>
 ##     42     71     37</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+<li><code>iris &lt;- within(iris, { ... })</code> modifies the iris
+dataset by adding a new variable called Petal.cat. The within function
+allows us to create or modify variables within a data frame in this
+case, the iris data frame.</li>
+<li><code>Petal.cat[Petal.Length &lt; 1.6] &lt;- &quot;Small&quot;</code>if the
+Petal.Length is less than 1.6, assign the category “Small” to
+Petal.cat.</li>
+<li><code>Petal.cat[Petal.Length &gt;= 1.6 &amp; Petal.Length &lt; 5.1] &lt;- &quot;Medium&quot;</code>
+if the Petal.Length is between 1.6 (inclusive) and 5.1 (exclusive),
+assign the category “Medium” to Petal.cat.</li>
+<li><code>Petal.cat[Petal.Length &gt;= 5.1] &lt;- &quot;Large&quot; if the Petal.Length</code>
+is greater than or equal to 5.1, assign the category “Large” to
+Petal.cat.</li>
+<li><code>iris$Petal.cat</code> displays the values of the newly created
+Petal.cat variable for each observation(Small, Medium, Large) in the
+iris dataset.</li>
+<li>`table(iris$Petal.cat)1 generates a frequency table showing how many
+times each category appears in the Petal.cat variable.</li>
 </ul>
 <p><br />
 </p>
 </div>
-<div id="code-sample-20-6" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 20</b></span></h5>
+<div id="code-sample-21-1" class="section level5">
+<h5><span style="color:#7b9a26"> <b> Code Sample 21</b></span></h5>
 <pre class="r"><code>if (temp &lt;= 0) {
   &quot;freezing&quot;
 }
@@ -1417,20 +1424,15 @@ else {
 }</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+<li>Throws an error as temp object is not defined.</li>
 </ul>
 <p><br />
 </p>
 </div>
-<div id="code-sample-20-7" class="section level5">
-<h5><span style="color:#7b9a26"> <b> Code Sample 20</b></span></h5>
+<div id="code-sample-22-1" class="section level5">
+<h5><span style="color:#7b9a26"> <b> Code Sample 22</b></span></h5>
 <pre class="r"><code># Multiple Conditions: If, else if, else if, else if
-temp &lt;- function(x) {
+x &lt;- function(temp) {
   if (temp &lt;= 0) {
     &quot;freezing&quot;
   }
@@ -1449,15 +1451,23 @@ temp &lt;- function(x) {
 }</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>x is column vector having elements 1 to 30.<br />
-</li>
-<li>y is also vector having elements of x exponentiated of 3.<br />
-</li>
-<li>plot is a generic function in R to plot, by default scatter plot is
-plotted.</li>
+<li>as temp was not defined. I created a function x which takes temp as
+input.</li>
+<li>Inside the function, there are several conditions for temp
+statements (using if and else if):
+<ul>
+<li>if the value of temp is less than or equal to 0, the result is
+“freezing.”</li>
+<li>if the value of temp is between 0 (exclusive) and 10 (inclusive),
+the result is “cold.”</li>
+<li>if the value of temp is between 10 (exclusive) and 20 (inclusive),
+the result is “cool.”</li>
+<li>if the value of temp is between 20 (exclusive) and 30 (inclusive),
+the result is “warm.”</li>
+<li>if none of the above conditions are met (i.e., temp is greater than
+30), the result is “hot.”</li>
+</ul></li>
 </ul>
-<p><br />
-</p>
 </div>
 </div>
 
