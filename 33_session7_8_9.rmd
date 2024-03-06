@@ -1,30 +1,58 @@
 ---
-title: "33_session7_8_9.rmd"
-author: "Suman Paudel"
+title: '**Assignment 2: Web scrapping/Data Wrangling in R**'
+author: '**Suman Paudel 33**'
 date: "2024-03-03"
-output: pdf_document
+output:
+  pdf_document: default
+  github_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
+    toc: true
+    toc_float: true
+    code_folding: hide
 ---
+[GitHub Repository](https://github.com/sumanpaudel1997/R-For-Data-Science/tree/main)
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+## <span style="color:#d30000"> <b> Code Execution and Output/Interpretation of Session 4</b></span>
+
+##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
+
+```{r}
+# vector 
+x <- c(1:30)
+y <- x^3
+plot(x,y,)
 ```
 
-## R Markdown
+***Interpretation***:
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+-   x is vector having elements 1 to 30. 
+-   y is also vector having elements of x exponentiated of 3. 
+-   plot is a generic function in R to plot, by default in R scatter plot is plotted.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
+##### <span style="color:#7b9a26"> <b> Code Sample 2</b></span>
+
+```{r}
+# store the current working using following command:
+initial.dir <- getwd()
+initial.dir
 ```
 
-## Including Plots
+***Interpretation***:
 
-You can also embed plots, for example:
+-   **initial.dir** object will be assigned the current working directory.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+##### <span style="color:#7b9a26"> <b> Code Sample 3</b></span>
+
+```{r}
+# to change the working directory custom directory
+setwd("C:/Users/SumanPaudel/Desktop/R For Data Science")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+***Interpretation***:
+
+-   **setwd()** function will change the working directory to given path.
+
+ 
