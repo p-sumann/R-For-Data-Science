@@ -1,6 +1,22 @@
 library(jsonlite)
 
 
+library("rjson")
+data <- fromJSON(file = "jason_data.json")
+# jason_data.json must be in the current working directory of R
+print(data)
+# covert to data frame:
+jason_data_frame <- as.data.frame(data)
+print(jason_data_frame)
+
+# summary of jason_data_frame
+summary(jason_data_frame)
+
+# histogram of salary of jason data frame
+# since salary was of character so hist was not produced, so I converted it to integer.
+jason_data_frame$Salary <- as.integer(jason_data_frame$Salary)
+hist(jason_data_frame$Salary)
+
 raw <- fromJSON(("https://data.ny.gov/api/views/9a8c-vfzj/rows.json?accessType=DOWNLOAD"))
 
 

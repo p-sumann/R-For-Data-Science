@@ -3,52 +3,93 @@ title: '**Assignment 2: Web scrapping/Data Wrangling in R**'
 author: '**Suman Paudel 33**'
 date: "2024-03-03"
 output:
-  pdf_document: default
-  github_document: default
   html_notebook: default
-  html_document: default
+  pdf_document: 
+    highlight: pygments
+  github_document: default
+  html_document:
+    highlight: haddock
 ---
 [GitHub Repository](https://github.com/sumanpaudel1997/R-For-Data-Science/tree/main)
 
-## <span style="color:#d30000"> <b> Code Execution and Output/Interpretation of Session 4</b></span>
+## <span style="color:#d30000"> <b> Code Execution and Output/Interpretation of Session 7</b></span>
 
+
+
+#### What is a “package” in R?
+
+- In R, the fundamental unit of shareable code/function is the package. 
+- A package bundles together code, data, documentation, and tests, and is easy to share with others. 
+- The public clearing house for R packages is the Comprehensive R Archive Network or `CRAN`. The details about the packages can be found at CRAN.
+
+
+#### How to install, use and get help about any package from CRAN?
+
+- We can install packages of CRAN in R using:
+**``install.packages("packagename")``**  
+For example: **``install.packages("dplyr")``**  
+
+- We can then use the installed packages in R using:  
+**``library(packagename) ``**  
+**``e.g. library(dplyr)``**  
+
+- We can get help on the installed packages in R using:  
+**``?packagement``** or **``help(package = "packagement")``**  
+**``e.g. ?dplyr``** OR **``help(package = "dplyr")``**   
+
+#### How to develop a package in R?
+https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/
+
+- Step 0: Packages you will need
+- Step 1: Creating your package directory
+- Step 2: Add functions
+- Step 3: Add documentation
+- Step 4: Process your documentation
+- Step 5: Install
+- Step 6: Make a package GitHub repo (Bonus!)
+- Step 7: Infinity- Iterate
+
+#### Reading (Import) data in R/R Studio:
+
+- Text files: R base, readr etc
+- Excel files: readXL, openxls etc. 
+- SPSS, Stata, SAS files: foreign, haven etc. 
+
+#### Reading data in R/R Studio
+
+- JSON files: rjason, jsonlite, RJSONIO etc.
+
+#### To install the library to work on josn files.
+```{r eval=FALSE}
+# install rjson package to work with json file.
+install.packages('rjson')
+```
+
+#### Read the created JSON file (json_file.json) in R and Convert it as data.frame for further manipulation in R.
+
+```{r}
+
+library("rjson")
+data <- fromJSON(file = "jason_data.json")
+# jason_data.json must be in the current working directory of R
+print(data)
+# covert to data frame:
+jason_data_frame <- as.data.frame(data)
+print(jason_data_frame) 
+```
 ##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
 
 ```{r}
-# vector 
-x <- c(1:30)
-y <- x^3
-plot(x,y,)
+# summary of data
+summary(jason_data_frame)
+
+# histogram of salary of jason data frame
+# since salary was of character so hist was not produced, so I converted it to integer.
+jason_data_frame$Salary <-  as.integer(jason_data_frame$Salary)
+hist(jason_data_frame$Salary)
+# 
 ```
 
-***Interpretation***:
 
--   x is vector having elements 1 to 30. 
--   y is also vector having elements of x exponentiated of 3. 
--   plot is a generic function in R to plot, by default in R scatter plot is plotted.
-
-
-##### <span style="color:#7b9a26"> <b> Code Sample 2</b></span>
-
-```{r}
-# store the current working using following command:
-initial.dir <- getwd()
-initial.dir
-```
-
-***Interpretation***:
-
--   **initial.dir** object will be assigned the current working directory.
-
-##### <span style="color:#7b9a26"> <b> Code Sample 3</b></span>
-
-```{r}
-# to change the working directory custom directory
-setwd("C:/Users/SumanPaudel/Desktop/R For Data Science")
-```
-
-***Interpretation***:
-
--   **setwd()** function will change the working directory to given path.
 
  
