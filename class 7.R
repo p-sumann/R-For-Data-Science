@@ -154,31 +154,21 @@ covid_table$RR <- as.numeric(covid_table$RR)
 covid_table$CFR <- as.numeric(covid_table$CFR)
 
 
-infer_year <- function(date_vector) {
-  year <- 2020  # Start year
-  inferred_years <- numeric(length(date_vector))
-  
-  for (i in seq_along(date_vector)) {
-    if (i == 1) {
-      inferred_years[i] <- year
-    } else {
-      # Check if the current date is earlier than the previous one
-      if (as.Date(date_vector[i], format = "%d %b") < as.Date(date_vector[i - 1], format = "%d %b")) {
-        year <- year + 1  # Increment year if the date resets
-      }
-      inferred_years[i] <- year
-    }
-  }
-  
-  return(inferred_years)
-}
+start_date_2020 <- '2020-01-23'
+end_date_2020 <- '2020-12-31'
+final <- ifelse(1:nrow(covid_table) <= diff, 2020, 2021)
+# using base R date time functions
+diff <- as.numeric(difftime(end_date_2020,start_date_2020,units = 'days')) + 1
+formatted_date <- as.Date(covid_table$Date,format = "%d %b")
+formatted_date <- format(formatted_date, '-%m-%d')
+final_converted_date <- paste0(final,formatted_date)
+class(final_converted_date)
+
+# using lubridate
+diff <- (ymd(start) %--% ymd(end)) %/% days(1) + 1
+formatted <- format(as.Date(covid_table$Date, format= "%d %b"),"-%m-%d")
+finall_date <- paste0(final,formatted)
+as.Date(finall_date)
 
 
-df <- data.frame(
-  year = c(2020, 2021),
-  col1 = c(1, 2),
-  col2 = c(3, 4)
-)
 
-
-ifelse(1:nrow(covid_table) <= 344, 2020, 2021)
