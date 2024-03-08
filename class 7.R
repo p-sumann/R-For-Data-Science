@@ -166,9 +166,8 @@ class(final_converted_date)
 
 # using lubridate
 diff <- (ymd(start) %--% ymd(end)) %/% days(1) + 1
-formatted <- format(as.Date(covid_table$Date, format= "%d %b"),"-%m-%d")
-finall_date <- paste0(final,formatted)
-as.Date(finall_date)
-
-
+final <- ifelse(1:nrow(covid_table) <= diff, 2020, 2021)
+formatted_date <- ymd(as.Date(covid_table$Date,format = "%d %b"))
+final_converted_date <- make_date(year = final,month = month(formatted_date), day = day(formatted_date))
+class(final_converted_date)
 
