@@ -3,8 +3,8 @@ title: "**Project 1: Unit 1**"
 author: "**Suman Paudel**"
 date: "3/2/2024"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 [GitHub Repository](https://github.com/sumanpaudel1997/R-For-Data-Science/tree/main)
 

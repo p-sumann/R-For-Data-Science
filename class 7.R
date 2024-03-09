@@ -123,6 +123,11 @@ names(covid_table)[names(covid_table)=='Ref._Ref.'] = 'Ref'
 
 # removing "+" and "%" from the variables
 
+covid_table$Confirmed_Cases_New <- gsub('[+]', '', covid_table$Confirmed_Cases_New)
+covid_table$Recoveries_New <- gsub('[+]', '', covid_table$Recoveries_New)
+covid_table$Deaths_New <- gsub('[+]', '', covid_table$Deaths_New)
+covid_table$PCR_New <- gsub('[+]', '', covid_table$PCR_New)
+
 covid_table$TPR <- gsub('[%]', '', covid_table$TPR)
 covid_table$RR <- gsub('[%]', '', covid_table$RR)
 covid_table$CFR <- gsub('[%]', '', covid_table$CFR)
@@ -152,6 +157,7 @@ covid_table$PCR_New <- as.integer(covid_table$PCR_New)
 covid_table$TPR <- as.numeric(covid_table$TPR)
 covid_table$RR <- as.numeric(covid_table$RR)
 covid_table$CFR <- as.numeric(covid_table$CFR)
+
 
 
 start_date_2020 <- '2020-01-23'

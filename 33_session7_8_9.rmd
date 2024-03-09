@@ -1,268 +1,63 @@
 ---
 title: '**Assignment 2: Web scrapping/Data Wrangling in R**'
 author: '**Suman Paudel 33**'
-date: "2024-03-03"
+date: "`r Sys.Date()`"
 output:
   html_document:
-    highlight: textmate
+    theme:
+      base_font:
+        google: kate
+      heading_font:
+        google: Proza Libre
+    highlight: tango
   pdf_document: 
     highlight: pygments
-  github_document: default
-  html_notebook: default
 ---
+
 [GitHub Repository](https://github.com/sumanpaudel1997/R-For-Data-Science/tree/main)
 
-## <span style="color:#d30000"> <b> Code Execution and Output/Interpretation of Session 7</b></span>
-
-
+### [ <b> Code Execution and Output/Interpretation of Session 7</b>]{style="color:#d30000"}
 
 #### What is a “package” in R?
 
-- In R, the fundamental unit of shareable code/function is the package. 
-- A package bundles together code, data, documentation, and tests, and is easy to share with others. 
-- The public clearing house for R packages is the Comprehensive R Archive Network or `CRAN`. The details about the packages can be found at CRAN.
-
+-   In R, the fundamental unit of shareable code/function is the package.
+-   A package bundles together code, data, documentation, and tests, and is easy to share with others.
+-   The public clearing house for R packages is the Comprehensive R Archive Network or `CRAN`. The details about the packages can be found at CRAN.
 
 #### How to install, use and get help about any package from CRAN?
 
-- We can install packages of CRAN in R using:
-**``install.packages("packagename")``**  
-For example: **``install.packages("dplyr")``**  
+-   We can install packages of CRAN in R using: **`install.packages("packagename")`**\
+    For example: **`install.packages("dplyr")`**
 
-- We can then use the installed packages in R using:  
-**``library(packagename) ``**  
-**``e.g. library(dplyr)``**  
+-   We can then use the installed packages in R using:\
+    **`library(packagename)`**\
+    **`e.g. library(dplyr)`**
 
-- We can get help on the installed packages in R using:  
-**``?packagement``** or **``help(package = "packagement")``**  
-**``e.g. ?dplyr``** OR **``help(package = "dplyr")``**   
+-   We can get help on the installed packages in R using:\
+    **`?packagement`** or **`help(package = "packagement")`**\
+    **`e.g. ?dplyr`** OR **`help(package = "dplyr")`**
 
-#### How to develop a package in R?
-https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/
+#### How to develop a package in R?  
 
-- Step 0: Packages you will need
-- Step 1: Creating your package directory
-- Step 2: Add functions
-- Step 3: Add documentation
-- Step 4: Process your documentation
-- Step 5: Install
-- Step 6: Make a package GitHub repo (Bonus!)
-- Step 7: Infinity- Iterate
+\ <https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/>
+
+-   Step 0: Packages you will need
+-   Step 1: Creating your package directory
+-   Step 2: Add functions
+-   Step 3: Add documentation
+-   Step 4: Process your documentation
+-   Step 5: Install
+-   Step 6: Make a package GitHub repo (Bonus!)
+-   Step 7: Infinity- Iterate
 
 #### Reading (Import) data in R/R Studio:
 
-- Text files: R base, readr etc
-- Excel files: readXL, openxls etc. 
-- SPSS, Stata, SAS files: foreign, haven etc. 
+-   Text files: R base, readr etc
+-   Excel files: readXL, openxls etc.
+-   SPSS, Stata, SAS files: foreign, haven etc.
 
 #### Reading data in R/R Studio
 
-- JSON files: rjason, jsonlite, RJSONIO etc.
+-   JSON files: rjason, jsonlite, RJSONIO etc.
 
 #### To install the library to work on josn files.
-```{r eval=FALSE}
-# install rjson package to work with json file.
-install.packages('rjson')
-```
-
-#### Read the created JSON file (json_file.json) in R and Convert it as data.frame for further manipulation in R.
-
-```{r}
-
-library("rjson")
-data <- fromJSON(file = "jason_data.json")
-# jason_data.json must be in the current working directory of R
-print(data)
-# covert to data frame:
-jason_data_frame <- as.data.frame(data)
-print(jason_data_frame) 
-```
-##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
-
-```{r}
-# summary of data
-summary(jason_data_frame)
-
-# histogram of salary of jason data frame
-# since salary was of character so hist was not produced, so I converted it to integer.
-jason_data_frame$Salary <-  as.integer(jason_data_frame$Salary)
-hist(jason_data_frame$Salary)
-
-# average salary by department
-aggregate(Salary ~ Dept, data = jason_data_frame, FUN = max)
-
-# also using dplyr package
-library(dplyr)
-library(magrittr)
-avg_by_dept <-
-  jason_data_frame %>% group_by(Dept) %>% summarise(avg_salart = mean(Salary))
-
-# frequency distribution of all variables
-# since tables only shows the frequency distribution of factors, table on numerical or integer value is bad practice.
-table(jason_data_frame$Dept)
-```
-
-#### Reading data in R/R Studio: Web Scrapping
-- HTML page: `rvest` package (from R Studio)
-- Use **`rvest`** package to extract HTML tables.
-
-#### Reading JSON file from URL: Web API
-- `install.packages('jsonlite')`
-- `library('jsonlite')`
-
-# Reading JSON file from URL: Web API 
-
-```{r rows.print=5}
-library(jsonlite)
-
-raw <-
-  fromJSON((
-    "https://data.ny.gov/api/views/9a8c-vfzj/rows.json?accessType=DOWNLOAD"
-  ))
-
-food_market <- raw[['data']] 
-str(food_market) 
-head(food_market)
-```
-
-```{r eval=FALSE}
-names <- food_market[,14]
-head(names)
-table(names)
-```
-
-```{r error=TRUE}
-table(v19)
-```
-
-```{r error=TRUE, rows.print=5}
-
-print(table(food_market$V19))
-table(food_market[,19])
-```
-
-
-```{r}
-# Web scrapping in R: A Simple (barebones) Example
-# https://www.dataquest.io/blog/web-scraping-in-r-rvest
-
-# The recommended package for web scrapping in R is “rvest
-# using html
-library(rvest)
-simple <- read_html('https://dataquestio.github.io/web-scraping-pages/simple.html')
-
-simple %>% html_nodes('p') %>% html_text()
-```
-
-
-```{r error=TRUE}
-# wikipedia nepal covid 19 
-wiki_link <- "https://en.wikipedia.org/wiki/COVID-19_pandemic_in_Nepal"
-wiki_page <- read_html(wiki_link)
-str(wiki_page)
-
-wiki_page %>% html_nodes("table")
-
-covid_table <- wiki_page %>% html_elements('.COVID-19_pandemic_data_Nepal_medical_cases') %>% html_node('table') %>% html_table()
-covid_table <- covid_table[[1]]
-
-
-
-names(covid_table) <- paste(names(covid_table), covid_table[1,], sep = "_")
-names(covid_table)
-covid_table <- covid_table[-1,]
-
-str(covid_table)
-
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
-
-# another way to do same thing 
-
-names(covid_table)[names(covid_table)=='Date_Date'] = 'Date'
-names(covid_table)[names(covid_table)=='Confirmed cases_Total'] = 'Confirmed_Cases_Total'
-names(covid_table)[names(covid_table)=='Confirmed cases_New'] = 'Confirmed_Cases_New'
-names(covid_table)[names(covid_table)=='Confirmed cases_Active'] = 'Confirmed_Cases_Active'
-names(covid_table)[names(covid_table)=='Recoveries_Total'] = 'Recoveries_Total'
-names(covid_table)[names(covid_table)=='Recoveries_New'] = 'Recoveries_New'
-names(covid_table)[names(covid_table)=='Deaths_Total'] = 'Deaths_Total'
-names(covid_table)[names(covid_table)=='Deaths_New'] = 'Deaths_New'
-names(covid_table)[names(covid_table)=='RT-PCR tests_Total'] = 'PCR_Total'
-names(covid_table)[names(covid_table)=='RT-PCR tests_New'] = 'PCR_New'
-names(covid_table)[names(covid_table)=='TPR_TPR'] = 'TPR'
-names(covid_table)[names(covid_table)=='RR_RR'] = 'RR'
-names(covid_table)[names(covid_table)=='CFR_CFR'] = 'CFR'
-names(covid_table)[names(covid_table)=='Ref._Ref.'] = 'Ref'
-
-
-# data wrangling part iii
-
-# removing "+" and "%" from the variables
-
-covid_table$TPR <- gsub('[%]', '', covid_table$TPR)
-covid_table$RR <- gsub('[%]', '', covid_table$RR)
-covid_table$CFR <- gsub('[%]', '', covid_table$CFR)
-
-# converting  chr variables as 1
-
-covid_table$Confirmed_Cases_Total <-
-  as.integer(covid_table$Confirmed_Cases_Total)
-covid_table$Confirmed_Cases_New <-
-  as.integer(covid_table$Confirmed_Cases_New)
-covid_table$Confirmed_Cases_Active <-
-  as.integer(covid_table$Confirmed_Cases_Active)
-covid_table$Recoveries_Total <-
-  as.integer(covid_table$Recoveries_Total)
-covid_table$Recoveries_New <-
-  as.integer(covid_table$Recoveries_New)
-
-# converting chr variable as integer
-
-covid_table$Deaths_Total <- as.integer(covid_table$Deaths_Total)
-covid_table$Deaths_New <- as.integer(covid_table$Deaths_New)
-covid_table$PCR_Total <- as.integer(covid_table$PCR_Total)
-covid_table$PCR_New <- as.integer(covid_table$PCR_New)
-
-#Data wrangling: Part IV
-#Converting “chr” variables as numbers 
-covid_table$TPR <- as.numeric(covid_table$TPR)
-covid_table$RR <- as.numeric(covid_table$RR)
-covid_table$CFR <- as.numeric(covid_table$CFR)
-
-
-start_date_2020 <- '2020-01-23'
-end_date_2020 <- '2020-12-31'
-final <- ifelse(1:nrow(covid_table) <= diff, 2020, 2021)
-# using base R date time functions
-diff <- as.numeric(difftime(end_date_2020,start_date_2020,units = 'days')) + 1
-formatted_date <- as.Date(covid_table$Date,format = "%d %b")
-formatted_date <- format(formatted_date, '-%m-%d')
-final_converted_date <- paste0(final,formatted_date)
-class(final_converted_date)
-
-# using lubridate
-library(lubridate)
-diff <- (ymd(start) %--% ymd(end)) %/% days(1) + 1
-final <- ifelse(1:nrow(covid_table) <= diff, 2020, 2021)
-formatted_date <- ymd(as.Date(covid_table$Date,format = "%d %b"))
-final_converted_date <- make_date(year = final,month = month(formatted_date), day = day(formatted_date))
-class(final_converted_date)
-
-```
-
-
- 
