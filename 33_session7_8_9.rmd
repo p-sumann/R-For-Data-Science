@@ -4,11 +4,6 @@ author: '**Suman Paudel 33**'
 date: "`r Sys.Date()`"
 output:
   html_document:
-    theme:
-      base_font:
-        google: kate
-      heading_font:
-        google: Proza Libre
     highlight: tango
   pdf_document: 
     highlight: pygments
@@ -61,3 +56,954 @@ output:
 -   JSON files: rjason, jsonlite, RJSONIO etc.
 
 #### To install the library to work on josn files.
+-   `install.packages('jsonlite')`
+-   `install.packages('rjson')`
+
+##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
+
+```{r}
+# vector 
+library("rjson")
+data <- fromJSON(file = "jason_data.json")
+data
+```
+
+***Interpretation***:
+
+-   loaded the jason_data.json file fromm current working directory using rjson library
+
+##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
+
+```{r}
+library("rjson")
+data <- fromJSON(file = "jason_data.json")
+data
+```
+
+***Interpretation***:
+
+-   loaded the jason_data.json file fromm current working directory using rjson library
+
+##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
+
+```{r}
+# covert to data frame:
+jason_data_frame <- as.data.frame(data)
+jason_data_frame
+```
+
+***Interpretation***:
+
+-   converted the loaded json data into data.frame
+
+##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
+
+```{r}
+# summary of jason_data_frame
+summary(jason_data_frame)
+```
+
+***Interpretation***:
+
+-   summarizes the json data frame.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
+
+```{r}
+# histogram of salary of jason data frame
+# since salary was of character so hist was not produced, so I converted it to integer.
+jason_data_frame$Salary <- as.integer(jason_data_frame$Salary)
+hist(jason_data_frame$Salary)
+```
+
+***Interpretation***:
+
+- since salary was of character so hist was not produced, so I converted it to integer.
+- generates histogram of salary of jason data frame
+
+```{r}
+# histogram of salary of jason data frame
+# since salary was of character so hist was not produced, so I converted it to integer.
+jason_data_frame$Salary <- as.integer(jason_data_frame$Salary)
+hist(jason_data_frame$Salary)
+```
+
+***Interpretation***:
+
+- since salary was of character so hist was not produced, so I converted it to integer.
+- generates histogram of salary of jason data frame
+
+```{r}
+# histogram of salary of jason data frame
+# since salary was of character so hist was not produced, so I converted it to integer.
+jason_data_frame$Salary <- as.integer(jason_data_frame$Salary)
+hist(jason_data_frame$Salary)
+```
+
+***Interpretation***:
+
+- since salary was of character so hist was not produced, so I converted it to integer.
+- generates histogram of salary of jason data frame
+
+```{r}
+# histogram of salary of jason data frame
+# since salary was of character so hist was not produced, so I converted it to integer.
+jason_data_frame$Salary <- as.integer(jason_data_frame$Salary)
+hist(jason_data_frame$Salary)
+```
+
+***Interpretation***:
+
+- since salary was of character so hist was not produced, so I converted it to integer.
+- generates histogram of salary of jason data frame
+
+```{r}
+# histogram of salary of jason data frame
+# since salary was of character so hist was not produced, so I converted it to integer.
+jason_data_frame$Salary <- as.integer(jason_data_frame$Salary)
+hist(jason_data_frame$Salary)
+```
+
+***Interpretation***:
+
+- since salary was of character so hist was not produced, so I converted it to integer.
+- generates histogram of salary of jason data frame
+
+```{r}
+# histogram of salary of jason data frame
+# since salary was of character so hist was not produced, so I converted it to integer.
+jason_data_frame$Salary <- as.integer(jason_data_frame$Salary)
+hist(jason_data_frame$Salary)
+```
+
+***Interpretation***:
+
+- since salary was of character so hist was not produced, so I converted it to integer.
+- generates histogram of salary of jason data frame
+
+```{r}
+# average salary by department
+aggregate(Salary ~ Dept, data = jason_data_frame, FUN = mean)
+```
+
+***Interpretation***:
+
+- aggregates the average salary by department.
+
+```{r}
+# also using dplyr package
+library(dplyr)
+library(magrittr)
+avg_by_dept <-
+  jason_data_frame %>%
+  group_by(Dept) %>%
+  summarise(avg_salart = mean(Salary))
+```
+
+***Interpretation***:
+
+- average salary by department can be achieved by using dplyr package and using summarise.
+
+```{r}
+# frequency distribution of all variables
+# since tables only shows the frequency distribution of factors, table on numerical or integer value is bad practice.
+table(jason_data_frame$Dept)
+```
+
+***Interpretation***:
+
+- since tables only shows the frequency distribution of factors, table on numerical or integer value is bad practice.
+
+
+#### Reading JSON file from URL: Web API 
+
+```{r cache=TRUE}
+# fetch the data from web api
+library(jsonlite)
+raw <-
+  fromJSON(
+    "https://data.ny.gov/api/views/9a8c-vfzj/rows.json?accessType=DOWNLOAD")
+food_market <- raw[['data']] 
+```
+
+***Interpretation***:
+
+- read the json data from API using jsonlite library
+- the raw object gets the list of values from where data part is extracted and assigned to food_market object
+
+```{r}
+# structure and head of food market
+str(food_market) 
+head(food_market, n = 4)
+```
+
+***Interpretation***:
+
+- returns the structure and head of food_market.
+
+```{r}
+names <- food_market[,14]
+```
+
+***Interpretation***:
+
+- returns the names stores listed in index 14 of food_market in names object
+
+```{r}
+head(names)
+head(table(names), n = 7)
+```
+
+***Interpretation***:
+
+- `head(names)` returns first few data.
+- `head(table(names), n = 7)` returns the frequency table of names of stores.
+- since data is so much I restricted to first 7 values for frequency table.
+
+```{r error=TRUE}
+table(v19)
+```
+
+***Interpretation***:
+
+- trying to get the frequency tabke v19. but v19 doesn't exist and throws error
+
+```{r error=TRUE}
+table(food_market$V19)
+```
+
+***Interpretation***:
+
+- An atomic vector is a one-dimensional data object created using functions like c() or vector() in R.
+- The $ operator is commonly used to access elements of a data frame by column name.
+- since food_market is of atomic vectors type, while access the element using $ returned this error.
+- this can be mitigated by using `table(food_market[,19])`
+
+```{r, warning=FALSE}
+head(table(food_market[, 19]), n = 5)
+```
+
+***Interpretation***:
+
+- returns the frequency table of data that is at 19th column of food_market
+- since data is too much, I restricted the display to 5.
+
+#### Web scrapping in R: A Simple (barebones) Example
+
+```{r warning=FALSE}
+# The recommended package for web scrapping in R is “rvest
+# using html
+library(rvest)
+simple <-
+  read_html('https://dataquestio.github.io/web-scraping-pages/simple.html')
+simple %>% html_nodes('p') %>% html_text()
+```
+
+***Interpretation***:
+
+- reads the html using `read_html()`
+- we loaded the html in simple object then using pipes parsed the html with node 'p' then converted that to normal text.
+
+```{r}
+# Wikipedia Nepal Covid 19 
+wiki_link <- "https://en.wikipedia.org/wiki/COVID-19_pandemic_in_Nepal"
+wiki_page <- read_html(wiki_link)
+```
+
+***Interpretation***:
+
+- since salary was of character so hist was not produced, so I converted it to integer.
+- generates histogram of salary of jason data frame
+
+```{r}
+str(wiki_page)
+```
+
+***Interpretation***:
+
+- structure of wiki page, returns list of 2 xml node and xml doc
+
+```{r}
+wiki_page %>% html_nodes("table")
+```
+
+***Interpretation***:
+
+- parses the html nodes containing `table` in html page of wiki_page.
+
+```{r}
+covid_table <-
+  wiki_page %>% html_elements('.COVID-19_pandemic_data_Nepal_medical_cases') %>% html_node('table') %>% html_table()
+covid_table <- covid_table[[1]]
+```
+
+***Interpretation***:
+
+- from wiki page, first parsed the html elements having `.COVID-19_pandemic_data_Nepal_medical_cases`
+- then extracted the node containing `table` into html_table()
+- since the data was returned in the list, the actual data was at first index which is dataframe.
+
+
+#### Data wrangling: Part I Column names of covid_table
+```{r}
+names(covid_table) <-
+  paste(names(covid_table), covid_table[1, ], sep = "_")
+covid_table <- covid_table[-1, ]
+names(covid_table)
+```
+
+***Interpretation***:
+
+- even though the data was extracted to dataframe there was error in columns and we want to rename it
+- concatenated the column names with first row of dataframe.
+- and finally dropping the first column.
+
+
+```{r}
+#Check the structure of data again
+str(covid_table)
+```
+
+***Interpretation***:
+
+- checking the structure again to ensure.
+
+#### Data wrangling: Part II Renaming the column names
+- Change “Date_Date” variable as “Date”
+- Change “Confirmed cases_Total” variable as “Confirmed_Cases_Total”
+- Change “Confirmed cases_New” variable as “Confirmed_Cases_New”
+- Change “Confirmed cases_Active” variable as “Confirmed_Cases_Active”
+- Change “RT-PCR tests_Total” variable as “RT-PCR_tests_Total”
+- Change “RT-PCR tests_New” variable as “RT-PCR_tests_New”
+- Change “TPR_TPR” variable as “TPR”
+- Change “RR_RR” variable as “RR”
+- Change “CFR_CFR” variable as “CFR”
+- Change “Ref. _Ref.” variable as “Ref”
+
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r eval=FALSE}
+# another way to do same thing 
+
+names(covid_table)[names(covid_table)=='Date_Date'] = 'Date'
+names(covid_table)[names(covid_table)=='Confirmed cases_Total'] = 'Confirmed_Cases_Total'
+names(covid_table)[names(covid_table)=='Confirmed cases_New'] = 'Confirmed_Cases_New'
+names(covid_table)[names(covid_table)=='Confirmed cases_Active'] = 'Confirmed_Cases_Active'
+names(covid_table)[names(covid_table)=='Recoveries_Total'] = 'Recoveries_Total'
+names(covid_table)[names(covid_table)=='Recoveries_New'] = 'Recoveries_New'
+names(covid_table)[names(covid_table)=='Deaths_Total'] = 'Deaths_Total'
+names(covid_table)[names(covid_table)=='Deaths_New'] = 'Deaths_New'
+names(covid_table)[names(covid_table)=='RT-PCR tests_Total'] = 'PCR_Total'
+names(covid_table)[names(covid_table)=='RT-PCR tests_New'] = 'PCR_New'
+names(covid_table)[names(covid_table)=='TPR_TPR'] = 'TPR'
+names(covid_table)[names(covid_table)=='RR_RR'] = 'RR'
+names(covid_table)[names(covid_table)=='CFR_CFR'] = 'CFR'
+names(covid_table)[names(covid_table)=='Ref._Ref.'] = 'Ref'
+```
+
+***Interpretation***:
+
+- Another way to rename the column names to desired column names.
+
+#### Data Wrangling Part III
+```{r}
+
+# removing "+" and "%" from the variables
+covid_table$Confirmed_Cases_New <- gsub('[+]', '', covid_table$Confirmed_Cases_New)
+covid_table$Recoveries_New <- gsub('[+]', '', covid_table$Recoveries_New)
+covid_table$Deaths_New <- gsub('[+]', '', covid_table$Deaths_New)
+covid_table$PCR_New <- gsub('[+]', '', covid_table$PCR_New)
+
+covid_table$TPR <- gsub('[%]', '', covid_table$TPR)
+covid_table$RR <- gsub('[%]', '', covid_table$RR)
+covid_table$CFR <- gsub('[%]', '', covid_table$CFR)
+
+```
+
+***Interpretation***:
+
+- cleaning the messy data using gsub.
+- removing `%` and `+` from data.
+
+```{r}
+# since in pdf while converting chr to numeric or integer type coerce warning was given for invalid type.
+covid_table$Confirmed_Cases_Total <- gsub('[,]', '', covid_table$Confirmed_Cases_Total)
+covid_table$Confirmed_Cases_New <- gsub('[,]', '', covid_table$Confirmed_Cases_New)
+covid_table$Confirmed_Cases_Active <- gsub('[,]', '', covid_table$Confirmed_Cases_Active)
+covid_table$Recoveries_Total <- gsub('[,]', '', covid_table$Recoveries_Total)
+covid_table$Recoveries_New <- gsub('[,]', '', covid_table$Recoveries_New)
+
+covid_table$Deaths_Total <- gsub('[,]', '', covid_table$Deaths_Total)
+covid_table$Deaths_New <- gsub('[,]', '', covid_table$Deaths_New)
+covid_table$PCR_Total <- gsub('[,]', '', covid_table$PCR_Total)
+covid_table$PCR_New <- gsub('[,]', '', covid_table$PCR_New)
+
+covid_table$TPR <- gsub('[,]', '', covid_table$TPR)
+covid_table$RR <- gsub('[,]', '', covid_table$RR)
+covid_table$CFR <- gsub('[,]', '', covid_table$CFR)
+```
+
+***Interpretation***:
+
+- Since while converting chr to integer type it gave some warning about coerce where values were invalid type for e.g `313,333` can't be interpreted as integer because of comma. But it is right in context of html in website. 
+- removed the `,` using gsub.
+
+#### Data wrangling: Part IV Converting “chr” variables as numbers 
+
+```{r}
+
+covid_table$Confirmed_Cases_Total <-
+  as.integer(covid_table$Confirmed_Cases_Total)
+covid_table$Confirmed_Cases_New <-
+  as.integer(covid_table$Confirmed_Cases_New)
+covid_table$Confirmed_Cases_Active <-
+  as.integer(covid_table$Confirmed_Cases_Active)
+covid_table$Recoveries_Total <-
+  as.integer(covid_table$Recoveries_Total)
+covid_table$Recoveries_New <-
+  as.integer(covid_table$Recoveries_New)
+
+covid_table$Deaths_Total <- as.integer(covid_table$Deaths_Total)
+covid_table$Deaths_New <- as.integer(covid_table$Deaths_New)
+covid_table$PCR_Total <- as.integer(covid_table$PCR_Total)
+covid_table$PCR_New <- as.integer(covid_table$PCR_New)
+
+covid_table$TPR <- as.numeric(covid_table$TPR)
+covid_table$RR <- as.numeric(covid_table$RR)
+covid_table$CFR <- as.numeric(covid_table$CFR)
+```
+
+***Interpretation***:
+
+- converted all of the required columns of chr type of integer or numeric type using `as.numeric()` function.
+
+```{r}
+str(covid_table)
+```
+
+***Interpretation***:
+
+- finally check the data type.
+
+
+##### Converting Date (Assignment)
+```{r}
+head(as.Date(covid_table$Date, format = "%d %b"), n = 50)
+```
+
+***Interpretation***:
+
+- By default tries to check this format `"%Y-%m-%d"` or `"%Y/%m/%d"`for given date or string data.
+- since out date column has day and month I have to use `%d` for day and `%b` for short name of month.
+- returns the value in 2024 but that date is of 2020 and 2021
+- In order to work around this I have made a logic below.
+
+```{r }
+# using base R date time functions
+
+start_date_2020 <- "2020-01-23"
+end_date_2020 <- "2020-12-31"
+
+# check days diff
+days_diff <-
+  as.numeric(difftime(end_date_2020, start_date_2020, units = 'days')) + 1
+
+# check difference till first n rows and insert value if condition is true return 2020 else 2021
+check_year <- ifelse(1:nrow(covid_table) <= days_diff, 2020, 2021)
+
+# format the date according to need
+formatted_date <- as.Date(covid_table$Date, format = "%d %b")
+formatted_date <- format(formatted_date, '-%m-%d')
+
+# concantante the year and formated day and date
+final_converted_date <- paste0(check_year, formatted_date)
+
+# finally since concatenation returns string again convert the type into Date and load the Date column of covid table
+covid_table$Date <- as.Date(final_converted_date)
+head(covid_table$Date)
+class(covid_table$Date)
+```
+
+***Interpretation***:
+
+- Since I know that data is of 23rd Jan 2020 to 31st May 2021.
+- Also, after 31st Dec next year will arrive, so I set variable `start_date_2020 <- "2020-01-23"` and `end_date_2020 <- "2020-12-31"`.
+- I calculated the difference in day from 23rd Jan to 31st Dec.
+- Also data is serial in dataframe I filtered the data to 2020 and 2021 using difference in rows. Set `2020` to first 344 rows and rest `2021`.
+- since `as.Date(covid_table$Date, format = "%d %b")` gave the date of 2024, I formatted the date and only got day and month.
+- Finally concatenated the calulcated year with formatted day and month. 
+
+```{r, warning=FALSE, message=FALSE}
+# using lubridate
+library(lubridate)
+
+start_date_2020 <- "2020-01-23"
+end_date_2020 <- "2020-12-31"
+
+# find difference
+diff <-
+  (ymd(start_date_2020) %--% ymd(end_date_2020)) %/% days(1) + 1
+
+# check difference till first n rows and insert value if condition is true return 2020 else 2021
+check_year <- ifelse(1:nrow(covid_table) <= diff, 2020, 2021)
+
+# format the date to day and month 
+formatted_date <- ymd(as.Date(covid_table$Date, format = "%d %b"))
+
+# create the date using make_date function
+final_converted_date <-
+  make_date(
+    year = check_year,
+    month = month(formatted_date),
+    day = day(formatted_date)
+  )
+# change the Date column value with final converted date 
+covid_table$Date <- final_converted_date
+class(covid_table$Date)
+```
+
+***Interpretation***:
+
+- Using lubridate to achieve the solution to given problem.
+
+
+
+### [ <b> Code Execution and Output/Interpretation of Session 7</b>]{style="color:#d30000"}
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+

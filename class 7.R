@@ -63,8 +63,6 @@ simple <- read_html('https://dataquestio.github.io/web-scraping-pages/simple.htm
 
 simple %>% html_nodes('p') %>% html_text()
 
-# 
-
 
 # wikipedia nepal covid 19 
 wiki_link <- "https://en.wikipedia.org/wiki/COVID-19_pandemic_in_Nepal"
@@ -131,6 +129,23 @@ covid_table$PCR_New <- gsub('[+]', '', covid_table$PCR_New)
 covid_table$TPR <- gsub('[%]', '', covid_table$TPR)
 covid_table$RR <- gsub('[%]', '', covid_table$RR)
 covid_table$CFR <- gsub('[%]', '', covid_table$CFR)
+
+# removing "," from the variables
+covid_table$Confirmed_Cases_Total <- gsub('[,]', '', covid_table$Confirmed_Cases_Total)
+covid_table$Confirmed_Cases_New <- gsub('[,]', '', covid_table$Confirmed_Cases_New)
+covid_table$Confirmed_Cases_Active <- gsub('[,]', '', covid_table$Confirmed_Cases_Active)
+covid_table$Recoveries_Total <- gsub('[,]', '', covid_table$Recoveries_Total)
+covid_table$Recoveries_New <- gsub('[,]', '', covid_table$Recoveries_New)
+
+covid_table$Deaths_Total <- gsub('[,]', '', covid_table$Deaths_Total)
+covid_table$Deaths_New <- gsub('[,]', '', covid_table$Deaths_New)
+covid_table$PCR_Total <- gsub('[,]', '', covid_table$PCR_Total)
+covid_table$PCR_New <- gsub('[,]', '', covid_table$PCR_New)
+
+covid_table$TPR <- gsub('[,]', '', covid_table$TPR)
+covid_table$RR <- gsub('[,]', '', covid_table$RR)
+covid_table$CFR <- gsub('[,]', '', covid_table$CFR)
+
 
 # converting  chr variables as 1
 
