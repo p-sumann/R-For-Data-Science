@@ -1112,14 +1112,23 @@ month.</li>
 <span id="cb65-3"><a href="#cb65-3" tabindex="-1"></a>start_date_2020 <span class="ot">&lt;-</span> <span class="st">&quot;2020-01-23&quot;</span></span>
 <span id="cb65-4"><a href="#cb65-4" tabindex="-1"></a>end_date_2020 <span class="ot">&lt;-</span> <span class="st">&quot;2020-12-31&quot;</span></span>
 <span id="cb65-5"><a href="#cb65-5" tabindex="-1"></a></span>
-<span id="cb65-6"><a href="#cb65-6" tabindex="-1"></a>days_diff <span class="ot">&lt;-</span></span>
-<span id="cb65-7"><a href="#cb65-7" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">difftime</span>(end_date_2020, start_date_2020, <span class="at">units =</span> <span class="st">&#39;days&#39;</span>)) <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb65-8"><a href="#cb65-8" tabindex="-1"></a>check_year <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(covid_table) <span class="sc">&lt;=</span> days_diff, <span class="dv">2020</span>, <span class="dv">2021</span>)</span>
-<span id="cb65-9"><a href="#cb65-9" tabindex="-1"></a>formatted_date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(covid_table<span class="sc">$</span>Date, <span class="at">format =</span> <span class="st">&quot;%d %b&quot;</span>)</span>
-<span id="cb65-10"><a href="#cb65-10" tabindex="-1"></a>formatted_date <span class="ot">&lt;-</span> <span class="fu">format</span>(formatted_date, <span class="st">&#39;-%m-%d&#39;</span>)</span>
-<span id="cb65-11"><a href="#cb65-11" tabindex="-1"></a>final_converted_date <span class="ot">&lt;-</span> <span class="fu">paste0</span>(check_year, formatted_date)</span>
-<span id="cb65-12"><a href="#cb65-12" tabindex="-1"></a>covid_table<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(final_converted_date)</span>
-<span id="cb65-13"><a href="#cb65-13" tabindex="-1"></a><span class="fu">head</span>(covid_table<span class="sc">$</span>Date)</span></code></pre></div>
+<span id="cb65-6"><a href="#cb65-6" tabindex="-1"></a><span class="co"># check days diff</span></span>
+<span id="cb65-7"><a href="#cb65-7" tabindex="-1"></a>days_diff <span class="ot">&lt;-</span></span>
+<span id="cb65-8"><a href="#cb65-8" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">difftime</span>(end_date_2020, start_date_2020, <span class="at">units =</span> <span class="st">&#39;days&#39;</span>)) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb65-9"><a href="#cb65-9" tabindex="-1"></a></span>
+<span id="cb65-10"><a href="#cb65-10" tabindex="-1"></a><span class="co"># check difference till first n rows and insert value if condition is true return 2020 else 2021</span></span>
+<span id="cb65-11"><a href="#cb65-11" tabindex="-1"></a>check_year <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(covid_table) <span class="sc">&lt;=</span> days_diff, <span class="dv">2020</span>, <span class="dv">2021</span>)</span>
+<span id="cb65-12"><a href="#cb65-12" tabindex="-1"></a></span>
+<span id="cb65-13"><a href="#cb65-13" tabindex="-1"></a><span class="co"># format the date according to need</span></span>
+<span id="cb65-14"><a href="#cb65-14" tabindex="-1"></a>formatted_date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(covid_table<span class="sc">$</span>Date, <span class="at">format =</span> <span class="st">&quot;%d %b&quot;</span>)</span>
+<span id="cb65-15"><a href="#cb65-15" tabindex="-1"></a>formatted_date <span class="ot">&lt;-</span> <span class="fu">format</span>(formatted_date, <span class="st">&#39;-%m-%d&#39;</span>)</span>
+<span id="cb65-16"><a href="#cb65-16" tabindex="-1"></a></span>
+<span id="cb65-17"><a href="#cb65-17" tabindex="-1"></a><span class="co"># concantante the year and formated day and date</span></span>
+<span id="cb65-18"><a href="#cb65-18" tabindex="-1"></a>final_converted_date <span class="ot">&lt;-</span> <span class="fu">paste0</span>(check_year, formatted_date)</span>
+<span id="cb65-19"><a href="#cb65-19" tabindex="-1"></a></span>
+<span id="cb65-20"><a href="#cb65-20" tabindex="-1"></a><span class="co"># finally since concatenation returns string again convert the type into date and load the Date column of covid table</span></span>
+<span id="cb65-21"><a href="#cb65-21" tabindex="-1"></a>covid_table<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(final_converted_date)</span>
+<span id="cb65-22"><a href="#cb65-22" tabindex="-1"></a><span class="fu">head</span>(covid_table<span class="sc">$</span>Date)</span></code></pre></div>
 <pre><code>## [1] &quot;2020-01-23&quot; &quot;2020-01-24&quot; &quot;2020-01-25&quot; &quot;2020-01-26&quot; &quot;2020-01-27&quot;
 ## [6] &quot;2020-01-28&quot;</code></pre>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a><span class="fu">class</span>(covid_table<span class="sc">$</span>Date)</span></code></pre></div>
@@ -1145,363 +1154,666 @@ month.</li>
 <span id="cb69-4"><a href="#cb69-4" tabindex="-1"></a>start_date_2020 <span class="ot">&lt;-</span> <span class="st">&quot;2020-01-23&quot;</span></span>
 <span id="cb69-5"><a href="#cb69-5" tabindex="-1"></a>end_date_2020 <span class="ot">&lt;-</span> <span class="st">&quot;2020-12-31&quot;</span></span>
 <span id="cb69-6"><a href="#cb69-6" tabindex="-1"></a></span>
-<span id="cb69-7"><a href="#cb69-7" tabindex="-1"></a>diff <span class="ot">&lt;-</span></span>
-<span id="cb69-8"><a href="#cb69-8" tabindex="-1"></a>  (<span class="fu">ymd</span>(start_date_2020) <span class="sc">%--%</span> <span class="fu">ymd</span>(end_date_2020)) <span class="sc">%/%</span> <span class="fu">days</span>(<span class="dv">1</span>) <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb69-9"><a href="#cb69-9" tabindex="-1"></a>check_year <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(covid_table) <span class="sc">&lt;=</span> diff, <span class="dv">2020</span>, <span class="dv">2021</span>)</span>
+<span id="cb69-7"><a href="#cb69-7" tabindex="-1"></a><span class="co"># find difference</span></span>
+<span id="cb69-8"><a href="#cb69-8" tabindex="-1"></a>diff <span class="ot">&lt;-</span></span>
+<span id="cb69-9"><a href="#cb69-9" tabindex="-1"></a>  (<span class="fu">ymd</span>(start_date_2020) <span class="sc">%--%</span> <span class="fu">ymd</span>(end_date_2020)) <span class="sc">%/%</span> <span class="fu">days</span>(<span class="dv">1</span>) <span class="sc">+</span> <span class="dv">1</span></span>
 <span id="cb69-10"><a href="#cb69-10" tabindex="-1"></a></span>
-<span id="cb69-11"><a href="#cb69-11" tabindex="-1"></a>formatted_date <span class="ot">&lt;-</span> <span class="fu">ymd</span>(<span class="fu">as.Date</span>(covid_table<span class="sc">$</span>Date, <span class="at">format =</span> <span class="st">&quot;%d %b&quot;</span>))</span>
-<span id="cb69-12"><a href="#cb69-12" tabindex="-1"></a>final_converted_date <span class="ot">&lt;-</span></span>
-<span id="cb69-13"><a href="#cb69-13" tabindex="-1"></a>  <span class="fu">make_date</span>(</span>
-<span id="cb69-14"><a href="#cb69-14" tabindex="-1"></a>    <span class="at">year =</span> check_year,</span>
-<span id="cb69-15"><a href="#cb69-15" tabindex="-1"></a>    <span class="at">month =</span> <span class="fu">month</span>(formatted_date),</span>
-<span id="cb69-16"><a href="#cb69-16" tabindex="-1"></a>    <span class="at">day =</span> <span class="fu">day</span>(formatted_date)</span>
-<span id="cb69-17"><a href="#cb69-17" tabindex="-1"></a>  )</span>
-<span id="cb69-18"><a href="#cb69-18" tabindex="-1"></a>covid_table<span class="sc">$</span>Date <span class="ot">&lt;-</span> final_converted_date</span>
-<span id="cb69-19"><a href="#cb69-19" tabindex="-1"></a><span class="fu">class</span>(covid_table<span class="sc">$</span>Date)</span></code></pre></div>
+<span id="cb69-11"><a href="#cb69-11" tabindex="-1"></a><span class="co"># check difference till first n rows and insert value if condition is true return 2020 else 2021</span></span>
+<span id="cb69-12"><a href="#cb69-12" tabindex="-1"></a>check_year <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(covid_table) <span class="sc">&lt;=</span> diff, <span class="dv">2020</span>, <span class="dv">2021</span>)</span>
+<span id="cb69-13"><a href="#cb69-13" tabindex="-1"></a></span>
+<span id="cb69-14"><a href="#cb69-14" tabindex="-1"></a><span class="co"># format the date to day and month </span></span>
+<span id="cb69-15"><a href="#cb69-15" tabindex="-1"></a>formatted_date <span class="ot">&lt;-</span> <span class="fu">ymd</span>(<span class="fu">as.Date</span>(covid_table<span class="sc">$</span>Date, <span class="at">format =</span> <span class="st">&quot;%d %b&quot;</span>))</span>
+<span id="cb69-16"><a href="#cb69-16" tabindex="-1"></a></span>
+<span id="cb69-17"><a href="#cb69-17" tabindex="-1"></a><span class="co"># create the date using make_date function</span></span>
+<span id="cb69-18"><a href="#cb69-18" tabindex="-1"></a>final_converted_date <span class="ot">&lt;-</span></span>
+<span id="cb69-19"><a href="#cb69-19" tabindex="-1"></a>  <span class="fu">make_date</span>(</span>
+<span id="cb69-20"><a href="#cb69-20" tabindex="-1"></a>    <span class="at">year =</span> check_year,</span>
+<span id="cb69-21"><a href="#cb69-21" tabindex="-1"></a>    <span class="at">month =</span> <span class="fu">month</span>(formatted_date),</span>
+<span id="cb69-22"><a href="#cb69-22" tabindex="-1"></a>    <span class="at">day =</span> <span class="fu">day</span>(formatted_date)</span>
+<span id="cb69-23"><a href="#cb69-23" tabindex="-1"></a>  )</span>
+<span id="cb69-24"><a href="#cb69-24" tabindex="-1"></a><span class="co"># change the Date column value with final converted date </span></span>
+<span id="cb69-25"><a href="#cb69-25" tabindex="-1"></a>covid_table<span class="sc">$</span>Date <span class="ot">&lt;-</span> final_converted_date</span>
+<span id="cb69-26"><a href="#cb69-26" tabindex="-1"></a><span class="fu">class</span>(covid_table<span class="sc">$</span>Date)</span></code></pre></div>
 <pre><code>## [1] &quot;Date&quot;</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li>Using lubridate to achieve the solution to given problem.</li>
 </ul>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb71-2"><a href="#cb71-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb71-3"><a href="#cb71-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb71-4"><a href="#cb71-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb71-5"><a href="#cb71-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb71-6"><a href="#cb71-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb71-7"><a href="#cb71-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb71-8"><a href="#cb71-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb71-9"><a href="#cb71-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb71-10"><a href="#cb71-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb71-11"><a href="#cb71-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb71-12"><a href="#cb71-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb71-13"><a href="#cb71-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb71-14"><a href="#cb71-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb71-15"><a href="#cb71-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb71-16"><a href="#cb71-16" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="code-execution-and-outputinterpretation-of-session-7-1" class="section level3">
+<h3><span style="color:#d30000"><b> Code Execution and
+Output/Interpretation of Session 7</b></span></h3>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb71-2"><a href="#cb71-2" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" tabindex="-1"></a>table1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb72-2"><a href="#cb72-2" tabindex="-1"></a>  <span class="at">country =</span> <span class="fu">c</span>(<span class="st">&quot;Afghanistan&quot;</span>, <span class="st">&quot;Afghanistan&quot;</span>, <span class="st">&quot;Brazil&quot;</span>, </span>
+<span id="cb72-3"><a href="#cb72-3" tabindex="-1"></a>               <span class="st">&quot;Brazil&quot;</span>, <span class="st">&quot;China&quot;</span>, <span class="st">&quot;China&quot;</span>),</span>
+<span id="cb72-4"><a href="#cb72-4" tabindex="-1"></a>  <span class="at">year =</span> <span class="fu">c</span>(<span class="dv">1999</span>, <span class="dv">2000</span>, <span class="dv">1999</span>, <span class="dv">2000</span>, <span class="dv">1999</span>, <span class="dv">2000</span>),</span>
+<span id="cb72-5"><a href="#cb72-5" tabindex="-1"></a>  <span class="at">cases =</span> <span class="fu">c</span>(<span class="dv">745</span>,<span class="dv">2666</span>,<span class="dv">37737</span>,<span class="dv">80488</span>,<span class="dv">212258</span>,<span class="dv">213766</span>),</span>
+<span id="cb72-6"><a href="#cb72-6" tabindex="-1"></a>  <span class="at">population =</span> <span class="fu">c</span>(<span class="dv">19987071</span>,<span class="dv">20595360</span>,<span class="dv">172006362</span>, </span>
+<span id="cb72-7"><a href="#cb72-7" tabindex="-1"></a>                 <span class="dv">174504898</span>, <span class="dv">1272915272</span>,<span class="dv">1280428583</span>)</span>
+<span id="cb72-8"><a href="#cb72-8" tabindex="-1"></a>)</span>
+<span id="cb72-9"><a href="#cb72-9" tabindex="-1"></a></span>
+<span id="cb72-10"><a href="#cb72-10" tabindex="-1"></a>table1</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   country      year  cases population
+##   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" tabindex="-1"></a>table2</span></code></pre></div>
+<pre><code>## # A tibble: 12 × 4
+##    country      year type            count
+##    &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;
+##  1 Afghanistan  1999 cases             745
+##  2 Afghanistan  1999 population   19987071
+##  3 Afghanistan  2000 cases            2666
+##  4 Afghanistan  2000 population   20595360
+##  5 Brazil       1999 cases           37737
+##  6 Brazil       1999 population  172006362
+##  7 Brazil       2000 cases           80488
+##  8 Brazil       2000 population  174504898
+##  9 China        1999 cases          212258
+## 10 China        1999 population 1272915272
+## 11 China        2000 cases          213766
+## 12 China        2000 population 1280428583</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" tabindex="-1"></a>table3</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   country      year rate             
+##   &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;            
+## 1 Afghanistan  1999 745/19987071     
+## 2 Afghanistan  2000 2666/20595360    
+## 3 Brazil       1999 37737/172006362  
+## 4 Brazil       2000 80488/174504898  
+## 5 China        1999 212258/1272915272
+## 6 China        2000 213766/1280428583</code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" tabindex="-1"></a>table4a</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 3
+##   country     `1999` `2000`
+##   &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Afghanistan    745   2666
+## 2 Brazil       37737  80488
+## 3 China       212258 213766</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" tabindex="-1"></a>table4b</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 3
+##   country         `1999`     `2000`
+##   &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Afghanistan   19987071   20595360
+## 2 Brazil       172006362  174504898
+## 3 China       1272915272 1280428583</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li>Exploring the few built in tables from tidyverse package.</li>
+<li>There are two main advantages:
+<ul>
+<li>There’s a general advantage to picking one consistent way of storing
+data. If you have a consistent data structure, it’s easier to learn the
+tools that work with it because they have an underlying uniformity.</li>
+<li>There’s a specific advantage to placing variables in columns because
+it allows R’s vectorized nature to shine.</li>
+<li>dplyr, ggplot2, and all the other packages in the tidyverse are
+designed to work with tidy data.</li>
+</ul></li>
 </ul>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb72-2"><a href="#cb72-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb72-3"><a href="#cb72-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb72-4"><a href="#cb72-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb72-5"><a href="#cb72-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb72-6"><a href="#cb72-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb72-7"><a href="#cb72-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb72-8"><a href="#cb72-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb72-9"><a href="#cb72-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb72-10"><a href="#cb72-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb72-11"><a href="#cb72-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb72-12"><a href="#cb72-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb72-13"><a href="#cb72-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb72-14"><a href="#cb72-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb72-15"><a href="#cb72-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb72-16"><a href="#cb72-16" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" tabindex="-1"></a><span class="co"># Pivoting – Longer to wider</span></span>
+<span id="cb82-2"><a href="#cb82-2" tabindex="-1"></a><span class="co"># (To do standard statistical analysis)</span></span>
+<span id="cb82-3"><a href="#cb82-3" tabindex="-1"></a>table2 <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> type, <span class="at">values_from =</span> count)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   country      year  cases population
+##   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li>Pivoting the <code>table2</code> from longer to wider.</li>
+<li>usually used for standard statistical analysis</li>
 </ul>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb73-2"><a href="#cb73-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb73-3"><a href="#cb73-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb73-4"><a href="#cb73-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb73-5"><a href="#cb73-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb73-6"><a href="#cb73-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb73-7"><a href="#cb73-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb73-8"><a href="#cb73-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb73-9"><a href="#cb73-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb73-10"><a href="#cb73-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb73-11"><a href="#cb73-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb73-12"><a href="#cb73-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb73-13"><a href="#cb73-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb73-14"><a href="#cb73-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb73-15"><a href="#cb73-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb73-16"><a href="#cb73-16" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" tabindex="-1"></a><span class="co"># Pivoting – Wider to Longer</span></span>
+<span id="cb84-2"><a href="#cb84-2" tabindex="-1"></a><span class="co"># (To do Variance components analysis)</span></span>
+<span id="cb84-3"><a href="#cb84-3" tabindex="-1"></a>table4a <span class="sc">%&gt;%</span></span>
+<span id="cb84-4"><a href="#cb84-4" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">c</span>(<span class="st">`</span><span class="at">1999</span><span class="st">`</span>, <span class="st">`</span><span class="at">2000</span><span class="st">`</span>), <span class="at">names_to =</span></span>
+<span id="cb84-5"><a href="#cb84-5" tabindex="-1"></a>                 <span class="st">&quot;year&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;cases&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   country     year   cases
+##   &lt;chr&gt;       &lt;chr&gt;  &lt;dbl&gt;
+## 1 Afghanistan 1999     745
+## 2 Afghanistan 2000    2666
+## 3 Brazil      1999   37737
+## 4 Brazil      2000   80488
+## 5 China       1999  212258
+## 6 China       2000  213766</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li>Pivoting the <code>table2</code> from wider to longer.</li>
+<li>usually used for standard statistical analysis.</li>
 </ul>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb74-2"><a href="#cb74-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb74-3"><a href="#cb74-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb74-4"><a href="#cb74-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb74-5"><a href="#cb74-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb74-6"><a href="#cb74-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb74-7"><a href="#cb74-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb74-8"><a href="#cb74-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb74-9"><a href="#cb74-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb74-10"><a href="#cb74-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb74-11"><a href="#cb74-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb74-12"><a href="#cb74-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb74-13"><a href="#cb74-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb74-14"><a href="#cb74-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb74-15"><a href="#cb74-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb74-16"><a href="#cb74-16" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" tabindex="-1"></a><span class="co"># Tidy data: Separate</span></span>
+<span id="cb86-2"><a href="#cb86-2" tabindex="-1"></a>table3 <span class="sc">%&gt;%</span> <span class="fu">separate</span>(rate, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;cases&quot;</span>, <span class="st">&quot;population&quot;</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   country      year cases  population
+##   &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;     
+## 1 Afghanistan  1999 745    19987071  
+## 2 Afghanistan  2000 2666   20595360  
+## 3 Brazil       1999 37737  172006362 
+## 4 Brazil       2000 80488  174504898 
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583</code></pre>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" tabindex="-1"></a><span class="co"># OR</span></span>
+<span id="cb88-2"><a href="#cb88-2" tabindex="-1"></a>table3 <span class="sc">%&gt;%</span> <span class="fu">separate</span>(rate, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;cases&quot;</span>, <span class="st">&quot;population&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;/&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   country      year cases  population
+##   &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;     
+## 1 Afghanistan  1999 745    19987071  
+## 2 Afghanistan  2000 2666   20595360  
+## 3 Brazil       1999 37737  172006362 
+## 4 Brazil       2000 80488  174504898 
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li>separate the value from single column to multiple columns.</li>
+<li>often useful when dealing with delimited values in single
+column.</li>
 </ul>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb75-2"><a href="#cb75-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb75-3"><a href="#cb75-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb75-4"><a href="#cb75-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb75-5"><a href="#cb75-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb75-6"><a href="#cb75-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb75-7"><a href="#cb75-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb75-8"><a href="#cb75-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb75-9"><a href="#cb75-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb75-10"><a href="#cb75-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb75-11"><a href="#cb75-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb75-12"><a href="#cb75-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb75-13"><a href="#cb75-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb75-14"><a href="#cb75-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb75-15"><a href="#cb75-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb75-16"><a href="#cb75-16" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" tabindex="-1"></a><span class="co"># Tidy data: Unite</span></span>
+<span id="cb90-2"><a href="#cb90-2" tabindex="-1"></a>table5 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(new, century, year)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   country     new   rate             
+##   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;            
+## 1 Afghanistan 19_99 745/19987071     
+## 2 Afghanistan 20_00 2666/20595360    
+## 3 Brazil      19_99 37737/172006362  
+## 4 Brazil      20_00 80488/174504898  
+## 5 China       19_99 212258/1272915272
+## 6 China       20_00 213766/1280428583</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" tabindex="-1"></a><span class="co"># OR</span></span>
+<span id="cb92-2"><a href="#cb92-2" tabindex="-1"></a>table5 <span class="sc">%&gt;%</span> <span class="fu">unite</span>(new, century, year, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   country     new   rate             
+##   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;            
+## 1 Afghanistan 1999  745/19987071     
+## 2 Afghanistan 2000  2666/20595360    
+## 3 Brazil      1999  37737/172006362  
+## 4 Brazil      2000  80488/174504898  
+## 5 China       1999  212258/1272915272
+## 6 China       2000  213766/1280428583</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li>unites columns into one.</li>
+<li>opposite of separate: it combines multiple columns into a single
+column.</li>
+<li></li>
 </ul>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb76-2"><a href="#cb76-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb76-3"><a href="#cb76-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb76-4"><a href="#cb76-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb76-5"><a href="#cb76-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb76-6"><a href="#cb76-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb76-7"><a href="#cb76-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb76-8"><a href="#cb76-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb76-9"><a href="#cb76-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb76-10"><a href="#cb76-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb76-11"><a href="#cb76-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb76-12"><a href="#cb76-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb76-13"><a href="#cb76-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb76-14"><a href="#cb76-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb76-15"><a href="#cb76-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb76-16"><a href="#cb76-16" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" tabindex="-1"></a><span class="co"># Missing values: Example</span></span>
+<span id="cb94-2"><a href="#cb94-2" tabindex="-1"></a>stocks <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb94-3"><a href="#cb94-3" tabindex="-1"></a>  <span class="at">year =</span> <span class="fu">c</span>(<span class="dv">2015</span>, <span class="dv">2015</span>, <span class="dv">2015</span>, <span class="dv">2015</span>, <span class="dv">2016</span>, <span class="dv">2016</span>, <span class="dv">2016</span>),</span>
+<span id="cb94-4"><a href="#cb94-4" tabindex="-1"></a>  <span class="at">qtr =</span> <span class="fu">c</span>( <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>),</span>
+<span id="cb94-5"><a href="#cb94-5" tabindex="-1"></a>  <span class="at">return =</span> <span class="fu">c</span>(<span class="fl">1.88</span>, <span class="fl">0.59</span>, <span class="fl">0.35</span>, <span class="cn">NA</span>, <span class="fl">0.92</span>, <span class="fl">0.17</span>, <span class="fl">2.66</span>)</span>
+<span id="cb94-6"><a href="#cb94-6" tabindex="-1"></a>)</span>
+<span id="cb94-7"><a href="#cb94-7" tabindex="-1"></a></span>
+<span id="cb94-8"><a href="#cb94-8" tabindex="-1"></a>stocks <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> return)</span></code></pre></div>
+<pre><code>## # A tibble: 4 × 3
+##     qtr `2015` `2016`
+##   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1     1   1.88  NA   
+## 2     2   0.59   0.92
+## 3     3   0.35   0.17
+## 4     4  NA      2.66</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li>pivoted the stocks to wider to check missing values on year and
+return</li>
+<li>The return for the fourth quarter of 2015 is explicitly missing,
+because the cell where its value should be instead contains NA.</li>
+<li>The return for the first quarter of 2016 is implicitly missing,
+because it simply does not appear in the dataset.</li>
 </ul>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb77-2"><a href="#cb77-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb77-3"><a href="#cb77-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb77-4"><a href="#cb77-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb77-5"><a href="#cb77-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb77-6"><a href="#cb77-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb77-7"><a href="#cb77-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb77-8"><a href="#cb77-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb77-9"><a href="#cb77-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb77-10"><a href="#cb77-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb77-11"><a href="#cb77-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb77-12"><a href="#cb77-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb77-13"><a href="#cb77-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb77-14"><a href="#cb77-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb77-15"><a href="#cb77-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb77-16"><a href="#cb77-16" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" tabindex="-1"></a>stocks <span class="sc">%&gt;%</span></span>
+<span id="cb96-2"><a href="#cb96-2" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> return) <span class="sc">%&gt;%</span></span>
+<span id="cb96-3"><a href="#cb96-3" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb96-4"><a href="#cb96-4" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">2015</span><span class="st">`</span>, <span class="st">`</span><span class="at">2016</span><span class="st">`</span>),</span>
+<span id="cb96-5"><a href="#cb96-5" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;year&quot;</span>,</span>
+<span id="cb96-6"><a href="#cb96-6" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;return&quot;</span>,</span>
+<span id="cb96-7"><a href="#cb96-7" tabindex="-1"></a>    <span class="at">values_drop_na =</span> <span class="cn">TRUE</span></span>
+<span id="cb96-8"><a href="#cb96-8" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##     qtr year  return
+##   &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;
+## 1     1 2015    1.88
+## 2     2 2015    0.59
+## 3     2 2016    0.92
+## 4     3 2015    0.35
+## 5     3 2016    0.17
+## 6     4 2016    2.66</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li><code>pivot_wider(names_from = year, values_from = return)</code>
+pivots data from longer to wider format. the date is spread out based on
+different years, where year is the column providing the year
+information, and return is the column providing return values.</li>
+<li><code>pivot_longer()</code> is used to pivot data from wider to
+longer format. It gathers columns specified in cols into key-value
+pairs. Here, it specifies to gather columns 2015 and 2016 into a new
+column named “year”, with their corresponding values into a new column
+named “return”. The parameter values_drop_na = TRUE indicates that rows
+with missing values after pivoting should be dropped.</li>
 </ul>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb78-2"><a href="#cb78-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb78-3"><a href="#cb78-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb78-4"><a href="#cb78-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb78-5"><a href="#cb78-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb78-6"><a href="#cb78-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb78-7"><a href="#cb78-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb78-8"><a href="#cb78-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb78-9"><a href="#cb78-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb78-10"><a href="#cb78-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb78-11"><a href="#cb78-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb78-12"><a href="#cb78-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb78-13"><a href="#cb78-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb78-14"><a href="#cb78-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb78-15"><a href="#cb78-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb78-16"><a href="#cb78-16" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" tabindex="-1"></a>stocks <span class="sc">%&gt;%</span> <span class="fu">complete</span>(year, qtr)</span></code></pre></div>
+<pre><code>## # A tibble: 8 × 3
+##    year   qtr return
+##   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1  2015     1   1.88
+## 2  2015     2   0.59
+## 3  2015     3   0.35
+## 4  2015     4  NA   
+## 5  2016     1  NA   
+## 6  2016     2   0.92
+## 7  2016     3   0.17
+## 8  2016     4   2.66</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li><code>complete()</code> is used to complete a data frame with
+missing combinations of values. It takes columns specified in the
+arguments and ensures that all combinations of unique values are present
+in the resulting data frame.</li>
+<li>here, it ensures that all combinations of values from the columns
+year and qtr are present in the data frame, filling in any missing
+combinations with NA values.</li>
 </ul>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb79-2"><a href="#cb79-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb79-3"><a href="#cb79-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb79-4"><a href="#cb79-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb79-5"><a href="#cb79-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb79-6"><a href="#cb79-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb79-7"><a href="#cb79-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb79-8"><a href="#cb79-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb79-9"><a href="#cb79-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb79-10"><a href="#cb79-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb79-11"><a href="#cb79-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb79-12"><a href="#cb79-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb79-13"><a href="#cb79-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb79-14"><a href="#cb79-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb79-15"><a href="#cb79-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb79-16"><a href="#cb79-16" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" tabindex="-1"></a>treatment <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb100-2"><a href="#cb100-2" tabindex="-1"></a><span class="sc">~</span> person, <span class="sc">~</span> treatment, <span class="sc">~</span>response,</span>
+<span id="cb100-3"><a href="#cb100-3" tabindex="-1"></a><span class="st">&quot;Derrick Whitmore&quot;</span>, <span class="dv">1</span>, <span class="dv">7</span>,</span>
+<span id="cb100-4"><a href="#cb100-4" tabindex="-1"></a><span class="cn">NA</span>, <span class="dv">2</span>, <span class="dv">10</span>,</span>
+<span id="cb100-5"><a href="#cb100-5" tabindex="-1"></a><span class="cn">NA</span>, <span class="dv">3</span>, <span class="dv">9</span>,</span>
+<span id="cb100-6"><a href="#cb100-6" tabindex="-1"></a><span class="st">&quot;Katherine Burke&quot;</span>, <span class="dv">1</span>, <span class="dv">4</span></span>
+<span id="cb100-7"><a href="#cb100-7" tabindex="-1"></a>)</span>
+<span id="cb100-8"><a href="#cb100-8" tabindex="-1"></a>treatment</span></code></pre></div>
+<pre><code>## # A tibble: 4 × 3
+##   person           treatment response
+##   &lt;chr&gt;                &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Derrick Whitmore         1        7
+## 2 &lt;NA&gt;                     2       10
+## 3 &lt;NA&gt;                     3        9
+## 4 Katherine Burke          1        4</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li>Create tibbles using an easier to read row-by-row layout. This is
+useful for small tables of data where readability is important.</li>
 </ul>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb80-2"><a href="#cb80-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb80-3"><a href="#cb80-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb80-4"><a href="#cb80-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb80-5"><a href="#cb80-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb80-6"><a href="#cb80-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb80-7"><a href="#cb80-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb80-8"><a href="#cb80-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb80-9"><a href="#cb80-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb80-10"><a href="#cb80-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb80-11"><a href="#cb80-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb80-12"><a href="#cb80-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb80-13"><a href="#cb80-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb80-14"><a href="#cb80-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb80-15"><a href="#cb80-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb80-16"><a href="#cb80-16" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" tabindex="-1"></a>treatment <span class="sc">%&gt;%</span> <span class="fu">fill</span>(person)</span></code></pre></div>
+<pre><code>## # A tibble: 4 × 3
+##   person           treatment response
+##   &lt;chr&gt;                &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Derrick Whitmore         1        7
+## 2 Derrick Whitmore         2       10
+## 3 Derrick Whitmore         3        9
+## 4 Katherine Burke          1        4</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li><code>fill(person)</code> fills missing values in the specified
+column (person in this case) with the most recent non-missing value in
+that column.</li>
 </ul>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb81-2"><a href="#cb81-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb81-3"><a href="#cb81-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb81-4"><a href="#cb81-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb81-5"><a href="#cb81-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb81-6"><a href="#cb81-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb81-7"><a href="#cb81-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb81-8"><a href="#cb81-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb81-9"><a href="#cb81-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb81-10"><a href="#cb81-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb81-11"><a href="#cb81-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb81-12"><a href="#cb81-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb81-13"><a href="#cb81-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb81-14"><a href="#cb81-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb81-15"><a href="#cb81-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb81-16"><a href="#cb81-16" tabindex="-1"></a>)</span></code></pre></div>
+<div id="transformmanipulate-data-with-dplyr" class="section level4">
+<h4>Transform/manipulate data with “dplyr”</h4>
+<div id="to-learn-five-key-dplyr-package-functions-that-allow-you-to-solve-the-vast-majority-of-your-data-manipulation-challenges" class="section level6">
+<h6>To learn five key “dplyr” package functions that allow you to solve
+the vast majority of your data manipulation challenges:</h6>
+<ul>
+<li><strong><code>filter())</code></strong> function is used to subset a
+data frame, retaining all rows that satisfy your conditions.</li>
+<li><strong><code>(arrange()</code></strong>: orders the rows of a data
+frame by the values of selected columns.</li>
+<li><strong><code>select()</code></strong>: (and optionally rename)
+variables in a data frame, using a concise mini-language that makes it
+easy to refer to variables based on their name (e.g. a:f selects all
+columns from a on the left to f on the right) or type
+(e.g. where(is.numeric) selects all numeric columns).</li>
+<li><strong><code>mutate()</code></strong>: creates new columns that are
+functions of existing variables. It can also modify (if the name is the
+same as an existing column) and delete columns (by setting their value
+to NULL). Collapse many values down to a single summary</li>
+<li><strong><code>summarise()</code></strong>: It returns one row for
+each combination of grouping variables; if there are no grouping
+variables, the output will have a single row summarizing all
+observations in the input. It will contain one column for each grouping
+variable and one column for each of the summary statistics that you have
+specified</li>
+<li><strong><code>group_by()</code></strong>: Most data operations are
+done on groups defined by variables. group_by() takes an existing tbl
+and converts it into a grouped tbl where operations are performed “by
+group”. ungroup() removes grouping.</li>
+</ul>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb104-2"><a href="#cb104-2" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>
+<span id="cb104-3"><a href="#cb104-3" tabindex="-1"></a>flights</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1      533            529         4      850            830
+##  3  2013     1     1      542            540         2      923            850
+##  4  2013     1     1      544            545        -1     1004           1022
+##  5  2013     1     1      554            600        -6      812            837
+##  6  2013     1     1      554            558        -4      740            728
+##  7  2013     1     1      555            600        -5      913            854
+##  8  2013     1     1      557            600        -3      709            723
+##  9  2013     1     1      557            600        -3      838            846
+## 10  2013     1     1      558            600        -2      753            745
+## # ℹ 336,766 more rows
+## # ℹ 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+## #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+## #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li>load the flights dataset.</li>
 </ul>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb82-2"><a href="#cb82-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb82-3"><a href="#cb82-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb82-4"><a href="#cb82-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb82-5"><a href="#cb82-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb82-6"><a href="#cb82-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb82-7"><a href="#cb82-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb82-8"><a href="#cb82-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb82-9"><a href="#cb82-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb82-10"><a href="#cb82-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb82-11"><a href="#cb82-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb82-12"><a href="#cb82-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb82-13"><a href="#cb82-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb82-14"><a href="#cb82-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb82-15"><a href="#cb82-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb82-16"><a href="#cb82-16" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="filter" class="section level6">
+<h6>Filter</h6>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span>, day <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 842 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1      533            529         4      850            830
+##  3  2013     1     1      542            540         2      923            850
+##  4  2013     1     1      544            545        -1     1004           1022
+##  5  2013     1     1      554            600        -6      812            837
+##  6  2013     1     1      554            558        -4      740            728
+##  7  2013     1     1      555            600        -5      913            854
+##  8  2013     1     1      557            600        -3      709            723
+##  9  2013     1     1      557            600        -3      838            846
+## 10  2013     1     1      558            600        -2      753            745
+## # ℹ 832 more rows
+## # ℹ 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+## #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+## #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li>filters flights datasets for all months and day equals to 1</li>
 </ul>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb83-2"><a href="#cb83-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb83-3"><a href="#cb83-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb83-4"><a href="#cb83-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb83-5"><a href="#cb83-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb83-6"><a href="#cb83-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb83-7"><a href="#cb83-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb83-8"><a href="#cb83-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb83-9"><a href="#cb83-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb83-10"><a href="#cb83-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb83-11"><a href="#cb83-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb83-12"><a href="#cb83-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb83-13"><a href="#cb83-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb83-14"><a href="#cb83-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb83-15"><a href="#cb83-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb83-16"><a href="#cb83-16" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" tabindex="-1"></a><span class="co"># filter jan1</span></span>
+<span id="cb108-2"><a href="#cb108-2" tabindex="-1"></a>jan1 <span class="ot">&lt;-</span> <span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span>, day <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb108-3"><a href="#cb108-3" tabindex="-1"></a>(jan1 <span class="ot">&lt;-</span> <span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span>, day <span class="sc">==</span> <span class="dv">1</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 842 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1      533            529         4      850            830
+##  3  2013     1     1      542            540         2      923            850
+##  4  2013     1     1      544            545        -1     1004           1022
+##  5  2013     1     1      554            600        -6      812            837
+##  6  2013     1     1      554            558        -4      740            728
+##  7  2013     1     1      555            600        -5      913            854
+##  8  2013     1     1      557            600        -3      709            723
+##  9  2013     1     1      557            600        -3      838            846
+## 10  2013     1     1      558            600        -2      753            745
+## # ℹ 832 more rows
+## # ℹ 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+## #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+## #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" tabindex="-1"></a><span class="co"># filter dec25</span></span>
+<span id="cb110-2"><a href="#cb110-2" tabindex="-1"></a>dec25 <span class="ot">&lt;-</span> <span class="fu">filter</span>(flights, day <span class="sc">==</span><span class="dv">12</span> , day <span class="sc">==</span> <span class="dv">25</span>)</span>
+<span id="cb110-3"><a href="#cb110-3" tabindex="-1"></a>(dec25 <span class="ot">&lt;-</span> <span class="fu">filter</span>(flights, day <span class="sc">==</span><span class="dv">12</span> , day <span class="sc">==</span> <span class="dv">25</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 0 × 19
+## # ℹ 19 variables: year &lt;int&gt;, month &lt;int&gt;, day &lt;int&gt;, dep_time &lt;int&gt;,
+## #   sched_dep_time &lt;int&gt;, dep_delay &lt;dbl&gt;, arr_time &lt;int&gt;,
+## #   sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+## #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+## #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li>filters January 1 for all flights data.</li>
+<li>filters December 25 for all flights data.</li>
 </ul>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb84-2"><a href="#cb84-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb84-3"><a href="#cb84-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb84-4"><a href="#cb84-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb84-5"><a href="#cb84-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb84-6"><a href="#cb84-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb84-7"><a href="#cb84-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb84-8"><a href="#cb84-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb84-9"><a href="#cb84-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb84-10"><a href="#cb84-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb84-11"><a href="#cb84-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb84-12"><a href="#cb84-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb84-13"><a href="#cb84-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb84-14"><a href="#cb84-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb84-15"><a href="#cb84-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb84-16"><a href="#cb84-16" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" tabindex="-1"></a><span class="fu">filter</span>(flights, <span class="at">month =</span> <span class="dv">1</span>) <span class="co">#throws error</span></span></code></pre></div>
+<pre><code>## Error in `filter()`:
+## ! We detected a named input.
+## ℹ This usually means that you&#39;ve used `=` instead of `==`.
+## ℹ Did you mean `month == 1`?</code></pre>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span>) <span class="co">#works fine</span></span></code></pre></div>
+<pre><code>## # A tibble: 27,004 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1      533            529         4      850            830
+##  3  2013     1     1      542            540         2      923            850
+##  4  2013     1     1      544            545        -1     1004           1022
+##  5  2013     1     1      554            600        -6      812            837
+##  6  2013     1     1      554            558        -4      740            728
+##  7  2013     1     1      555            600        -5      913            854
+##  8  2013     1     1      557            600        -3      709            723
+##  9  2013     1     1      557            600        -3      838            846
+## 10  2013     1     1      558            600        -2      753            745
+## # ℹ 26,994 more rows
+## # ℹ 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+## #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+## #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li><code>filter(flights, month = 1)</code> will throw an error because
+month=1 doesn’t filter but assigns the value 1 to month.</li>
+<li>filter(flights, month == 1) will filter the month 1.</li>
 </ul>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb85-2"><a href="#cb85-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb85-3"><a href="#cb85-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb85-4"><a href="#cb85-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb85-5"><a href="#cb85-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb85-6"><a href="#cb85-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb85-7"><a href="#cb85-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb85-8"><a href="#cb85-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb85-9"><a href="#cb85-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb85-10"><a href="#cb85-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb85-11"><a href="#cb85-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb85-12"><a href="#cb85-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb85-13"><a href="#cb85-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb85-14"><a href="#cb85-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb85-15"><a href="#cb85-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb85-16"><a href="#cb85-16" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" tabindex="-1"></a><span class="co"># valid filter to fetch only rows where the month is either November December.</span></span>
+<span id="cb116-2"><a href="#cb116-2" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">11</span> <span class="sc">|</span> month <span class="sc">==</span> <span class="dv">12</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 55,403 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013    11     1        5           2359         6      352            345
+##  2  2013    11     1       35           2250       105      123           2356
+##  3  2013    11     1      455            500        -5      641            651
+##  4  2013    11     1      539            545        -6      856            827
+##  5  2013    11     1      542            545        -3      831            855
+##  6  2013    11     1      549            600       -11      912            923
+##  7  2013    11     1      550            600       -10      705            659
+##  8  2013    11     1      554            600        -6      659            701
+##  9  2013    11     1      554            600        -6      826            827
+## 10  2013    11     1      554            600        -6      749            751
+## # ℹ 55,393 more rows
+## # ℹ 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+## #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+## #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" tabindex="-1"></a><span class="co"># returns all row since 11 | 12 computes to TRUE</span></span>
+<span id="cb118-2"><a href="#cb118-2" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">11</span> <span class="sc">|</span> <span class="dv">12</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1      533            529         4      850            830
+##  3  2013     1     1      542            540         2      923            850
+##  4  2013     1     1      544            545        -1     1004           1022
+##  5  2013     1     1      554            600        -6      812            837
+##  6  2013     1     1      554            558        -4      740            728
+##  7  2013     1     1      555            600        -5      913            854
+##  8  2013     1     1      557            600        -3      709            723
+##  9  2013     1     1      557            600        -3      838            846
+## 10  2013     1     1      558            600        -2      753            745
+## # ℹ 336,766 more rows
+## # ℹ 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+## #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+## #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" tabindex="-1"></a><span class="co"># valid filter to fetch only rows where the month is either November December.</span></span>
+<span id="cb120-2"><a href="#cb120-2" tabindex="-1"></a>nov_dec <span class="ot">&lt;-</span> <span class="fu">filter</span>(flights, month <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">12</span>))</span></code></pre></div>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li><code>filter(flights, month == 11 | month == 12)</code> fetch only
+rows where the month is either November December.</li>
+<li><code>filter(flights, month == 11 | 12)</code> returns all row since
+11 | 12 computes to TRUE, even though syntactically it returns values
+but it won’t gives us desired output.</li>
+<li><code>nov_dec &lt;- filter(flights, month %in% c(11, 12))</code>
+fetch only rows where the month is either November December.</li>
 </ul>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb86-2"><a href="#cb86-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb86-3"><a href="#cb86-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb86-4"><a href="#cb86-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb86-5"><a href="#cb86-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb86-6"><a href="#cb86-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb86-7"><a href="#cb86-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb86-8"><a href="#cb86-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb86-9"><a href="#cb86-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb86-10"><a href="#cb86-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb86-11"><a href="#cb86-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb86-12"><a href="#cb86-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb86-13"><a href="#cb86-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb86-14"><a href="#cb86-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb86-15"><a href="#cb86-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb86-16"><a href="#cb86-16" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" tabindex="-1"></a><span class="co"># De Morgan&#39;s Law:</span></span>
+<span id="cb121-2"><a href="#cb121-2" tabindex="-1"></a><span class="fu">filter</span>(flights, <span class="sc">!</span>(arr_delay <span class="sc">&gt;</span> <span class="dv">120</span> <span class="sc">|</span> dep_delay <span class="sc">&gt;</span> <span class="dv">120</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 316,050 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1      533            529         4      850            830
+##  3  2013     1     1      542            540         2      923            850
+##  4  2013     1     1      544            545        -1     1004           1022
+##  5  2013     1     1      554            600        -6      812            837
+##  6  2013     1     1      554            558        -4      740            728
+##  7  2013     1     1      555            600        -5      913            854
+##  8  2013     1     1      557            600        -3      709            723
+##  9  2013     1     1      557            600        -3      838            846
+## 10  2013     1     1      558            600        -2      753            745
+## # ℹ 316,040 more rows
+## # ℹ 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+## #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+## #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" tabindex="-1"></a><span class="fu">filter</span>(flights, arr_delay <span class="sc">&lt;=</span> <span class="dv">120</span>, dep_delay <span class="sc">&lt;=</span> <span class="dv">120</span>) </span></code></pre></div>
+<pre><code>## # A tibble: 316,050 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1      533            529         4      850            830
+##  3  2013     1     1      542            540         2      923            850
+##  4  2013     1     1      544            545        -1     1004           1022
+##  5  2013     1     1      554            600        -6      812            837
+##  6  2013     1     1      554            558        -4      740            728
+##  7  2013     1     1      555            600        -5      913            854
+##  8  2013     1     1      557            600        -3      709            723
+##  9  2013     1     1      557            600        -3      838            846
+## 10  2013     1     1      558            600        -2      753            745
+## # ℹ 316,040 more rows
+## # ℹ 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+## #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+## #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li>Both returns the same value:
+<code>filter(flights, !(arr_delay &gt; 120 | dep_delay &gt; 120))</code>
+filters all arrival and departure delayed which are not greater
+120.</li>
+<li><code>filter(flights, arr_delay &lt;= 120, dep_delay &lt;= 120)</code>
+filters all arrival and departure delayed which are less than or equal
+to 120.</li>
+<li></li>
 </ul>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" tabindex="-1"></a><span class="fu">colnames</span>(covid_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb87-2"><a href="#cb87-2" tabindex="-1"></a>  <span class="st">&quot;Date&quot;</span>,</span>
-<span id="cb87-3"><a href="#cb87-3" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Total&quot;</span>,</span>
-<span id="cb87-4"><a href="#cb87-4" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_New&quot;</span>,</span>
-<span id="cb87-5"><a href="#cb87-5" tabindex="-1"></a>  <span class="st">&quot;Confirmed_Cases_Active&quot;</span>,</span>
-<span id="cb87-6"><a href="#cb87-6" tabindex="-1"></a>  <span class="st">&quot;Recoveries_Total&quot;</span>,</span>
-<span id="cb87-7"><a href="#cb87-7" tabindex="-1"></a>  <span class="st">&quot;Recoveries_New&quot;</span>,</span>
-<span id="cb87-8"><a href="#cb87-8" tabindex="-1"></a>  <span class="st">&quot;Deaths_Total&quot;</span>,</span>
-<span id="cb87-9"><a href="#cb87-9" tabindex="-1"></a>  <span class="st">&quot;Deaths_New&quot;</span>,</span>
-<span id="cb87-10"><a href="#cb87-10" tabindex="-1"></a>  <span class="st">&quot;PCR_Total&quot;</span>,</span>
-<span id="cb87-11"><a href="#cb87-11" tabindex="-1"></a>  <span class="st">&quot;PCR_New&quot;</span>,</span>
-<span id="cb87-12"><a href="#cb87-12" tabindex="-1"></a>  <span class="st">&quot;TPR&quot;</span>,</span>
-<span id="cb87-13"><a href="#cb87-13" tabindex="-1"></a>  <span class="st">&quot;RR&quot;</span>,</span>
-<span id="cb87-14"><a href="#cb87-14" tabindex="-1"></a>  <span class="st">&quot;CFR&quot;</span>,</span>
-<span id="cb87-15"><a href="#cb87-15" tabindex="-1"></a>  <span class="st">&quot;Ref&quot;</span></span>
-<span id="cb87-16"><a href="#cb87-16" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="arrange-example" class="section level6">
+<h6>Arrange Example</h6>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" tabindex="-1"></a><span class="co"># by default sorts in ascending order</span></span>
+<span id="cb125-2"><a href="#cb125-2" tabindex="-1"></a><span class="fu">arrange</span>(flights, year, month, day)</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1      533            529         4      850            830
+##  3  2013     1     1      542            540         2      923            850
+##  4  2013     1     1      544            545        -1     1004           1022
+##  5  2013     1     1      554            600        -6      812            837
+##  6  2013     1     1      554            558        -4      740            728
+##  7  2013     1     1      555            600        -5      913            854
+##  8  2013     1     1      557            600        -3      709            723
+##  9  2013     1     1      557            600        -3      838            846
+## 10  2013     1     1      558            600        -2      753            745
+## # ℹ 336,766 more rows
+## # ℹ 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+## #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+## #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" tabindex="-1"></a><span class="co"># descending order</span></span>
+<span id="cb127-2"><a href="#cb127-2" tabindex="-1"></a><span class="fu">arrange</span>(flights, <span class="fu">desc</span>(dep_delay))</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     9      641            900      1301     1242           1530
+##  2  2013     6    15     1432           1935      1137     1607           2120
+##  3  2013     1    10     1121           1635      1126     1239           1810
+##  4  2013     9    20     1139           1845      1014     1457           2210
+##  5  2013     7    22      845           1600      1005     1044           1815
+##  6  2013     4    10     1100           1900       960     1342           2211
+##  7  2013     3    17     2321            810       911      135           1020
+##  8  2013     6    27      959           1900       899     1236           2226
+##  9  2013     7    22     2257            759       898      121           1026
+## 10  2013    12     5      756           1700       896     1058           2020
+## # ℹ 336,766 more rows
+## # ℹ 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+## #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+## #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
 <p><strong><em>Interpretation</em></strong>:</p>
 <ul>
-<li>renaming the column names to desired column names.</li>
+<li><code>arrange(flights, year, month, day)</code> sorts year, month
+and day in ascending order.<br />
+</li>
+<li><code>arrange(flights, year, month, day)</code> sorts year, month
+and day in descending order.</li>
+<li>Missing values are always sorted at the end.</li>
+</ul>
+</div>
+<div id="select-example" class="section level5">
+<h5>Select Example</h5>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" tabindex="-1"></a><span class="co"># Select columns by name</span></span>
+<span id="cb129-2"><a href="#cb129-2" tabindex="-1"></a><span class="fu">select</span>(flights, year, month, day)</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 3
+##     year month   day
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1  2013     1     1
+##  2  2013     1     1
+##  3  2013     1     1
+##  4  2013     1     1
+##  5  2013     1     1
+##  6  2013     1     1
+##  7  2013     1     1
+##  8  2013     1     1
+##  9  2013     1     1
+## 10  2013     1     1
+## # ℹ 336,766 more rows</code></pre>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" tabindex="-1"></a><span class="co"># Select all columns between year and day (inclusive)</span></span>
+<span id="cb131-2"><a href="#cb131-2" tabindex="-1"></a><span class="fu">select</span>(flights, year<span class="sc">:</span>day)</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 3
+##     year month   day
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1  2013     1     1
+##  2  2013     1     1
+##  3  2013     1     1
+##  4  2013     1     1
+##  5  2013     1     1
+##  6  2013     1     1
+##  7  2013     1     1
+##  8  2013     1     1
+##  9  2013     1     1
+## 10  2013     1     1
+## # ℹ 336,766 more rows</code></pre>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" tabindex="-1"></a><span class="co"># Select all columns except those from year to day (inclusive)</span></span>
+<span id="cb133-2"><a href="#cb133-2" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="sc">-</span>(year<span class="sc">:</span>day))</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 16
+##    dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay carrier
+##       &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;  
+##  1      517            515         2      830            819        11 UA     
+##  2      533            529         4      850            830        20 UA     
+##  3      542            540         2      923            850        33 AA     
+##  4      544            545        -1     1004           1022       -18 B6     
+##  5      554            600        -6      812            837       -25 DL     
+##  6      554            558        -4      740            728        12 UA     
+##  7      555            600        -5      913            854        19 B6     
+##  8      557            600        -3      709            723       -14 EV     
+##  9      557            600        -3      838            846        -8 B6     
+## 10      558            600        -2      753            745         8 AA     
+## # ℹ 336,766 more rows
+## # ℹ 9 more variables: flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<p><strong><em>Interpretation</em></strong>:</p>
+<ul>
+<li><code>select(flights, year, month, day)</code> selects year, month
+and day from flights.</li>
+<li><code>select(flights, year:day)</code> selects all columns between
+year and day (inclusive) from flights.</li>
+<li><code>select(flights, year, month, day)</code> selects all columns
+except those from year to day (inclusive).</li>
 </ul>
 </div>
 </div>

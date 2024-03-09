@@ -564,7 +564,7 @@ formatted_date <- format(formatted_date, '-%m-%d')
 # concantante the year and formated day and date
 final_converted_date <- paste0(check_year, formatted_date)
 
-# finally since concatenation returns string again convert the type into Date and load the Date column of covid table
+# finally since concatenation returns string again convert the type into date and load the Date column of covid table
 covid_table$Date <- as.Date(final_converted_date)
 head(covid_table$Date)
 class(covid_table$Date)
@@ -616,394 +616,617 @@ class(covid_table$Date)
 
 ### [ <b> Code Execution and Output/Interpretation of Session 7</b>]{style="color:#d30000"}
 
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+library(magrittr)
+```
+
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
+table1 <- tibble(
+  country = c("Afghanistan", "Afghanistan", "Brazil", 
+               "Brazil", "China", "China"),
+  year = c(1999, 2000, 1999, 2000, 1999, 2000),
+  cases = c(745,2666,37737,80488,212258,213766),
+  population = c(19987071,20595360,172006362, 
+                 174504898, 1272915272,1280428583)
 )
+
+table1
+table2
+table3
+table4a
+table4b
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- Exploring the few built in tables from tidyverse package.
+- There are two main advantages:
+  - There’s a general advantage to picking one consistent way of storing 
+data. If you have a consistent data structure, it’s easier to learn the 
+tools that work with it because they have an underlying uniformity.
+  - There’s a specific advantage to placing variables in columns because it 
+allows R’s vectorized nature to shine.
+  - dplyr, ggplot2, and all the other packages in the tidyverse are 
+designed to work with tidy data.
+
 
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+# Pivoting – Longer to wider
+# (To do standard statistical analysis)
+table2 %>% pivot_wider(names_from = type, values_from = count)
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- Pivoting the `table2` from longer to wider.
+- usually used for standard statistical analysis
 
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+# Pivoting – Wider to Longer
+# (To do Variance components analysis)
+table4a %>%
+  pivot_longer(c(`1999`, `2000`), names_to =
+                 "year", values_to = "cases")
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- Pivoting the `table2` from  wider to longer.
+- usually used for standard statistical analysis.
 
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+# Tidy data: Separate
+table3 %>% separate(rate, into = c("cases", "population"))
+# OR
+table3 %>% separate(rate, into = c("cases", "population"), sep = "/")
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- separate the value from single column to multiple columns.
+- often useful when dealing with delimited values in single column.
 
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+# Tidy data: Unite
+table5 %>% unite(new, century, year)
+# OR
+table5 %>% unite(new, century, year, sep = "")
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
-
+- unites columns into one.
+- opposite of separate: it combines multiple columns into a single column.
+- 
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
+# Missing values: Example
+stocks <- tibble(
+  year = c(2015, 2015, 2015, 2015, 2016, 2016, 2016),
+  qtr = c( 1, 2, 3, 4, 2, 3, 4),
+  return = c(1.88, 0.59, 0.35, NA, 0.92, 0.17, 2.66)
 )
+
+stocks %>% pivot_wider(names_from = year, values_from = return)
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- pivoted the stocks to wider to check missing values on year and return
+- The return for the fourth quarter of 2015 is explicitly missing, 
+because the cell where its value should be instead contains NA.
+- The return for the first quarter of 2016 is implicitly missing, because it simply does not appear in the dataset.
+
 
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+stocks %>%
+  pivot_wider(names_from = year, values_from = return) %>%
+  pivot_longer(
+    cols = c(`2015`, `2016`),
+    names_to = "year",
+    values_to = "return",
+    values_drop_na = TRUE
+  )
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- `pivot_wider(names_from = year, values_from = return)` pivots data from longer to wider format. the date is spread out based on different years, where year is the column providing the year information, and return is the column providing return values.
+- `pivot_longer()` is used to pivot data from wider to longer format. It gathers columns specified in cols into key-value pairs. Here, it specifies to gather columns 2015 and 2016 into a new column named "year", with their corresponding values into a new column named "return". The parameter values_drop_na = TRUE indicates that rows with missing values after pivoting should be dropped.
 
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+stocks %>% complete(year, qtr)
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- `complete()` is used to complete a data frame with missing combinations of values. It takes columns specified in the arguments and ensures that all combinations of unique values are present in the resulting data frame. 
+- here, it ensures that all combinations of values from the columns year and qtr are present in the data frame, filling in any missing combinations with NA values.
 
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
+treatment <- tribble(
+~ person, ~ treatment, ~response,
+"Derrick Whitmore", 1, 7,
+NA, 2, 10,
+NA, 3, 9,
+"Katherine Burke", 1, 4
 )
+treatment
+
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- Create tibbles using an easier to read row-by-row layout. This is useful for small tables of data where readability is important.
 
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+treatment %>% fill(person)
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- `fill(person)` fills missing values in the specified column (person in this case) with the most recent non-missing value in that column.
 
-```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+
+#### Transform/manipulate data with “dplyr”
+
+###### To learn five key “dplyr” package functions that allow you to solve the vast majority of your data manipulation challenges:
+- **``filter())``** function is used to subset a data frame, retaining all rows that satisfy your conditions.
+- **``(arrange()``**: orders the rows of a data frame by the values of selected columns.
+- **``select()``**: (and optionally rename) variables in a data frame, using a concise mini-language that makes it easy to refer to variables based on their name (e.g. a:f selects all columns from a on the left to f on the right) or type (e.g. where(is.numeric) selects all numeric columns).
+- **``mutate()``**: creates new columns that are functions of existing variables. It can also modify (if the name is the same as an existing column) and delete columns (by setting their value to NULL). Collapse many values down to a single summary 
+- **``summarise()``**: It returns one row for each combination of grouping variables; if there are no grouping variables, the output will have a single row summarizing all observations in the input. It will contain one column for each grouping variable and one column for each of the summary statistics that you have specified
+- **``group_by()``**: Most data operations are done on groups defined by variables. group_by() takes an existing tbl and converts it into a grouped tbl where operations are performed "by group". ungroup() removes grouping.
+
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(nycflights13)
+flights
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- load the flights dataset.
 
+
+###### Filter
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+filter(flights, month == 1, day == 1)
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- filters flights datasets for all months and day equals to 1
 
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+
+# filter jan1
+jan1 <- filter(flights, month == 1, day == 1)
+(jan1 <- filter(flights, month == 1, day == 1))
+
+# filter dec25
+dec25 <- filter(flights, day ==12 , day == 25)
+(dec25 <- filter(flights, day ==12 , day == 25))
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- filters January 1 for all flights data.
+- filters December 25 for all flights data.
 
-```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+```{r error=TRUE}
+filter(flights, month = 1) #throws error
+filter(flights, month == 1) #works fine
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- `filter(flights, month = 1)` will throw an error because month=1 doesn't filter but assigns the value 1 to month.
+- filter(flights, month == 1) will filter the month 1.
 
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+
+# valid filter to fetch only rows where the month is either November December.
+filter(flights, month == 11 | month == 12)
+
+# returns all row since 11 | 12 computes to TRUE
+filter(flights, month == 11 | 12)
+
+# valid filter to fetch only rows where the month is either November December.
+nov_dec <- filter(flights, month %in% c(11, 12))
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- `filter(flights, month == 11 | month == 12)` fetch only rows where the month is either November December.
+- `filter(flights, month == 11 | 12)` returns all row since 11 | 12 computes to TRUE, even though syntactically it returns values but it won't gives us desired output.
+- `nov_dec <- filter(flights, month %in% c(11, 12))` fetch only rows where the month is either November December.
+
 
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+
+# De Morgan's Law:
+filter(flights, !(arr_delay > 120 | dep_delay > 120))
+filter(flights, arr_delay <= 120, dep_delay <= 120) 
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- Both returns the same value: `filter(flights, !(arr_delay > 120 | dep_delay > 120))` filters all arrival and departure delayed which are not greater 120.
+- `filter(flights, arr_delay <= 120, dep_delay <= 120)` filters all arrival and departure delayed which are less than or equal to 120.
+- 
 
+###### Arrange Example
 ```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
+
+# by default sorts in ascending order
+arrange(flights, year, month, day)
+
+# descending order
+arrange(flights, desc(dep_delay))
 ```
 
 ***Interpretation***:
 
-- renaming the column names to desired column names.
+- `arrange(flights, year, month, day)` sorts year, month and day in ascending order.  
+- `arrange(flights, year, month, day)` sorts year, month and day in descending order. 
+- Missing values are always sorted at the end.
+
+
+##### Select Example
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+flights %>% select(starts_with('d')) #matches names beginning with d
+flights %>% select(ends_with('e')) #matches names ending with e
+flights %>% select(contains('d')) #matches names containing with d
+flights %>% select(matches("(.)\\1")) #matches any variables that contain repeated characters
+flights %>% select(num_range("dest",1:15)) #matches if dest contains any range between 1 to 15
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+
+
+```{r}
+
+# Select columns by name
+select(flights, year, month, day)
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+***Interpretation***:
+
+- `select(flights, year, month, day)` selects year, month and day from flights.
+- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
+- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
 
