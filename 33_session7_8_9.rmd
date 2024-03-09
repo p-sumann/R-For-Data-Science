@@ -3,7 +3,8 @@ title: '**Assignment 2: Web scrapping/Data Wrangling in R**'
 author: '**Suman Paudel 33**'
 date: "`r Sys.Date()`"
 output:
-  html_document:
+  html_document: 
+    theme: united
     highlight: tango
   pdf_document: 
     highlight: pygments
@@ -11,15 +12,15 @@ output:
 
 [GitHub Repository](https://github.com/sumanpaudel1997/R-For-Data-Science/tree/main)
 
-### [ <b> Code Execution and Output/Interpretation of Session 7</b>]{style="color:#d30000"}
+### [ <b>Code Execution and Output/Interpretation of Session 7</b>]{style="color:#d30000"}
 
-#### What is a “package” in R?
+#### **What is a “package” in R?**
 
 -   In R, the fundamental unit of shareable code/function is the package.
 -   A package bundles together code, data, documentation, and tests, and is easy to share with others.
 -   The public clearing house for R packages is the Comprehensive R Archive Network or `CRAN`. The details about the packages can be found at CRAN.
 
-#### How to install, use and get help about any package from CRAN?
+#### **How to install, use and get help about any package from CRAN?**
 
 -   We can install packages of CRAN in R using: **`install.packages("packagename")`**\
     For example: **`install.packages("dplyr")`**
@@ -32,7 +33,7 @@ output:
     **`?packagement`** or **`help(package = "packagement")`**\
     **`e.g. ?dplyr`** OR **`help(package = "dplyr")`**
 
-#### How to develop a package in R?  
+#### **How to develop a package in R?  **
 
 \ <https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/>
 
@@ -45,17 +46,17 @@ output:
 -   Step 6: Make a package GitHub repo (Bonus!)
 -   Step 7: Infinity- Iterate
 
-#### Reading (Import) data in R/R Studio:
+#### **Reading (Import) data in R/R Studio:**
 
 -   Text files: R base, readr etc
 -   Excel files: readXL, openxls etc.
 -   SPSS, Stata, SAS files: foreign, haven etc.
 
-#### Reading data in R/R Studio
+#### **Reading data in R/R Studio**
 
 -   JSON files: rjason, jsonlite, RJSONIO etc.
 
-#### To install the library to work on josn files.
+#### **To install the library to work on josn files.**
 -   `install.packages('jsonlite')`
 -   `install.packages('rjson')`
 
@@ -70,21 +71,9 @@ data
 
 ***Interpretation***:
 
--   loaded the jason_data.json file fromm current working directory using rjson library
+-   loaded the `jason_data.json` file from current working directory using rjson library.
 
-##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
-
-```{r}
-library("rjson")
-data <- fromJSON(file = "jason_data.json")
-data
-```
-
-***Interpretation***:
-
--   loaded the jason_data.json file fromm current working directory using rjson library
-
-##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 2</b></span>
 
 ```{r}
 # covert to data frame:
@@ -96,7 +85,7 @@ jason_data_frame
 
 -   converted the loaded json data into data.frame
 
-##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 3</b></span>
 
 ```{r}
 # summary of jason_data_frame
@@ -107,7 +96,7 @@ summary(jason_data_frame)
 
 -   summarizes the json data frame.
 
-##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
+##### <span style="color:#7b9a26"> <b> Code Sample 4</b></span>
 
 ```{r}
 # histogram of salary of jason data frame
@@ -121,65 +110,7 @@ hist(jason_data_frame$Salary)
 - since salary was of character so hist was not produced, so I converted it to integer.
 - generates histogram of salary of jason data frame
 
-```{r}
-# histogram of salary of jason data frame
-# since salary was of character so hist was not produced, so I converted it to integer.
-jason_data_frame$Salary <- as.integer(jason_data_frame$Salary)
-hist(jason_data_frame$Salary)
-```
-
-***Interpretation***:
-
-- since salary was of character so hist was not produced, so I converted it to integer.
-- generates histogram of salary of jason data frame
-
-```{r}
-# histogram of salary of jason data frame
-# since salary was of character so hist was not produced, so I converted it to integer.
-jason_data_frame$Salary <- as.integer(jason_data_frame$Salary)
-hist(jason_data_frame$Salary)
-```
-
-***Interpretation***:
-
-- since salary was of character so hist was not produced, so I converted it to integer.
-- generates histogram of salary of jason data frame
-
-```{r}
-# histogram of salary of jason data frame
-# since salary was of character so hist was not produced, so I converted it to integer.
-jason_data_frame$Salary <- as.integer(jason_data_frame$Salary)
-hist(jason_data_frame$Salary)
-```
-
-***Interpretation***:
-
-- since salary was of character so hist was not produced, so I converted it to integer.
-- generates histogram of salary of jason data frame
-
-```{r}
-# histogram of salary of jason data frame
-# since salary was of character so hist was not produced, so I converted it to integer.
-jason_data_frame$Salary <- as.integer(jason_data_frame$Salary)
-hist(jason_data_frame$Salary)
-```
-
-***Interpretation***:
-
-- since salary was of character so hist was not produced, so I converted it to integer.
-- generates histogram of salary of jason data frame
-
-```{r}
-# histogram of salary of jason data frame
-# since salary was of character so hist was not produced, so I converted it to integer.
-jason_data_frame$Salary <- as.integer(jason_data_frame$Salary)
-hist(jason_data_frame$Salary)
-```
-
-***Interpretation***:
-
-- since salary was of character so hist was not produced, so I converted it to integer.
-- generates histogram of salary of jason data frame
+##### <span style="color:#7b9a26"> <b> Code Sample 5</b></span>
 
 ```{r}
 # average salary by department
@@ -189,6 +120,8 @@ aggregate(Salary ~ Dept, data = jason_data_frame, FUN = mean)
 ***Interpretation***:
 
 - aggregates the average salary by department.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 6</b></span>
 
 ```{r}
 # also using dplyr package
@@ -204,6 +137,8 @@ avg_by_dept <-
 
 - average salary by department can be achieved by using dplyr package and using summarise.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 7</b></span>
+
 ```{r}
 # frequency distribution of all variables
 # since tables only shows the frequency distribution of factors, table on numerical or integer value is bad practice.
@@ -215,7 +150,11 @@ table(jason_data_frame$Dept)
 - since tables only shows the frequency distribution of factors, table on numerical or integer value is bad practice.
 
 
-#### Reading JSON file from URL: Web API 
+#### **Reading JSON file from URL: Web API**
+
+\
+
+##### <span style="color:#7b9a26"> <b> Code Sample 8</b></span>
 
 ```{r cache=TRUE}
 # fetch the data from web api
@@ -231,6 +170,8 @@ food_market <- raw[['data']]
 - read the json data from API using jsonlite library
 - the raw object gets the list of values from where data part is extracted and assigned to food_market object
 
+##### <span style="color:#7b9a26"> <b> Code Sample 9</b></span>
+
 ```{r}
 # structure and head of food market
 str(food_market) 
@@ -241,6 +182,8 @@ head(food_market, n = 4)
 
 - returns the structure and head of food_market.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 10</b></span>
+
 ```{r}
 names <- food_market[,14]
 ```
@@ -248,6 +191,8 @@ names <- food_market[,14]
 ***Interpretation***:
 
 - returns the names stores listed in index 14 of food_market in names object
+
+##### <span style="color:#7b9a26"> <b> Code Sample 11</b></span>
 
 ```{r}
 head(names)
@@ -260,6 +205,8 @@ head(table(names), n = 7)
 - `head(table(names), n = 7)` returns the frequency table of names of stores.
 - since data is so much I restricted to first 7 values for frequency table.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 12</b></span>
+
 ```{r error=TRUE}
 table(v19)
 ```
@@ -267,6 +214,8 @@ table(v19)
 ***Interpretation***:
 
 - trying to get the frequency tabke v19. but v19 doesn't exist and throws error
+
+##### <span style="color:#7b9a26"> <b> Code Sample 13</b></span>
 
 ```{r error=TRUE}
 table(food_market$V19)
@@ -279,6 +228,8 @@ table(food_market$V19)
 - since food_market is of atomic vectors type, while access the element using $ returned this error.
 - this can be mitigated by using `table(food_market[,19])`
 
+##### <span style="color:#7b9a26"> <b> Code Sample 14</b></span>
+
 ```{r, warning=FALSE}
 head(table(food_market[, 19]), n = 5)
 ```
@@ -288,7 +239,10 @@ head(table(food_market[, 19]), n = 5)
 - returns the frequency table of data that is at 19th column of food_market
 - since data is too much, I restricted the display to 5.
 
-#### Web scrapping in R: A Simple (barebones) Example
+#### **Web scrapping in R: A Simple (barebones) Example**
+
+
+##### <span style="color:#7b9a26"> <b> Code Sample 15</b></span>
 
 ```{r warning=FALSE}
 # The recommended package for web scrapping in R is “rvest
@@ -304,6 +258,8 @@ simple %>% html_nodes('p') %>% html_text()
 - reads the html using `read_html()`
 - we loaded the html in simple object then using pipes parsed the html with node 'p' then converted that to normal text.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 16</b></span>
+
 ```{r}
 # Wikipedia Nepal Covid 19 
 wiki_link <- "https://en.wikipedia.org/wiki/COVID-19_pandemic_in_Nepal"
@@ -315,6 +271,8 @@ wiki_page <- read_html(wiki_link)
 - since salary was of character so hist was not produced, so I converted it to integer.
 - generates histogram of salary of jason data frame
 
+##### <span style="color:#7b9a26"> <b> Code Sample 17</b></span>
+
 ```{r}
 str(wiki_page)
 ```
@@ -323,6 +281,8 @@ str(wiki_page)
 
 - structure of wiki page, returns list of 2 xml node and xml doc
 
+##### <span style="color:#7b9a26"> <b> Code Sample 18</b></span>
+
 ```{r}
 wiki_page %>% html_nodes("table")
 ```
@@ -330,6 +290,8 @@ wiki_page %>% html_nodes("table")
 ***Interpretation***:
 
 - parses the html nodes containing `table` in html page of wiki_page.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 19</b></span>
 
 ```{r}
 covid_table <-
@@ -343,8 +305,10 @@ covid_table <- covid_table[[1]]
 - then extracted the node containing `table` into html_table()
 - since the data was returned in the list, the actual data was at first index which is dataframe.
 
+#### **Data wrangling: Part I Column names of covid_table**
 
-#### Data wrangling: Part I Column names of covid_table
+##### <span style="color:#7b9a26"> <b> Code Sample 20</b></span>
+
 ```{r}
 names(covid_table) <-
   paste(names(covid_table), covid_table[1, ], sep = "_")
@@ -358,6 +322,7 @@ names(covid_table)
 - concatenated the column names with first row of dataframe.
 - and finally dropping the first column.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 21</b></span>
 
 ```{r}
 #Check the structure of data again
@@ -368,18 +333,44 @@ str(covid_table)
 
 - checking the structure again to ensure.
 
-#### Data wrangling: Part II Renaming the column names
-- Change “Date_Date” variable as “Date”
-- Change “Confirmed cases_Total” variable as “Confirmed_Cases_Total”
-- Change “Confirmed cases_New” variable as “Confirmed_Cases_New”
-- Change “Confirmed cases_Active” variable as “Confirmed_Cases_Active”
-- Change “RT-PCR tests_Total” variable as “RT-PCR_tests_Total”
-- Change “RT-PCR tests_New” variable as “RT-PCR_tests_New”
-- Change “TPR_TPR” variable as “TPR”
-- Change “RR_RR” variable as “RR”
-- Change “CFR_CFR” variable as “CFR”
-- Change “Ref. _Ref.” variable as “Ref”
+#### **Data wrangling: Part II Renaming the column names**
+- Change “Date_Date” variable as **“Date”**
+- Change “Confirmed cases_Total” variable as **“Confirmed_Cases_Total”**
+- Change “Confirmed cases_New” variable as **“Confirmed_Cases_New”**
+- Change “Confirmed cases_Active” variable as **“Confirmed_Cases_Active”**
+- Change “RT-PCR tests_Total” variable as **“RT-PCR_tests_Total”**
+- Change “RT-PCR tests_New” variable as **“RT-PCR_tests_New”**
+- Change “TPR_TPR” variable as **“TPR”**
+- Change “RR_RR” variable as **“RR”**
+- Change “CFR_CFR” variable as **“CFR”**
+- Change “Ref. _Ref.” variable as **“Ref”**
 
+##### <span style="color:#7b9a26"> <b> Code Sample 22</b></span>
+
+```{r}
+colnames(covid_table) <- c(
+  "Date",
+  "Confirmed_Cases_Total",
+  "Confirmed_Cases_New",
+  "Confirmed_Cases_Active",
+  "Recoveries_Total",
+  "Recoveries_New",
+  "Deaths_Total",
+  "Deaths_New",
+  "PCR_Total",
+  "PCR_New",
+  "TPR",
+  "RR",
+  "CFR",
+  "Ref"
+)
+```
+
+***Interpretation***:
+
+- renaming the column names to desired column names.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 23</b></span>
 
 ```{r}
 colnames(covid_table) <- c(
@@ -404,29 +395,7 @@ colnames(covid_table) <- c(
 
 - renaming the column names to desired column names.
 
-
-```{r}
-colnames(covid_table) <- c(
-  "Date",
-  "Confirmed_Cases_Total",
-  "Confirmed_Cases_New",
-  "Confirmed_Cases_Active",
-  "Recoveries_Total",
-  "Recoveries_New",
-  "Deaths_Total",
-  "Deaths_New",
-  "PCR_Total",
-  "PCR_New",
-  "TPR",
-  "RR",
-  "CFR",
-  "Ref"
-)
-```
-
-***Interpretation***:
-
-- renaming the column names to desired column names.
+##### <span style="color:#7b9a26"> <b> Code Sample 24</b></span>
 
 ```{r eval=FALSE}
 # another way to do same thing 
@@ -451,7 +420,10 @@ names(covid_table)[names(covid_table)=='Ref._Ref.'] = 'Ref'
 
 - Another way to rename the column names to desired column names.
 
-#### Data Wrangling Part III
+#### **Data Wrangling Part III**
+
+##### <span style="color:#7b9a26"> <b> Code Sample 25</b></span>
+
 ```{r}
 
 # removing "+" and "%" from the variables
@@ -470,6 +442,8 @@ covid_table$CFR <- gsub('[%]', '', covid_table$CFR)
 
 - cleaning the messy data using gsub.
 - removing `%` and `+` from data.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 26</b></span>
 
 ```{r}
 # since in pdf while converting chr to numeric or integer type coerce warning was given for invalid type.
@@ -494,20 +468,17 @@ covid_table$CFR <- gsub('[,]', '', covid_table$CFR)
 - Since while converting chr to integer type it gave some warning about coerce where values were invalid type for e.g `313,333` can't be interpreted as integer because of comma. But it is right in context of html in website. 
 - removed the `,` using gsub.
 
-#### Data wrangling: Part IV Converting “chr” variables as numbers 
+#### **Data wrangling: Part IV Converting “chr” variables as numbers **
+
+##### <span style="color:#7b9a26"> <b> Code Sample 27</b></span>
 
 ```{r}
 
-covid_table$Confirmed_Cases_Total <-
-  as.integer(covid_table$Confirmed_Cases_Total)
-covid_table$Confirmed_Cases_New <-
-  as.integer(covid_table$Confirmed_Cases_New)
-covid_table$Confirmed_Cases_Active <-
-  as.integer(covid_table$Confirmed_Cases_Active)
-covid_table$Recoveries_Total <-
-  as.integer(covid_table$Recoveries_Total)
-covid_table$Recoveries_New <-
-  as.integer(covid_table$Recoveries_New)
+covid_table$Confirmed_Cases_Total <- as.integer(covid_table$Confirmed_Cases_Total)
+covid_table$Confirmed_Cases_New <- as.integer(covid_table$Confirmed_Cases_New)
+covid_table$Confirmed_Cases_Active <- as.integer(covid_table$Confirmed_Cases_Active)
+covid_table$Recoveries_Total <- as.integer(covid_table$Recoveries_Total)
+covid_table$Recoveries_New <- as.integer(covid_table$Recoveries_New)
 
 covid_table$Deaths_Total <- as.integer(covid_table$Deaths_Total)
 covid_table$Deaths_New <- as.integer(covid_table$Deaths_New)
@@ -523,6 +494,8 @@ covid_table$CFR <- as.numeric(covid_table$CFR)
 
 - converted all of the required columns of chr type of integer or numeric type using `as.numeric()` function.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 28</b></span>
+
 ```{r}
 str(covid_table)
 ```
@@ -531,8 +504,10 @@ str(covid_table)
 
 - finally check the data type.
 
+#### **Converting Date (Assignment)**
 
-##### Converting Date (Assignment)
+##### <span style="color:#7b9a26"> <b> Code Sample 29</b></span>
+
 ```{r}
 head(as.Date(covid_table$Date, format = "%d %b"), n = 50)
 ```
@@ -543,6 +518,8 @@ head(as.Date(covid_table$Date, format = "%d %b"), n = 50)
 - since out date column has day and month I have to use `%d` for day and `%b` for short name of month.
 - returns the value in 2024 but that date is of 2020 and 2021
 - In order to work around this I have made a logic below.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 30</b></span>
 
 ```{r }
 # using base R date time functions
@@ -579,6 +556,8 @@ class(covid_table$Date)
 - since `as.Date(covid_table$Date, format = "%d %b")` gave the date of 2024, I formatted the date and only got day and month.
 - Finally concatenated the calulcated year with formatted day and month. 
 
+##### <span style="color:#7b9a26"> <b> Code Sample 31</b></span>
+
 ```{r, warning=FALSE, message=FALSE}
 # using lubridate
 library(lubridate)
@@ -613,8 +592,9 @@ class(covid_table$Date)
 - Using lubridate to achieve the solution to given problem.
 
 
+### [ <b> Code Execution and Output/Interpretation of Session 8 and 9</b>]{style="color:#d30000"}
 
-### [ <b> Code Execution and Output/Interpretation of Session 7</b>]{style="color:#d30000"}
+##### <span style="color:#7b9a26"> <b> Code Sample 1</b></span>
 
 ```{r warning=FALSE, message=FALSE}
 library(tidyverse)
@@ -641,7 +621,7 @@ table4b
 ***Interpretation***:
 
 - Exploring the few built in tables from tidyverse package.
-- There are two main advantages:
+- There are two main advantages of using tidy data:
   - There’s a general advantage to picking one consistent way of storing 
 data. If you have a consistent data structure, it’s easier to learn the 
 tools that work with it because they have an underlying uniformity.
@@ -650,6 +630,7 @@ allows R’s vectorized nature to shine.
   - dplyr, ggplot2, and all the other packages in the tidyverse are 
 designed to work with tidy data.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 2</b></span>
 
 ```{r}
 # Pivoting – Longer to wider
@@ -661,6 +642,8 @@ table2 %>% pivot_wider(names_from = type, values_from = count)
 
 - Pivoting the `table2` from longer to wider.
 - usually used for standard statistical analysis
+
+##### <span style="color:#7b9a26"> <b> Code Sample 3</b></span>
 
 ```{r}
 # Pivoting – Wider to Longer
@@ -675,6 +658,8 @@ table4a %>%
 - Pivoting the `table2` from  wider to longer.
 - usually used for standard statistical analysis.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 4</b></span>
+
 ```{r}
 # Tidy data: Separate
 table3 %>% separate(rate, into = c("cases", "population"))
@@ -687,6 +672,8 @@ table3 %>% separate(rate, into = c("cases", "population"), sep = "/")
 - separate the value from single column to multiple columns.
 - often useful when dealing with delimited values in single column.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 5</b></span>
+
 ```{r}
 # Tidy data: Unite
 table5 %>% unite(new, century, year)
@@ -698,7 +685,9 @@ table5 %>% unite(new, century, year, sep = "")
 
 - unites columns into one.
 - opposite of separate: it combines multiple columns into a single column.
-- 
+
+##### <span style="color:#7b9a26"> <b> Code Sample 6</b></span>
+
 ```{r}
 # Missing values: Example
 stocks <- tibble(
@@ -717,6 +706,7 @@ stocks %>% pivot_wider(names_from = year, values_from = return)
 because the cell where its value should be instead contains NA.
 - The return for the first quarter of 2016 is implicitly missing, because it simply does not appear in the dataset.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 7</b></span>
 
 ```{r}
 stocks %>%
@@ -734,6 +724,8 @@ stocks %>%
 - `pivot_wider(names_from = year, values_from = return)` pivots data from longer to wider format. the date is spread out based on different years, where year is the column providing the year information, and return is the column providing return values.
 - `pivot_longer()` is used to pivot data from wider to longer format. It gathers columns specified in cols into key-value pairs. Here, it specifies to gather columns 2015 and 2016 into a new column named "year", with their corresponding values into a new column named "return". The parameter values_drop_na = TRUE indicates that rows with missing values after pivoting should be dropped.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 8</b></span>
+
 ```{r}
 stocks %>% complete(year, qtr)
 ```
@@ -742,6 +734,8 @@ stocks %>% complete(year, qtr)
 
 - `complete()` is used to complete a data frame with missing combinations of values. It takes columns specified in the arguments and ensures that all combinations of unique values are present in the resulting data frame. 
 - here, it ensures that all combinations of values from the columns year and qtr are present in the data frame, filling in any missing combinations with NA values.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 9</b></span>
 
 ```{r}
 treatment <- tribble(
@@ -759,6 +753,8 @@ treatment
 
 - Create tibbles using an easier to read row-by-row layout. This is useful for small tables of data where readability is important.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 10</b></span>
+
 ```{r}
 treatment %>% fill(person)
 ```
@@ -768,16 +764,17 @@ treatment %>% fill(person)
 - `fill(person)` fills missing values in the specified column (person in this case) with the most recent non-missing value in that column.
 
 
-#### Transform/manipulate data with “dplyr”
+#### **Transform/manipulate data with “dplyr”**
 
 ###### To learn five key “dplyr” package functions that allow you to solve the vast majority of your data manipulation challenges:
 - **``filter())``** function is used to subset a data frame, retaining all rows that satisfy your conditions.
-- **``(arrange()``**: orders the rows of a data frame by the values of selected columns.
-- **``select()``**: (and optionally rename) variables in a data frame, using a concise mini-language that makes it easy to refer to variables based on their name (e.g. a:f selects all columns from a on the left to f on the right) or type (e.g. where(is.numeric) selects all numeric columns).
+- **``arrange()``**: orders the rows of a data frame by the values of selected columns.
+- **``select()``**: (and optionally rename) variables in a data frame, using a concise mini-language that makes it easy to refer to variables based on their name e.g. a:f selects all columns from a on the left to f on the right) or type (e.g. where(is.numeric) selects all numeric columns).
 - **``mutate()``**: creates new columns that are functions of existing variables. It can also modify (if the name is the same as an existing column) and delete columns (by setting their value to NULL). Collapse many values down to a single summary 
 - **``summarise()``**: It returns one row for each combination of grouping variables; if there are no grouping variables, the output will have a single row summarizing all observations in the input. It will contain one column for each grouping variable and one column for each of the summary statistics that you have specified
 - **``group_by()``**: Most data operations are done on groups defined by variables. group_by() takes an existing tbl and converts it into a grouped tbl where operations are performed "by group". ungroup() removes grouping.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 11</b></span>
 
 ```{r message=FALSE, warning=FALSE}
 library(dplyr)
@@ -789,8 +786,10 @@ flights
 
 - load the flights dataset.
 
+#### **Filter Example**
 
-###### Filter
+##### <span style="color:#7b9a26"> <b> Code Sample 12</b></span>
+
 ```{r}
 filter(flights, month == 1, day == 1)
 ```
@@ -798,6 +797,8 @@ filter(flights, month == 1, day == 1)
 ***Interpretation***:
 
 - filters flights datasets for all months and day equals to 1
+
+##### <span style="color:#7b9a26"> <b> Code Sample 13</b></span>
 
 ```{r}
 
@@ -815,6 +816,8 @@ dec25 <- filter(flights, day ==12 , day == 25)
 - filters January 1 for all flights data.
 - filters December 25 for all flights data.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 14</b></span>
+
 ```{r error=TRUE}
 filter(flights, month = 1) #throws error
 filter(flights, month == 1) #works fine
@@ -825,6 +828,7 @@ filter(flights, month == 1) #works fine
 - `filter(flights, month = 1)` will throw an error because month=1 doesn't filter but assigns the value 1 to month.
 - filter(flights, month == 1) will filter the month 1.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 15</b></span>
 ```{r}
 
 # valid filter to fetch only rows where the month is either November December.
@@ -843,6 +847,7 @@ nov_dec <- filter(flights, month %in% c(11, 12))
 - `filter(flights, month == 11 | 12)` returns all row since 11 | 12 computes to TRUE, even though syntactically it returns values but it won't gives us desired output.
 - `nov_dec <- filter(flights, month %in% c(11, 12))` fetch only rows where the month is either November December.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 16</b></span>
 
 ```{r}
 
@@ -855,9 +860,12 @@ filter(flights, arr_delay <= 120, dep_delay <= 120)
 
 - Both returns the same value: `filter(flights, !(arr_delay > 120 | dep_delay > 120))` filters all arrival and departure delayed which are not greater 120.
 - `filter(flights, arr_delay <= 120, dep_delay <= 120)` filters all arrival and departure delayed which are less than or equal to 120.
-- 
 
-###### Arrange Example
+
+###### **Arrange Example**
+
+##### <span style="color:#7b9a26"> <b> Code Sample 17</b></span>
+
 ```{r}
 
 # by default sorts in ascending order
@@ -874,7 +882,9 @@ arrange(flights, desc(dep_delay))
 - Missing values are always sorted at the end.
 
 
-##### Select Example
+#### **Select Example**
+
+##### <span style="color:#7b9a26"> <b> Code Sample 18</b></span>
 
 ```{r}
 
@@ -892,192 +902,14 @@ select(flights, -(year:day))
 - `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
 - `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
 
-```{r}
+#### **Other useful select functions**
+- `flights %>% select(starts_with('d'))` #matches names beginning with d
+- `flights %>% select(ends_with('e'))` #matches names ending with e
+- `flights %>% select(contains('d'))` #matches names containing with d
+- `flights %>% select(matches("(.)\\1"))` #matches any variables that contain repeated characters
+- `flights %>% select(num_range("dest",1:15))` #matches if dest contains any -range between 1 to 15
 
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
-```
-
-***Interpretation***:
-
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
-
-
-```{r}
-
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
-```
-
-***Interpretation***:
-
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
-
-
-```{r}
-
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
-```
-
-***Interpretation***:
-
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
-
-
-```{r}
-
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
-```
-
-***Interpretation***:
-
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
-
-
-```{r}
-
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
-```
-
-***Interpretation***:
-
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
-
-
-```{r}
-
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
-```
-
-***Interpretation***:
-
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
-
-
-```{r}
-
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
-```
-
-***Interpretation***:
-
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
-
-
-```{r}
-
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
-```
-
-***Interpretation***:
-
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
-
-
-```{r}
-
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
-```
-
-***Interpretation***:
-
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
-
-
-```{r}
-
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
-```
-
-***Interpretation***:
-
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
-
-
-```{r}
-
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
-```
-
-***Interpretation***:
-
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
-
+##### <span style="color:#7b9a26"> <b> Code Sample 19</b></span>
 
 ```{r}
 
@@ -1088,12 +920,102 @@ flights %>% select(matches("(.)\\1")) #matches any variables that contain repeat
 flights %>% select(num_range("dest",1:15)) #matches if dest contains any range between 1 to 15
 ```
 
+##### <span style="color:#7b9a26"> <b> Code Sample 20</b></span>
+
+```{r}
+
+# rename
+rename(flights, tail_num = tailnum)
+
+# move to the start of the data frame
+select(flights, time_hour, air_time, everything())
+
+```
+
 ***Interpretation***:
 
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+- select() can be used to rename variables, but it’s rarely useful 
+because it drops all of the variables not explicitly.
+- so using rename(), which is a variant of select() that keeps all 
+the variables that aren’t explicitly mentioned.
+- Another option is to use select() in conjunction with the 
+everything() helper.
 
+#### Mutate: Example 
+
+##### <span style="color:#7b9a26"> <b> Code Sample 21</b></span>
+
+```{r}
+flights_sml <- select(flights,
+                      year:day,
+                      ends_with("delay"),
+                      distance,
+                      air_time)
+```
+
+***Interpretation***:
+
+- adding some variables in flights_sml from flights.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 22</b></span>
+
+```{r}
+mutate(flights_sml,
+       gain = dep_delay - arr_delay,
+       speed = distance / air_time * 60)
+```
+
+***Interpretation***:
+
+- two new columns, gain and speed, is added based on existing variables in the flights_sml dataset.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 23</b></span>
+
+```{r}
+
+mutate(flights_sml,
+       gain = dep_delay - arr_delay,
+       hours = air_time / 60,
+       gain_per_hour = gain / hours
+)
+```
+
+***Interpretation***:
+
+- three new columns (gain, hours, and gain_per_hour) were added based on existing variables which are computed in the flights_sml dataset.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 24</b></span>
+
+```{r}
+# transmute 
+# If you only want to keep the new variables, use transmute()
+transmute(
+  flights,
+  gain = dep_delay - arr_delay,
+  hours = air_time / 60,
+  gain_per_hour = gain / hours
+)
+```
+
+***Interpretation***:
+
+- three new variables (gain, hours, and gain_per_hour) based on existing variables in the flights dataset while discarding all other variables.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 25</b></span>
+
+```{r}
+
+transmute(flights,
+          dep_time,
+          hour = dep_time %/% 100,
+          minute = dep_time %% 100)
+```
+
+***Interpretation***:
+
+- this code creates two new variables (hour and minute) from the dep_time variable in the flights dataset, while still retaining the original dep_time variable in the output and discard all other columns.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 26</b></span>
 
 ```{r}
 
@@ -1111,122 +1033,378 @@ select(flights, -(year:day))
 - `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
 - `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
 
+#### **Summarise Example**
+
+##### <span style="color:#7b9a26"> <b> Code Sample 27</b></span>
 
 ```{r}
 
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
+summarise(flights, delay = mean(dep_delay, na.rm = TRUE))
 ```
 
 ***Interpretation***:
 
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+- computes the mean departure delay for the flights dataset, removing any missing values in the dep_delay column.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 28</b></span>
 
 ```{r}
 
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
+summarise(flights, delay = mean(dep_delay, na.rm = TRUE))
 ```
 
 ***Interpretation***:
 
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+- computes the mean departure delay for the flights dataset, removing any missing values in the dep_delay column.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 29</b></span>
 
 ```{r}
 
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
+summarise(flights, delay = mean(dep_delay, na.rm = TRUE))
 ```
 
 ***Interpretation***:
 
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+- computes the mean departure delay for the flights dataset, removing any missing values in the dep_delay column.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 30</b></span>
 
 ```{r}
 
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
+summarise(flights, delay = mean(dep_delay, na.rm = TRUE))
 ```
 
 ***Interpretation***:
 
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+- computes the mean departure delay for the flights dataset, removing any missing values in the dep_delay column.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 31</b></span>
 
 ```{r}
 
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
+summarise(flights, delay = mean(dep_delay, na.rm = TRUE))
 ```
 
 ***Interpretation***:
 
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+- computes the mean departure delay for the flights dataset, removing any missing values in the dep_delay column.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 32</b></span>
 
 ```{r}
-
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
+by_day <- group_by(flights, year, month, day)
+summarise(by_day, delay = mean(dep_delay, na.rm = TRUE))
 ```
 
 ***Interpretation***:
 
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+- computes the mean departure delay for each day in the dataset by grouping the data by year, month, and day, and then summarizing the grouped data by average delayed time.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 33</b></span>
 
 ```{r}
 
-# Select columns by name
-select(flights, year, month, day)
-# Select all columns between year and day (inclusive)
-select(flights, year:day)
-# Select all columns except those from year to day (inclusive)
-select(flights, -(year:day))
+delays <- flights %>%
+  group_by(dest) %>%
+  summarise(
+    count = n(),
+    dist = mean(distance, na.rm = TRUE),
+    delay = mean(arr_delay, na.rm =
+                   TRUE)
+  ) %>%
+  filter(count > 20, dest != "HNL")
+delays
 ```
 
 ***Interpretation***:
 
-- `select(flights, year, month, day)` selects year, month and day from flights.
-- `select(flights, year:day)` selects all columns between year and day (inclusive) from flights.
-- `select(flights, year, month, day)` selects all columns except those from year to day (inclusive).
+- computes summary statistics on flight delays, including the count of flights, the average distance, and the average arrival delay, grouped by destination. It then filters the results to exclude destinations with greater than 20 flights and the destination of Honolulu.
 
+##### <span style="color:#7b9a26"> <b> Code Sample 34</b></span>
+
+```{r}
+
+flights %>%
+  group_by(year, month, day) %>%
+  summarise(mean = mean(dep_delay))
+```
+
+***Interpretation***:
+
+- calculates the mean departure delay for each day by grouping the data by year, month, and day, and then summarising the grouped data.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 35</b></span>
+
+```{r}
+
+flights %>%
+  group_by(year, month, day) %>%
+  summarise(mean = mean(dep_delay, na.rm = TRUE))
+```
+
+***Interpretation***:
+
+- calculates the mean departure delay for each day by grouping the data by year, month, and day, and then summarizing the grouped data after removing null from the data in the dep_delay column while computing the mean.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 36</b></span>
+
+```{r}
+not_cancelled <- flights %>%
+  filter(!is.na(dep_delay),!is.na(arr_delay))
+```
+
+***Interpretation***:
+
+- not_cancelled contains only flights that were not cancelled, based on the absence of missing values in the departure delay and arrival delay columns.
+- `!` negates the TRUE value to FALSE and vice versa.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 37</b></span>
+
+```{r}
+not_cancelled %>%
+  group_by(year, month, day) %>%
+  summarise(mean =
+              mean(dep_delay))
+```
+
+***Interpretation***:
+
+- calculates the mean departure delay for each day in the not_cancelled dataset by grouping the data by year, month, and day, and then summarizing the grouped data.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 38</b></span>
+
+```{r}
+delays <- not_cancelled %>% 
+  group_by(tailnum) %>% 
+  summarise(
+    delay = mean(arr_delay)
+  )
+delays
+```
+
+***Interpretation***:
+
+- calculates the average arrival delay for each planes in the not_cancelled dataset by grouping the data by tailnum and then summarizing the grouped data.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 39</b></span>
+
+```{r}
+hist(delays$delay)
+```
+
+***Interpretation***:
+
+- creates a histogram of the average arrival delays (delay) column.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 40</b></span>
+
+```{r}
+delays <- not_cancelled %>% 
+  group_by(tailnum) %>% 
+  summarise(
+    delay = mean(arr_delay, 
+                 na.rm = TRUE),
+    n = n()
+  )
+hist(delays$n)
+```
+
+***Interpretation***:
+
+- creates a histogram of the counts (n) of flights for each tailnum.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 41</b></span>
+
+```{r}
+plot(delays$n, delays$delay)
+```
+
+***Interpretation***:
+
+- creates a scatter plot showing the relationship between the count of flights and the average arrival delay for each aircraft.
+- even though creating histogram and scatter plot is good idead but if we can't make sense or interpret it, it will be useless in analysis.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 42</b></span>
+```{r}
+# When do the first and last flights leave each day
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(
+    first = min(dep_time),
+    last = max(dep_time)
+  )
+```
+
+***Interpretation***:
+
+- calculates the first and last departure times for each day in the not_cancelled dataset by grouping the data by year, month, and day, and then summarizing the grouped data.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 43</b></span>
+
+```{r}
+# Why is distance to some destinations more variable than to others?
+not_cancelled %>% 
+  group_by(dest) %>% 
+  summarise(distance_sd = 
+              sd(distance)) %>% 
+  arrange(desc(distance_sd))
+```
+
+***Interpretation***:
+
+- provides information about the variability of distances for each destination in the not_cancelled dataset, with destinations having higher standard deviations of distances appearing first in the resulting dataset.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 44</b></span>
+
+```{r}
+# Which destinations have the most carriers?
+not_cancelled %>% 
+  group_by(dest) %>% 
+  summarise(carriers = 
+              n_distinct(carrier)) %>% 
+  arrange(desc(carriers))
+```
+
+***Interpretation***:
+
+- summarizes the destination by most number of carriers.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 45</b></span>
+
+```{r}
+# How many flights left before 5am? (these usually indicate delayed flights from the previous day)
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(n_early = 
+              sum(dep_time < 500))
+```
+
+***Interpretation***:
+
+- summarizes the number of flights departing before 5:00 AM for each day in the not_cancelled dataset, grouped by year, month, and day.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 46</b></span>
+
+```{r}
+# What proportion of flights are delayed by more than an hour?
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(hour_prop = 
+              mean(arr_delay > 60))
+```
+
+***Interpretation***:
+
+- summarizes the proportion of flights with arrival delays exceeding 60 minutes for each day in the not_cancelled dataset, grouped by year, month, and day.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 47</b></span>
+
+```{r}
+#Find all groups bigger than a threshold:
+popular_dests <- flights %>%
+  group_by(dest) %>%
+  filter(n() > 365)
+popular_dests
+
+head(popular_dests$dest)
+tail(popular_dests$dest)
+```
+
+***Interpretation***:
+
+- summarizes the destinations that are popular based on having more than 365 flights in the flights dataset.
+- head() and tail() functions are then used to display the first and last few destinations in the popular_dests dataset, respectively.
+
+#### **Slice function**
+
+##### <span style="color:#7b9a26"> <b> Code Sample 48</b></span>
+
+```{r}
+#What will happen?
+flights %>% slice(1L)
+```
+
+***Interpretation***:
+
+- slice the first row of the flights dataset.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 49</b></span>
+
+```{r}
+#What will happen?
+flights %>% slice(n())
+```
+
+***Interpretation***:
+- slice the last row of the flights dataset.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 50</b></span>
+
+```{r}
+#What will happen?
+flights %>% slice(5:n())
+```
+
+***Interpretation***:
+
+- will slice rows from the 5th row to the last row of the flights dataset.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 51</b></span>
+
+```{r}
+#What will happen?
+slice(flights,-(1:4))
+```
+
+***Interpretation***:
+
+- will remove the first four rows from the flights dataset.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 52</b></span>
+
+```{r}
+#What will happen?
+flights %>% slice_sample(n=5)
+```
+
+***Interpretation***:
+
+- will randomly sample 5 rows from the flights dataset without replacement.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 53</b></span>
+
+```{r}
+#What will happen?
+flights %>% slice_sample(n=5, replace = TRUE)
+```
+
+***Interpretation***:
+
+- will randomly sample 5 rows from the flights dataset with replacement, meaning the same row may be selected more than once.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 55</b></span>
+
+```{r}
+#What will happen?
+set.seed(123)
+train_data <- flights %>% slice_sample(prop=0.8)
+train_data
+```
+
+***Interpretation***:
+
+- sets the random seed to ensure reproducibility of random sampling.
+- `train_data <- flights %>% slice_sample(prop = 0.8)` creates a training dataset (train_data) by randomly sampling 80% of the rows from the flights dataset without replacement.
+
+##### <span style="color:#7b9a26"> <b> Code Sample 56</b></span>
+
+```{r}
+test_data <- flights %>% slice_sample(prop=0.2)
+test_data
+```
+
+***Interpretation***:
+
+- sets the random seed to ensure reproducibility of random sampling.
+- `test_data <- flights %>% slice_sample(prop=0.2)` creates a testing dataset (test_data) by randomly sampling 20% of the rows from the flights dataset without replacement.
