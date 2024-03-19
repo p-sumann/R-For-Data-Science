@@ -15,3 +15,14 @@ url <- paste0(base_url, search_term)
 url
 
 
+pdf_link <- read_html(url) 
+
+# pdf_link %>%
+#   html_node('.gs_or_ggsm a') %>% 
+#   html_attr('href') %>% str_remove("[?.*]")
+# .gs_or_ggsm a
+pdf_urls <- pdf_link %>%
+  html_elements('.gs_or_ggsm') %>% html_elements('a') %>% html_attr('href')
+html_attr("href")
+
+pdf_urls
