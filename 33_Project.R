@@ -9,6 +9,9 @@
 # Data Mining
 # import library pdftools
 
+library(tidyverse)
+library(pdftools)
+library(rvest)
 base_url <- "https://scholar.google.com/scholar?"
 search_term <- "Data+Mining"
 first_page <- 'start=0&hl=en&q='
@@ -21,9 +24,28 @@ pdf_link1 <- read_html(url_first)
 pdf_link2 <- read_html(url_second) 
 
 first_page_pdf_link <- pdf_link1 %>%
-  html_elements('.gs_or_ggsm a') %>% html_attr('href') %>% unique() %>% head(5)
+  html_elements('.gs_or_ggsm a') %>%
+  html_attr('href') %>%
+  unique() %>%
+  head(5) %>%
+  enframe(name = NULL)
 
 second_page_pdf_link <- pdf_link2 %>%
-  html_elements('.gs_or_ggsm a') %>% html_attr('href') %>% unique() %>% head(5)
+  html_elements('.gs_or_ggsm a') %>%
+  html_attrs('href') %>% 
+  unique() %>%
+  head(5) %>% enframe(name = NULL)
 
-final_pdf_link <- rbind()
+final_pdf_link <- rbind(first_page_pdf_link,second_page_pdf_link)%>% rename(url=value)
+
+pdf_urls <- final_pdf_link$url
+
+# Create the 'MDS503P2' folder if it doesn't exist
+dir.create("MDS503P2", showWarnings = FALSE)
+
+
+map(seq_along(pdf_urls), function(url, i) {
+  print(url)
+  file_name <- sprintf("file_%03d.pdf", i)
+  download.file(url, file.path("MDS503P2", file_name))
+})
