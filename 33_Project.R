@@ -9,20 +9,21 @@
 # Data Mining
 # import library pdftools
 
-base_url <- "https://scholar.google.com/scholar?start=10&hl=en&q="
+base_url <- "https://scholar.google.com/scholar?"
 search_term <- "Data+Mining"
-url <- paste0(base_url, search_term)
-url
+first_page <- 'start=0&hl=en&q='
+second_page <- 'start=10&hl=en&q='
+url_first <- paste0(base_url, first_page, search_term)
+url_second <- paste0(base_url, second_page, search_term)
 
 
-pdf_link <- read_html(url) 
+pdf_link1 <- read_html(url_first) 
+pdf_link2 <- read_html(url_second) 
 
-# pdf_link %>%
-#   html_node('.gs_or_ggsm a') %>% 
-#   html_attr('href') %>% str_remove("[?.*]")
-# .gs_or_ggsm a
-pdf_urls <- pdf_link %>%
-  html_elements('.gs_or_ggsm') %>% html_elements('a') %>% html_attr('href')
-html_attr("href")
+first_page_pdf_link <- pdf_link1 %>%
+  html_elements('.gs_or_ggsm a') %>% html_attr('href') %>% unique() %>% head(5)
 
-pdf_urls
+second_page_pdf_link <- pdf_link2 %>%
+  html_elements('.gs_or_ggsm a') %>% html_attr('href') %>% unique() %>% head(5)
+
+final_pdf_link <- rbind()
