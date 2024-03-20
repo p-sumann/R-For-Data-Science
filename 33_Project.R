@@ -54,4 +54,26 @@ map(seq_along(pdf_urls), function(url, i) {
   download.file(url, file.path("MDS503P2", file_name))
 })
 
-%>% 
+
+library(jsonlite)
+  
+  
+  
+  
+  
+  
+  # Find all the hyperlinks in the site
+covid_india_urls <- read_html("https://data.covid19india.org") %>% 
+html_elements("a") %>% 
+html_attr("href") 
+
+# Filter URLs with ".json" extension
+json_link <- covid_india_urls[grep("\\json$",covid_india_urls)]
+json_link
+
+covid_india <- lapply('https://data.covid19india.org/v4/min/data.min.json',fromJSON)
+df <- as.data.frame(covid_india)
+
+
+
+
