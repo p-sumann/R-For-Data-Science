@@ -12,6 +12,9 @@
 library(tidyverse)
 library(pdftools)
 library(rvest)
+library(purrr)
+
+
 base_url <- "https://scholar.google.com/scholar?"
 search_term <- "Data+Mining"
 first_page <- 'start=0&hl=en&q='
@@ -46,6 +49,6 @@ dir.create("MDS503P2", showWarnings = FALSE)
 
 map(seq_along(pdf_urls), function(url, i) {
   print(url)
-  file_name <- sprintf("file_%03d.pdf", i)
+  file_name <- base
   download.file(url, file.path("MDS503P2", file_name))
 })
