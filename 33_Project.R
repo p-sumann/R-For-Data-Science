@@ -35,9 +35,10 @@ first_page_pdf_link <- pdf_link1 %>%
 
 second_page_pdf_link <- pdf_link2 %>%
   html_elements('.gs_or_ggsm a') %>%
-  html_attrs('href') %>% 
+  html_attr('href') %>%
   unique() %>%
-  head(5) %>% enframe(name = NULL)
+  head(5) %>%
+  enframe(name = NULL)
 
 final_pdf_link <- rbind(first_page_pdf_link,second_page_pdf_link)%>% rename(url=value)
 
@@ -52,3 +53,5 @@ map(seq_along(pdf_urls), function(url, i) {
   file_name <- base
   download.file(url, file.path("MDS503P2", file_name))
 })
+
+%>% 
