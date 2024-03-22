@@ -31,7 +31,7 @@ corpus <- tm_map(corpus, removeNumbers)
 
 # my_stopwords <- c("author","citations","publications","cordoba")
 # remove stopwords from the corpus
-corpus <- tm_map(corpus, removeWords, my_stopwords)
+# corpus <- tm_map(corpus, removeWords, my_stopwords)
 
 # stem the corpus
 # corpus <- tm_map(corpus, stemDocument)
@@ -46,7 +46,7 @@ corpus_copy <- corpus
 tdm <- TermDocumentMatrix(corpus, control = list((wordLenghts=c(1,Inf))))
 
 
-# best way to create a Term Document Matrix
+# best way to create a Term Document Matrix with preprocessing
 my_tdm <- TermDocumentMatrix(
   corpus,
   control =
@@ -63,32 +63,70 @@ my_tdm <- TermDocumentMatrix(
 
 low_frequent_terms <- findFreqTerms(my_tdm, lowfreq = 10)
 high_frequent_terms <- findFreqTerms(my_tdm, highfreq = 10)
-# read the pdf file using tm::readPDF
 
-reader <- readPDF(engine = 'pdftools')
+as.matrix(my_tdm[low_frequent_terms,])
 
-pdf_content <- lapply(files, function(file) {
-  pdf <-  reader(elem = list(uri = file), language = "en")
-  pdf
-})
+# find words association 
+
+# for word "mining"
+findAssocs(my_tdm, "mining", 0.4)
+
+# for word "warehouse"
+findAssocs(my_tdm, "warehouse", 0.35)
+
+# for word data
+findAssocs(my_tdm, "classification", 0.3)
+
+library(graph)
+library(Rgraphviz)
+
+plot(my_tdm, terms = low_frequent_terms, corThreshold = 0.7, weighting = T)
 
 
-library(pdftools)
-
-# Assuming you have a list of PDF file paths in 'pdf_files'
-pdf_list <- lapply(files, function(file) {
-  reader <- readPDF(engine = "pdftools")
-  pdf <-  reader(elem = list(uri = file), language = "en")
-  pdf
-})
 
 
-# Create a corpus from the PDF files using lapply() and pdf_combine()
-corpus <- Corpus(VectorSource((lapply(pdf_list, function(file) {
-  combined_file <-
-    paste0(tools::file_path_sans_ext(file), "_combined.pdf")
-  pdf_combine(file, output = combined_file)
-  text <- pdf_text(combined_file)
-  file.remove(combined_file)
-  return(text)
-}))))
+
+
+
+
+
+
+
+
+
+
+
+# # read the pdf file using tm::readPDF
+# 
+# reader <- readPDF(engine = 'pdftools')
+# 
+# 
+# 
+# 
+# pdf_content <- lapply(files, function(file) {
+#   pdf <-  reader(elem = list(uri = file), language = "en")
+#   pdf
+# })
+# 
+
+
+
+# library(pdftools)
+# 
+# # Assuming you have a list of PDF file paths in 'pdf_files'
+# pdf_list <- lapply(files, function(file) {
+#   reader <- readPDF(engine = "pdftools")
+#   pdf <-  reader(elem = list(uri = file), language = "en")
+#   pdf
+# })
+# 
+# 
+# # Create a corpus from the PDF files using lapply() and pdf_combine()
+# corpus <- Corpus(VectorSource((lapply(pdf_list, function(file) {
+#   combined_file <-
+#     paste0(tools::file_path_sans_ext(file), "_combined.pdf")
+#   pdf_combine(file, output = combined_file)
+#   text <- pdf_text(combined_file)
+#   file.remove(combined_file)
+#   return(text)
+# }))))
