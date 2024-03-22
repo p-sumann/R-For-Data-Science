@@ -61,20 +61,40 @@ my_tdm <- TermDocumentMatrix(
     )
 )
 
+# finding frequency of words which is at least present 10 times
 low_frequent_terms <- findFreqTerms(my_tdm, lowfreq = 10)
+head(low_frequent_terms)
+# finding frequency of words which is at max present 10 times
 high_frequent_terms <- findFreqTerms(my_tdm, highfreq = 10)
+head(high_frequent_terms)
 
-as.matrix(my_tdm[low_frequent_terms,])
 
+# top 10 words and their respective counts.
+freq_term <- findFreqTerms(my_tdm)
+high_count_freq <- as.matrix(my_tdm[freq_term,])
+df_high_freq <- as.data.frame(head(sort(apply(high_count_freq, 1, sum), decreasing = TRUE), n = 10))
+df_high_freq
+
+
+library(magrittr)
+library(tibble)
+df_high_freq <- 
+  my_tdm %>%
+  as.matrix() %>%
+  apply(1, sum) %>%
+  sort(decreasing = TRUE) %>%
+  head(10) %>%
+  enframe(name = "word", value = "counts")
+df_high_freq
 # find words association 
 
-# for word "mining"
+# for word "mining" with correlation 0.4
 findAssocs(my_tdm, "mining", 0.4)
 
-# for word "warehouse"
+# for word "warehouse" with correlation 0.5
 findAssocs(my_tdm, "warehouse", 0.35)
 
-# for word data
+# for word data with correlation 0.3
 findAssocs(my_tdm, "classification", 0.3)
 
 library(graph)
