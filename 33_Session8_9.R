@@ -310,3 +310,7 @@ test_data <- flights %>%
   slice_sample(prop=0.2)
 test_data
 
+
+
+
+
