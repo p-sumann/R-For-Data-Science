@@ -97,6 +97,9 @@ library(Rgraphviz)
 
 plot(myTdm, terms = freq.terms, corThreshold = 0.1, weighting = T)
 
+library(rgraphviz)
+
+# Input data in TDM format
 
 library(wordcloud)
 
@@ -119,4 +122,6 @@ terms(myLda)
 
 
 # google scholar 
+
+
 
