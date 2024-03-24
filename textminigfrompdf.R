@@ -76,6 +76,9 @@ head(low_frequent_terms)
 high_frequent_terms <- findFreqTerms(my_tdm, highfreq = 10)
 head(high_frequent_terms)
 
+
+findAssocs(myTdm, "social", 0.2)
+
 # top 10 words and their respective counts 
 library(magrittr)
 library(tibble)
@@ -91,7 +94,7 @@ df
 
 # top 10 words and counts using bargraph
 library(ggplot2)
-bargraph <- ggplot(df_high_freq, aes(word, counts)) +
+bargraph <- ggplot(df, aes(word, counts)) +
   geom_bar(stat = "identity", fill = "#E69F00") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(title = "Top 10 words by counts.") +
