@@ -437,7 +437,6 @@ wordcloud(
   max.words = 500,
   random.order = FALSE,
   colors = brewer.pal(8, "Dark2"),
-  
   random.color = TRUE,
   rot.per = 0.35,
   use.r.layout = FALSE
@@ -447,7 +446,7 @@ wordcloud(
 #### Word Correlation
 ```{r cache=TRUE}
 # correlation between top 600 frequent terms
-top_600_frequent_tems <- findFreqTerms(my_tdm, lowfreq = 600)
+top_600_frequent_tems <- findFreqTerms(my_tdm, lowfreq = 650)
 plot(my_tdm, terms = top_600_frequent_tems, corThreshold = 0.2, weighting = T)
 
 ```
