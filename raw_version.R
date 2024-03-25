@@ -339,7 +339,11 @@ high_frequent_terms <- findFreqTerms(my_tdm, highfreq = 10)
 head(high_frequent_terms)
 
 
-findAssocs(my_tdm, "social", 0.2)
+findAssocs(my_tdm, "mining", 0.3)
+
+findAssocs(my_tdm, "learning", 0.35)
+
+findAssocs(my_tdm, "classification", 0.4)
 
 # top 10 words and their respective counts 
 library(magrittr)
@@ -389,6 +393,6 @@ wordcloud(
 
 
 # correlation between top 600 frequent terms
-top_600_frequent_tems <- findFreqTerms(my_tdm, lowfreq = 600)
+top_600_frequent_tems <- findFreqTerms(my_tdm, lowfreq = 650)
 plot(my_tdm, terms = top_600_frequent_tems, corThreshold = 0.2, weighting = T)
 
