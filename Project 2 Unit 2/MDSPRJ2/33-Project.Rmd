@@ -1,10 +1,10 @@
 ---
-title: "Project 2"
-author: "Suman Paudel"
+title: "**Project 2**"
+author: "**Suman Paudel**"
 date: "`r Sys.Date()`"
 output: 
   pdf_document:
-    highlight: default
+    highlight: arrow
     latex_engine: pdflatex
     keep_tex: true
     extra_dependencies:
@@ -34,7 +34,11 @@ library(jsonlite)
 library(httr)
 ```
 
-#### **Task 1**
+
+
+# **\textcolor{magenta}{Task 1}**
+
+
 ###### Part 1
 ``` {r cache=TRUE}
 # load the data using Base R read.csv 
