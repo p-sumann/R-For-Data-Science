@@ -21,10 +21,8 @@ knit: (function(inputFile, encoding) {
 
 
 
-# **\textcolor{magenta}{Task 1}**
-
-#### **\textcolor{magenta}{Part 1}**
-##### *Task 1*
+# **\textcolor{orange}{Part 1}**
+#### **\textcolor{magenta}{Task 1}**
 #### **Load all of the necessary packages need for task 1.**
 ```{r warning=FALSE, cache=TRUE, message=FALSE}
 # Load the packages
@@ -32,6 +30,7 @@ library(foreign)
 library(gt)
 library(tidyverse)
 library(magrittr)
+library(readxl)
 ```
 
 ###### Load the Data using CSV module from base R
@@ -67,7 +66,7 @@ summary(totalCases_subsetting)
 ```
 
 
-# **\textcolor{magenta}{Task 2}**
+#### **\textcolor{magenta}{Task 2}**
 
 #### **Read the .sav file using foreign library which read.spss function**  
 
@@ -121,7 +120,6 @@ data %>% gt(rowname_col = 'Levels') %>%
 ###### **For q03**
 
 ```{r cache=TRUE}
-
 # extract q03
 
 q03 <- saq_data$q03
@@ -144,7 +142,6 @@ head(data_q03)
 ```
 
 ```{r cache=TRUE}
-
 # add row for total
 data_q03 <- data_q03 %>% add_row(Levels = "Total", 
                          Freq = sum(data_q03$Freq), 
@@ -166,10 +163,10 @@ data_q03 %>% gt(rowname_col = 'Levels') %>%
 ###### **For q06**
 
 ```{r cache=TRUE}
-
 # extract q06
 q06 <- saq_data$q06
 
+# mathematical computation
 datalevels_q06 <- levels(q06)
 freq_q06 <- as.numeric(table(q06))
 percent_q06 <- as.numeric(round(prop.table(freq_q06) * 100, 1))
@@ -187,7 +184,7 @@ data_q06 <- data.frame(
 ```
 
 ```{r cache=TRUE}
-
+# add row for total
 data_q06 <- data_q06 %>% add_row(Levels = "Total", 
                          Freq = sum(data_q06$Freq), 
                          Percent = sum(data_q06$Percent), 
@@ -207,10 +204,10 @@ data_q06 %>% gt(rowname_col = 'Levels') %>%
 ###### **For q08**
 
 ```{r cache=TRUE}
-
 # for q08
 q08 <- saq_data$q08
 
+# mathematical computation
 datalevels_q08 <- levels(q08)
 freq_q08 <- as.numeric(table(q08))
 percent_q08 <- as.numeric(round(prop.table(freq_q08) * 100, 2))
@@ -228,8 +225,7 @@ data_q08 <- data.frame(
 ```
 
 ```{r cache=TRUE}
-
-
+# add row for total
 data_q08 <- data_q08 %>% add_row(Levels = "Total", 
                          Freq = sum(data_q06$Freq), 
                          Percent = sum(data_q08$Percent), 
@@ -248,48 +244,101 @@ data_q08 %>% gt(rowname_col = 'Levels') %>%
 
 ```
 
-#### **Task 2** Web Scraping
+#### **\textcolor{magenta}{Task 3}**
+``` {r cache = TRUE}
+mr_drugs <- read_xlsx("MR_Drugs.xlsx")
 
-###### Since covid 19 data has 2 json file I had to download it using jsonlite library with `fromJSON` module
-```{r cache=TRUE}
+inco <- mr_drugs %>% select(starts_with('inco'))
+
+transform_inco <- mr_drugs %>% select(starts_with('inco')) %>%
+  colSums() %>%
+  enframe("income", "N") %>%
+  mutate(Percent = round(N / sum(N) * 100, 1))
+
+transform_inco
+```
+
+
+``` {r cache = TRUE}
+# get the frequencies of 0 and 1 and convert to dataframe
+income_frequencies <- apply(inco, 2, table) %>% 
+  t() %>% as.data.frame()
+income_frequencies
+
+
+transform_inco <- transform_inco %>% 
+  mutate(`Percent of Cases` = 
+           round(transform_inco$N / (transform_inco$N + income_frequencies[, 1]) * 100, 1))
+
+transform_inco
+
+```
+
+#### **Mathematical Computation**
+``` {r cache = TRUE}
+# final version of calculated table
+final_inco <- transform_inco %>% add_row(
+  income = "Total",
+  N = sum(transform_inco$N),
+  Percent = round(sum(transform_inco$Percent),2),
+  "Percent of Cases" = round(sum(transform_inco$`Percent of Cases`),2),
+)
+
+# converting into percentage
+final_inco$Percent <- paste0(sprintf("%.1f", final_inco$Percent),"%")
+final_inco$`Percent of Cases` <- paste0(sprintf("%.1f", final_inco$`Percent of Cases`),"%")
+final_inco
+
+```
+
+#### **Final Table using gt table**
+``` {r cache = TRUE}
+final_inco %>% gt(rowname_col = 'income') %>% 
+  tab_spanner(label='Response',columns = c('N','Percent')) %>% 
+  cols_align(align = "center",columns = c("Percent", "N")) %>% 
+  tab_header(title = md("$Income Frequencies")) %>% 
+  tab_footnote(footnote = "a. Dichotomy group tabulated at value 1")
+```
+
+\newpage
+
+# **\textcolor{orange}{Part 2}**
+#### **\textcolor{magenta}{Task 1}**
+``` {r cache = TRUE, out.width="60%"}
 data_1 = 'https://data.covid19india.org/v4/min/timeseries.min.json'
 data_2 = 'https://data.covid19india.org/v4/min/data.min.json'
 covid_data_1 <- jsonlite::fromJSON(data_1)
 covid_data_2 <- jsonlite::fromJSON(data_2)
-covid_data_1
-covid_data_2
+
+knitr::include_graphics('cov.png')
 ```
 
-```{r cache=TRUE}
+``` {r cache = TRUE, out.width="100%"}
+
 covid_1_parsed <-
-  covid_data_1 %>% 
-  enframe() %>% 
-  unnest_wider(value) %>% 
-  unnest_wider(dates) %>%
+  covid_data_1 %>% enframe() %>% unnest_wider(value) %>% unnest_wider(dates) %>% 
   pivot_longer(cols = !name,
                names_to = 'date',
-               values_to = "value") %>% unnest_wider(value) %>%
-  mutate(across(c(delta, delta7, total), ~ map(., ~ set_names(
-    as_tibble(.x), paste0(cur_column(), "_", names(.))
-  )))) %>%
-  unnest_wider(c(delta, delta7, total))
+               values_to = "value") %>% unnest_wider(value)
 
-covid_1_parsed[150:300, c("delta_confirmed","delta_recovered","delta_tested","delta7_confirmed","delta7_recovered","delta_tested")]
+knitr::include_graphics("covid.png")
 ```
-##### ** Interpretation **
-This code appears to be a data transformation pipeline using the `dplyr` and `tidyr` packages in R. Let's break it down step by step:
 
-- `covid_data_1 %>% enframe()`: This converts the `covid_data_1` data frame into a two-column data frame, where the first column is the row names and the second column is the values.
+``` {r cache = TRUE, out.width="100%"}
 
-- `unnest_wider(value)`: This takes the second column (the "value" column) and expands it into individual columns.
+num_rows <- nrow(covid_1_parsed)
+selected_rows <- sample(1:num_rows, 1000)
+covid_1_parsed_subset <- covid_1_parsed[selected_rows, ]
 
-- `unnest_wider(dates)`: This takes the "dates" column and expands it into individual columns.
+knitr::include_graphics("covid2.png")
 
-- `pivot_longer(cols = !name, names_to = 'date', values_to = "value")`: This reshapes the data from a wide format to a long format, where each row represents a single observation (a date and a value).
+```
 
-- `unnest_wider(value)`: This takes the "value" column and expands it into individual columns.
+``` {r cache = TRUE, out.width="100%"}
 
-- `mutate(across(c(delta, delta7, total), ~ map(., ~ set_names(as_tibble(.), paste0(cur_column(), "_", names(.))))))`: This applies a function to the "delta", "delta7", and "total" columns. The function creates a new tibble for each element in these columns, and renames the columns in the new tibble to include the original column name and the names of the columns in the new tibble.
-
-- `unnest_wider(c(delta, delta7, total))`: This takes the newly created columns from the previous step and expands them into individual columns.
+covid_1_parsed_subset <- covid_1_parsed_subset %>%
+  mutate(across(c(delta, delta7, total), ~ map(., ~ set_names(  as_tibble(.x), paste0(cur_column(), "_", names(.)))))) %>%
+  unnest_wider(c(delta, delta7, total))
+covid_1_parsed_subset
+```
 
