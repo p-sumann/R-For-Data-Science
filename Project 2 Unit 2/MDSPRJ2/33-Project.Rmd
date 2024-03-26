@@ -23,10 +23,8 @@ knit: (function(inputFile, encoding) {
 
 # **\textcolor{magenta}{Task 1}**
 
-
 #### **\textcolor{magenta}{Part 1}**
 ##### *Task 1*
-
 #### **Load all of the necessary packages need for task 1.**
 ```{r warning=FALSE, cache=TRUE, message=FALSE}
 # Load the packages
@@ -68,21 +66,19 @@ totalCases_subsetting[totalCases_subsetting < 1] <- 1
 summary(totalCases_subsetting)
 ```
 
+
+# **\textcolor{magenta}{Task 2}**
+
+#### **Read the .sav file using foreign library which read.spss function**  
+
 \
-
-##### *Task 2*
-
-###### Read the .sav file using foreign library which read.spss function
 
 ###### **For q01**
 ```{r cache=TRUE}
-
 # read the .sav file using read_sav function from haven
 saq_data <- read.spss("SAQ8.sav",to.data.frame=TRUE)
 
-
 # for q1
-
 q01 <- saq_data$q01
 
 # computer mathematical operations
@@ -167,6 +163,8 @@ data_q03 %>% gt(rowname_col = 'Levels') %>%
 
 ```
 
+###### **For q06**
+
 ```{r cache=TRUE}
 
 # extract q06
@@ -190,8 +188,8 @@ data_q06 <- data.frame(
 
 ```{r cache=TRUE}
 
-data_q06 <- data_q06 %>% add_row(Levels = "Total",
-                         Freq = data_q06sum(data_q06$Freq), 
+data_q06 <- data_q06 %>% add_row(Levels = "Total", 
+                         Freq = sum(data_q06$Freq), 
                          Percent = sum(data_q06$Percent), 
                          Val_Percent = sum(data_q06$Val_Percent),
                          Cum_Percent = NULL)
@@ -206,7 +204,10 @@ data_q06 %>% gt(rowname_col = 'Levels') %>%
   sub_missing(missing_text = "")
 ```
 
+###### **For q08**
+
 ```{r cache=TRUE}
+
 # for q08
 q08 <- saq_data$q08
 
@@ -216,7 +217,7 @@ percent_q08 <- as.numeric(round(prop.table(freq_q08) * 100, 2))
 valid_percent_q08 <- as.numeric(round(prop.table(freq_q08) * 100, 2))
 cum_percent_q08 <- cumsum(percent_q08)
 
-
+# convert into dataframe
 data_q08 <- data.frame(
   Levels = datalevels_q08,
   Freq = freq_q08,
@@ -224,8 +225,13 @@ data_q08 <- data.frame(
   Val_Percent = round(valid_percent_q08,1),
   Cum_Percent = round(cum_percent_q08,1)
 )
+```
 
-data_q08 <- data_q08 %>% add_row(Levels = "Total", Freq = sum(data_q06$Freq), 
+```{r cache=TRUE}
+
+
+data_q08 <- data_q08 %>% add_row(Levels = "Total", 
+                         Freq = sum(data_q06$Freq), 
                          Percent = sum(data_q08$Percent), 
                          Val_Percent = sum(data_q08$Val_Percent),
                          Cum_Percent = NULL)
@@ -242,18 +248,24 @@ data_q08 %>% gt(rowname_col = 'Levels') %>%
 
 ```
 
-
 #### **Task 2** Web Scraping
+
+###### Since covid 19 data has 2 json file I had to download it using jsonlite library with `fromJSON` module
 ```{r cache=TRUE}
 data_1 = 'https://data.covid19india.org/v4/min/timeseries.min.json'
 data_2 = 'https://data.covid19india.org/v4/min/data.min.json'
 covid_data_1 <- jsonlite::fromJSON(data_1)
 covid_data_2 <- jsonlite::fromJSON(data_2)
+covid_data_1
+covid_data_2
 ```
 
 ```{r cache=TRUE}
 covid_1_parsed <-
-  covid_data_1 %>% enframe() %>% unnest_wider(value) %>% unnest_wider(dates) %>%
+  covid_data_1 %>% 
+  enframe() %>% 
+  unnest_wider(value) %>% 
+  unnest_wider(dates) %>%
   pivot_longer(cols = !name,
                names_to = 'date',
                values_to = "value") %>% unnest_wider(value) %>%
@@ -264,221 +276,20 @@ covid_1_parsed <-
 
 covid_1_parsed[150:300, c("delta_confirmed","delta_recovered","delta_tested","delta7_confirmed","delta7_recovered","delta_tested")]
 ```
+##### ** Interpretation **
+This code appears to be a data transformation pipeline using the `dplyr` and `tidyr` packages in R. Let's break it down step by step:
 
-```{r cache=TRUE}
-covid_2_parsed <- covid_data_2 %>% enframe() %>% unnest_wider(value) %>% 
-  unnest_wider(c(delta,delta21_14, delta7, total),names_sep = "_") %>% select(-c(districts,meta))
-covid_2_parsed[, c("delta_confirmed","delta_recovered","delta_tested","delta7_confirmed","delta7_recovered","delta_tested")]
-```
+- `covid_data_1 %>% enframe()`: This converts the `covid_data_1` data frame into a two-column data frame, where the first column is the row names and the second column is the values.
 
-```{r cache=TRUE}
-merged_df <- merge(covid_1_parsed, covid_2_parsed, by = "name", all = FALSE)
-head(merged_df[7250:8000,])
+- `unnest_wider(value)`: This takes the second column (the "value" column) and expands it into individual columns.
 
-```
+- `unnest_wider(dates)`: This takes the "dates" column and expands it into individual columns.
 
-```{r cache=TRUE}
+- `pivot_longer(cols = !name, names_to = 'date', values_to = "value")`: This reshapes the data from a wide format to a long format, where each row represents a single observation (a date and a value).
 
-library(RSelenium)
-library(rvest)
-library(netstat)
-rD <- rsDriver(browser="firefox",verbose = F, port = 14421L)
-remDr <- rD[["client"]]
-remDr$navigate("https://aqicn.org/forecast/kathmandu/")
-aqi_html  <- read_html(remDr$getPageSource() %>% unlist())
-aqi_html %>% html_element(".forecast-body-table") %>%  html_nodes("table") %>% html_table() -> forecast_table
+- `unnest_wider(value)`: This takes the "value" column and expands it into individual columns.
 
+- `mutate(across(c(delta, delta7, total), ~ map(., ~ set_names(as_tibble(.), paste0(cur_column(), "_", names(.))))))`: This applies a function to the "delta", "delta7", and "total" columns. The function creates a new tibble for each element in these columns, and renames the columns in the new tibble to include the original column name and the names of the columns in the new tibble.
 
-
-aqi_table <- forecast_table %>% .[[1]]
-
-
-aqi_table <- aqi_table %>% select(-c('X10','X11','X20','X21','X30','X31','X40','X41','X50','X51','X60','X61'))
-
-aqi_table <- aqi_table %>% filter(X1 != 'UVI')
-aqi_table <- aqi_table %>% filter(X1 != 'humidity')
-aqi_table <- aqi_table %>% mutate(X1 = replace(X1, 9, "humidity"))
-aqi_table <- aqi_table %>% mutate(X1 = replace(X1, 1, "Index"))
-aqi_table <- aqi_table %>% filter(X1 != '')
-
-headers <- aqi_table[1,]
-
-colnames(aqi_table) <- headers
-
-aqi_table <- aqi_table[-1,]
-
-aqi_table <- aqi_table %>% column_to_rownames(var = 'Index')
-
-library(stringr)
-
-aqi_table[2,] <- floor(as.integer(str_extract(as.character(aqi_table[2,]), "\\d+")) / 1000)
-aqi_table[3,] <- floor(as.integer(str_extract(as.character(aqi_table[3,]), "\\d+")) / 100)
-
-lengths <- as.numeric(nchar(aqi_table[4,]))
-aqi_table[4,] <- ifelse(lengths == 2, substr(aqi_table[4,], 1, 1), ifelse(lengths %in% 3:4, substr(aqi_table[4,], 1, 2), ""))
-
-aqi_table
-```
-
-```{r cache=TRUE}
-files <- list.files(pattern = "pdf$")
-files
-```
-
-
-
-
-#### **Task 3**
-
-```{r cache=TRUE}
-files <- list.files(pattern = "pdf$")
-files
-```
-
-
-```{r cache=TRUE}
-# load the pdf files into list
-pdf_files <- lapply(files, pdf_text)
-```
-
-
-
-```{r cache=TRUE}
-
-# create a corpus from vector source i.e from list pdf_files
-corpus <- Corpus(VectorSource(unlist(pdf_files)))
-
-# make a duplicate of the loaded corpus for future use
-corpus_copy <- corpus
-
-```
-
-
-#### Preprocessing Corpus 
-
-```{r cache=TRUE, warning=FALSE}
-
-# convert the all texts in lower
-corpus <- tm_map(corpus, tolower)
-
-# remove punctuations
-corpus <- tm_map(corpus, removePunctuation)
-
-# remove numbers
-corpus <- tm_map(corpus, removeNumbers)
-
-my_stopwords <- c("can","may","used")
-# remove stopwords from the corpus
-corpus <- tm_map(corpus, removeWords, my_stopwords)
-
-# stem the corpus
-corpus <- tm_map(corpus, stemDocument)
-
-# since values and value are same so replaced values and value
-remove <- function(x) gsub("values","value",x)
-corpus <-  tm_map(corpus, remove)
-
-head(corpus)
-```
-
-
-#### Term Document Matrix 
-```{r cache=TRUE}
-# create Term Document Matrix with word lenght 1 or many
-tdm <- TermDocumentMatrix(corpus, control = list((wordLenghts=c(1,Inf))))
-head(tdm)
-```
-
-
-#### Best way to create TDM with less code
-```{r cache=TRUE, warning=FALSE}
-remove <- function(x) gsub("values","value",x)
-corpus_copy <-  tm_map(corpus_copy, remove)
-my_tdm <- TermDocumentMatrix(
-  corpus_copy,
-  control =
-    list(
-      removePunctuation = TRUE,
-      stopwords = TRUE,
-      tolower = TRUE,
-      stemming = FALSE,
-      removeNumbers = TRUE,
-      bounds = list(global = c(3, Inf)),
-      wordLenghts = c(1,Inf),
-      removeWords = (c("can","may","used")))
-)
-```
-
-
-#### Frequency Terms 
-```{r cache=TRUE}
-# finding frequency of words which is at least present 10 times
-low_frequent_terms <- findFreqTerms(my_tdm, lowfreq = 10)
-head(low_frequent_terms)
-
-# finding frequency of words which is at max present 10 times
-high_frequent_terms <- findFreqTerms(my_tdm, highfreq = 10)
-head(high_frequent_terms)
-```
-
-
-#### Word Association
-```{r cache=TRUE}
-findAssocs(my_tdm, "mining", 0.3)
-findAssocs(my_tdm, "learning", 0.35)
-findAssocs(my_tdm, "classification", 0.4)
-```
-
-
-#### Top words in TDM
-```{r cache=TRUE}
-# top 10 words and their respective counts 
-df <-
-    my_tdm %>%
-    as.matrix() %>%
-    rowSums() %>%
-    sort(decreasing = TRUE) %>%
-    head(10) %>%
-    enframe(name = "word", value = "counts")
-
-head(df)
-```
-
-
-#### Bar Grahph for Top 10 word counts
-```{r cache=TRUE}
-# top 10 words and counts using bargraph
-bargraph <- ggplot(df, aes(word, counts)) +
-  geom_bar(stat = "identity", fill = "#E69F00") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(title = "Top 10 words by counts.") +
-  geom_text(aes(label = counts), vjust = -0.5)
-bargraph
-```
-
-```{r cache=TRUE}
-mat <- as.matrix(my_tdm)
-freq <- mat %>% rowSums() %>% sort(decreasing = T)
-
-# plot word cloud
-wordcloud(
-  words = names(freq),
-  freq = freq,
-  min.freq = 300,
-  max.words = 500,
-  random.order = FALSE,
-  colors = brewer.pal(8, "Dark2"),
-  random.color = TRUE,
-  rot.per = 0.35,
-  use.r.layout = FALSE
-)
-```
-
-#### Word Correlation
-```{r cache=TRUE}
-# correlation between top 600 frequent terms
-top_600_frequent_tems <- findFreqTerms(my_tdm, lowfreq = 650)
-plot(my_tdm, terms = top_600_frequent_tems, corThreshold = 0.2, weighting = T)
-
-```
+- `unnest_wider(c(delta, delta7, total))`: This takes the newly created columns from the previous step and expands them into individual columns.
 
