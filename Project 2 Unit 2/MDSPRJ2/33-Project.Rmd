@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output: 
   pdf_document:
     
-    highlight: pygments
+    highlight: rstudio
     latex_engine: xelatex
     keep_tex: true
     extra_dependencies:
@@ -304,6 +304,17 @@ final_inco %>% gt(rowname_col = 'income') %>%
 
 # **\textcolor{orange}{Part 2}**
 #### **\textcolor{magenta}{Task 1}**
+
+**Load the necessary libarary needed for Part 2**
+``` {r cache = TRUE}
+library(jsonlite) #for working with json data
+library(RSelenium) #for web scraping of dynamic table
+library(rvest) #scraping the webpage into tibble or df
+library(netstat) #for selenium driver
+library(stringr) #string manipulation
+```
+
+
 ``` {r cache = TRUE, out.width="60%"}
 data_1 = 'https://data.covid19india.org/v4/min/timeseries.min.json'
 data_2 = 'https://data.covid19india.org/v4/min/data.min.json'
@@ -312,6 +323,8 @@ covid_data_2 <- jsonlite::fromJSON(data_2)
 
 knitr::include_graphics('cov.png')
 ```
+
+**Sample of raw json data for first record**
 
 ``` {r cache = TRUE, out.width="100%"}
 
@@ -323,6 +336,8 @@ covid_1_parsed <-
 
 knitr::include_graphics("covid.png")
 ```
+
+**Sample parsed till dates**
 
 ``` {r cache = TRUE, out.width="100%"}
 
@@ -341,4 +356,163 @@ covid_1_parsed_subset <- covid_1_parsed_subset %>%
   unnest_wider(c(delta, delta7, total))
 covid_1_parsed_subset
 ```
+
+``` {r cache = TRUE}
+# delta parsed
+covid_1_parsed_subset[80:150,] %>% select(starts_with('delta'))
+
+# delta7 parsed
+covid_1_parsed_subset[345:451,] %>% select(starts_with('delta'))
+
+# total parsed
+# for delta variants
+covid_1_parsed_subset[789:885,] %>% select(starts_with('total'))
+```
+
+``` {r cache = TRUE}
+
+covid_2_parsed <-
+  covid_data_2 %>% enframe() %>% unnest_wider(value) %>%
+  unnest_wider(c(delta, delta21_14, delta7, total), names_sep = "_") %>% select(-c(districts, meta))
+
+```
+
+``` {r cache = TRUE}
+
+# for delta
+covid_2_parsed %>% select(starts_with('delta'))
+
+# for delta7
+covid_2_parsed %>% select(starts_with('delta7'))
+
+# for delta21-_14
+covid_2_parsed %>% select(starts_with('delta2'))
+
+# for total
+covid_2_parsed %>% select(starts_with('total'))
+
+```
+
+
+``` {r cache = TRUE}
+
+# merge into single file
+merged_df <- merge(covid_1_parsed_subset, 
+    covid_2_parsed, 
+    by.x = "name", 
+    by.y = "name",
+    sort = T,
+    all = F)
+
+head(merged_df)
+
+```
+
+#### **\textcolor{magenta}{Task 2}**
+#### Webscraping of Dynamic Table AQI Kathmandu 
+
+``` {r cache = TRUE}
+
+# load the webdriver for firefox
+rD <- rsDriver(browser="firefox",verbose = F, port = 14421L)
+remDr <- rD[["client"]]
+remDr$navigate("https://aqicn.org/forecast/kathmandu/")
+aqi_html  <- read_html(remDr$getPageSource() %>% unlist())
+
+# scrape the needed table for data analysis
+aqi_html %>% html_element(".forecast-body-table") %>%  
+  html_nodes("table") %>% 
+  html_table() -> 
+  forecast_table
+
+```
+
+
+``` {r cache = TRUE, out.width="100%"}
+
+# since forecast consist the list of dataframe
+# extracted first value from the list which conists the required dataframe
+aqi_table <- forecast_table %>% .[[1]]
+
+knitr::include_graphics('aqi.png')
+```
+
+#### **Data Wrangling the forecast Table AQI Kathmandu**
+- **Step 1**: Remove null columns that came while parsing  
+`aqi_table %>%  select(-c('X10','X11','X20','X21','X30','X31','X40','X41','X50','X51','X60','X61'))`
+- **Step 2**: Filter out rows with 'UVI' and 'humidity' in the 'X1' column where entire row is NULL
+ \ `aqi_table %>% filter(X1 != 'UVI')` and `aqi_table %>% filter(X1 != 'humidity')`
+- **Step 3**: Replaced the value in the 'X1' column at index 9 with 'humidity' \ `aqi_table %>% mutate(X1 = replace(X1, 9, "humidity"))`
+- **Step 4**: Replaced the value in the 'X1' column at index 1 with 'Index' \
+  `aqi_table %>% mutate(X1 = replace(X1, 1, "Index"))`
+- **Step 5**: Filter out rows with empty values in the 'X1' column \
+  `aqi_table %>% filter(X1 != '')`
+- **Step 6**: Assigned the first row of the data frame as the column headers \
+`headers <-  aqi_table[1,]` \
+`colnames(aqi_table) <- headers`
+- **Step 7**: Remove the first row of the data frame `aqi_table <- aqi_table[-1,]`
+- **Step 8**: Converted the 'Index' column to row names `aqi_table %>% 
+  column_to_rownames(var = 'Index')`
+  
+``` {r cache = TRUE, out.width="100%"}
+# extract first value from list
+aqi_table <- forecast_table %>% .[[1]]
+
+# delete null columns
+aqi_table <- aqi_table %>% 
+  select(-c('X10','X11','X20','X21','X30','X31','X40','X41','X50','X51','X60','X61'))
+
+# remove null row 'UVI'
+aqi_table <- aqi_table %>% filter(X1 != 'UVI')
+
+# since value of humidity interchange for now I have removed empty row.
+aqi_table <- aqi_table %>% filter(X1 != 'humidity')
+
+# now I have assigned the value at 1st column 9th row as 'humidity'
+aqi_table <- aqi_table %>% mutate(X1 = replace(X1, 9, "humidity"))
+
+# now I have assigned the value at 1st column 1st row as 'Index'
+aqi_table <- aqi_table %>% mutate(X1 = replace(X1, 1, "Index"))
+
+# finally remove the last empty row
+aqi_table <- aqi_table %>% filter(X1 != '')
+
+# setting first row as headers
+headers <- aqi_table[1,]
+colnames(aqi_table) <- headers
+
+# dropping the first row as header has been set.
+aqi_table <- aqi_table[-1,]
+
+# now setting the index or row name as 'Index' column
+aqi_table <- aqi_table %>% column_to_rownames(var = 'Index')
+
+knitr::include_graphics('aqi_parse.png')
+```
+**Sample Parsed AQI Table**  
+**Note** Still some changes needs to be done on `hour`, `PM2.5`, `PM10` and `O3` as values are concatenated wrongly while parsing html.
+
+
+``` {r cache = TRUE, out.width="100%"}
+
+aqi_table[2,] <- 
+  floor(as.integer(str_extract(as.character(aqi_table[2,]), "\\d+")) / 1000)
+aqi_table[3,] <- 
+  floor(as.integer(str_extract(as.character(aqi_table[3,]), "\\d+")) / 100)
+
+lengths <- as.numeric(nchar(aqi_table[4,]))
+aqi_table[4,] <- 
+  ifelse(lengths == 2, substr(aqi_table[4,], 1, 1), 
+  ifelse(lengths %in% 3:4, substr(aqi_table[4,], 1, 2), ""))
+
+aqi_table
+```
+
+
+``` {r cache = TRUE, out.width="100%"}
+knitr::include_graphics('aqi_final.png')
+```
+**Final Version of Cleaned AQI Table**
+
+
 
