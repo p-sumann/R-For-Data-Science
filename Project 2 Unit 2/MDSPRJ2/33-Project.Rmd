@@ -4,8 +4,9 @@ author: "**Suman Paudel**"
 date: "`r Sys.Date()`"
 output: 
   pdf_document:
-    highlight: arrow
-    latex_engine: pdflatex
+    
+    highlight: pygments
+    latex_engine: xelatex
     keep_tex: true
     extra_dependencies:
       caption: ["labelfont={bf}"]
@@ -18,28 +19,24 @@ knit: (function(inputFile, encoding) {
                         output_dir=file.path(dirname(inputFile), out_dir))})
 ---
 
-#### **Load all of the necessary packages need for this project.**
-```{r warning=FALSE, cache=TRUE, message=FALSE}
-# Load the packages
-library(pdftools)
-library(tm)
-library(magrittr)
-library(wordcloud)
-library(Rgraphviz)
-library(graph)
-library(foreign) 
-library(gt)
-library(tidyverse)
-library(jsonlite)
-library(httr)
-```
-
 
 
 # **\textcolor{magenta}{Task 1}**
 
 
-###### Part 1
+#### **\textcolor{magenta}{Part 1}**
+##### *Task 1*
+
+#### **Load all of the necessary packages need for task 1.**
+```{r warning=FALSE, cache=TRUE, message=FALSE}
+# Load the packages
+library(foreign) 
+library(gt)
+library(tidyverse)
+library(magrittr)
+```
+
+###### Load the Data using CSV module from base R
 ``` {r cache=TRUE}
 # load the data using Base R read.csv 
 data <- read.csv("covnep_252days.csv")
@@ -47,37 +44,38 @@ data <- read.csv("covnep_252days.csv")
 summary(data$totalCases)
 ```
 
-```{r cache=TRUE}
-# minimum value is 0 but we need 1 instead
-# this can be achieved using multiple ways like ifelse or pmax or subsetting
+###### Since we need value as 1 instead of zero We can achieve this using \ multiple ways like ifelse or pmax or subsetting
 
+###### **Using `ifelse`**
+```{r cache=TRUE}
 # using ifelse
 totalCases_ifelse <- ifelse(data$totalCases < 1, 1, data$totalCases)
 summary(totalCases_ifelse)
+```
 
+###### **Using `pmax`**
+```{r cache=TRUE}
 # using pmax
 totalCases_pmax <- pmax(data$totalCases, 1)
 summary(totalCases_pmax)
+```
 
+###### **Using `subsetting`**
+```{r cache=TRUE}
 # subsetting
 totalCases_subsetting <- data$totalCases
 totalCases_subsetting[totalCases_subsetting < 1] <- 1
 summary(totalCases_subsetting)
 ```
 
-###### Part 2
-```{r cache=TRUE}
-saq_data <- read.spss("SAQ8.sav",to.data.frame=TRUE)
-```
+\
 
-###### For q01
-```{r cache=TRUE}
+##### *Task 2*
 
-library(foreign) # for .SAV file we can use foreign package for that as well
-library(gt, warn.conflicts = FALSE) #genotype table
-library(magrittr) # for using pipes
-library(tibble)
-library(dplyr)
+###### Read the .sav file using foreign library which read.spss function
+
+###### **For q01**
+```{r cache=TRUE}
 
 # read the .sav file using read_sav function from haven
 saq_data <- read.spss("SAQ8.sav",to.data.frame=TRUE)
@@ -87,6 +85,7 @@ saq_data <- read.spss("SAQ8.sav",to.data.frame=TRUE)
 
 q01 <- saq_data$q01
 
+# computer mathematical operations
 datalevels_q01 <- levels(q01)
 freq_q01 <- as.numeric(table(q01))
 percent_q01 <- as.numeric(round(prop.table(freq_q01) * 100, 1))
@@ -102,7 +101,11 @@ data <- data.frame(
   Cum_Percent = cum_percent
 )
 
-# final version of calculated table
+head(data)
+```
+
+```{r cache=TRUE}
+# final version of calculated table for q01
 data <- data %>% add_row(Levels = "Total", Freq = sum(data$Freq), 
                  Percent = sum(data$Percent), 
                  Val_Percent = sum(data$Val_Percent),
@@ -116,9 +119,14 @@ data %>% gt(rowname_col = 'Levels') %>%
              Val_Percent = "Valid Percent",
              Cum_Percent = "Cumulative Percent") %>% 
   sub_missing(missing_text = "")
-  
 
-# for q03
+```  
+
+###### **For q03**
+
+```{r cache=TRUE}
+
+# extract q03
 
 q03 <- saq_data$q03
 datalevels_q03 <- levels(q03)
@@ -127,6 +135,7 @@ percent_q03 <- as.numeric(round(prop.table(freq_q03) * 100, 1))
 valid_percent_q03 <- as.numeric(round(prop.table(freq_q03) * 100, 1))
 cum_percent_q03 <- cumsum(percent_q03)
 
+# convert the computed values into dataframe
 data_q03 <- data.frame(
   Levels = datalevels_q03,
   Freq = freq_q03,
@@ -135,7 +144,14 @@ data_q03 <- data.frame(
   Cum_Percent = cum_percent_q03
 )
 
-data_q03 <- data_q03 %>% add_row(Levels = "Total", Freq = sum(data_q03$Freq), 
+head(data_q03)
+```
+
+```{r cache=TRUE}
+
+# add row for total
+data_q03 <- data_q03 %>% add_row(Levels = "Total", 
+                         Freq = sum(data_q03$Freq), 
                          Percent = sum(data_q03$Percent), 
                          Val_Percent = sum(data_q03$Val_Percent),
                          Cum_Percent = NULL)
@@ -149,7 +165,11 @@ data_q03 %>% gt(rowname_col = 'Levels') %>%
              Cum_Percent = "Cumulative Percent") %>% 
   sub_missing(missing_text = "")
 
+```
 
+```{r cache=TRUE}
+
+# extract q06
 q06 <- saq_data$q06
 
 datalevels_q06 <- levels(q06)
@@ -158,6 +178,7 @@ percent_q06 <- as.numeric(round(prop.table(freq_q06) * 100, 1))
 valid_percent_q06 <- as.numeric(round(prop.table(freq_q06) * 100, 1))
 cum_percent_q06 <- cumsum(percent_q06)
 
+# convert into dataframe
 data_q06 <- data.frame(
   Levels = datalevels_q06,
   Freq = freq_q06,
@@ -165,8 +186,12 @@ data_q06 <- data.frame(
   Val_Percent = valid_percent_q06,
   Cum_Percent = cum_percent_q06
 )
+```
 
-data_q06 <- data_q06 %>% add_row(Levels = "Total", Freq = sum(data_q06$Freq), 
+```{r cache=TRUE}
+
+data_q06 <- data_q06 %>% add_row(Levels = "Total",
+                         Freq = data_q06sum(data_q06$Freq), 
                          Percent = sum(data_q06$Percent), 
                          Val_Percent = sum(data_q06$Val_Percent),
                          Cum_Percent = NULL)
@@ -179,8 +204,10 @@ data_q06 %>% gt(rowname_col = 'Levels') %>%
              Val_Percent = "Valid Percent",
              Cum_Percent = "Cumulative Percent") %>% 
   sub_missing(missing_text = "")
+```
 
-
+```{r cache=TRUE}
+# for q08
 q08 <- saq_data$q08
 
 datalevels_q08 <- levels(q08)
@@ -206,7 +233,7 @@ data_q08 <- data_q08 %>% add_row(Levels = "Total", Freq = sum(data_q06$Freq),
 
 # final version of calculated table
 data_q08 %>% gt(rowname_col = 'Levels') %>% 
-  tab_header(title = md("Statistics makes me cry")) %>% 
+  tab_header(title = md("I have never been good at mathematics")) %>% 
   cols_label(Freq = "Frequency",
              Percent = "Percent",
              Val_Percent = "Valid Percent",
