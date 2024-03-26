@@ -514,5 +514,19 @@ knitr::include_graphics('aqi_final.png')
 ```
 **Final Version of Cleaned AQI Table**
 
+\newpage
+
+# **\textcolor{orange}{Part 3}**
+
+**Load the necessary library needed for Part 3**
+``` {r cache = TRUE}
+
+library(pdftools) # for working with pdf files
+library(tm) # for text mining
+library(wordcloud) # plotting word cloud
+library(Rgraphviz) # plotting network like graph for word association 
+library(graph) # plotting network like graph for word association 
+library(ggplot2) # for bargraph
+```
 
 
