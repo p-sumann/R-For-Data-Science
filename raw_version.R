@@ -25,7 +25,7 @@ totalCases_subsetting <- data$totalCases
 totalCases_subsetting[totalCases_subsetting < 1] <- 1
 summary(totalCases_subsetting)
 
-# part 1 task 2
+# task 2 part 1
 
 # import required library
 
@@ -49,7 +49,7 @@ percent_q01 <- as.numeric(round(prop.table(freq_q01) * 100, 1))
 valid_percent_q01 <- as.numeric(round(prop.table(freq_q01) * 100, 1))
 cum_percent <- cumsum(percent_q01)
 
-# Create data frame
+# Create data frame for computed value
 data <- data.frame(
   Levels = datalevels_q01,
   Freq = freq_q01,
@@ -106,6 +106,7 @@ data_q03 %>% gt(rowname_col = 'Levels') %>%
   sub_missing(missing_text = "")
 
 
+# for q06
 q06 <- saq_data$q06
 
 datalevels_q06 <- levels(q06)
@@ -136,7 +137,7 @@ data_q06 %>% gt(rowname_col = 'Levels') %>%
              Cum_Percent = "Cumulative Percent") %>% 
   sub_missing(missing_text = "")
 
-
+# for q08
 q08 <- saq_data$q08
 
 datalevels_q08 <- levels(q08)
@@ -169,6 +170,8 @@ data_q08 %>% gt(rowname_col = 'Levels') %>%
              Cum_Percent = "Cumulative Percent") %>% 
   sub_missing(missing_text = "")
 
+# part 3 task 1
+
 library(readxl)
 library(tidyverse)
 
@@ -176,19 +179,21 @@ mr_drugs <- read_xlsx("MR_Drugs.xlsx")
 
 inco <- mr_drugs %>% select(starts_with('inco'))
 
-d <- mr_drugs %>% select(starts_with('inco')) %>%
+transform_inco <- mr_drugs %>% select(starts_with('inco')) %>%
   colSums() %>%
   enframe("income", "N") %>%
   mutate(Percent = round(N / sum(N) * 100, 1))
 
-d
+transform_inco
 
-income_frequencies <-
-  apply(inco, 2, table) %>% t() %>% as.data.frame()
+income_frequencies <- apply(inco, 2, table) %>% 
+  t() %>% 
+  as.data.frame()
 income_frequencies
 
-d <- d %>% 
-  mutate(`Percent of Cases` = round(d$N / (d$N + income_frequencies[, 1]) * 100, 1))
+transform_inco <- transform_inco %>% 
+  mutate(`Percent of Cases` = 
+           round(d$N / (d$N + income_frequencies[, 1]) * 100, 1))
 
 
 # final version of calculated table
@@ -199,8 +204,7 @@ data <- d %>% add_row(
   "Percent of Cases" = round(sum(d$`Percent of Cases`),2),
 )
 
-
-
+# converting into percentage
 data$Percent <- paste0(sprintf("%.1f", data$Percent),"%")
 data$`Percent of Cases` <- paste0(sprintf("%.1f", data$`Percent of Cases`),"%")
 
