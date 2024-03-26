@@ -174,6 +174,7 @@ data_q08 %>% gt(rowname_col = 'Levels') %>%
 
 library(readxl)
 library(tidyverse)
+library(gt)
 
 mr_drugs <- read_xlsx("MR_Drugs.xlsx")
 
@@ -193,23 +194,23 @@ income_frequencies
 
 transform_inco <- transform_inco %>% 
   mutate(`Percent of Cases` = 
-           round(d$N / (d$N + income_frequencies[, 1]) * 100, 1))
+           round(transform_inco$N / (transform_inco$N + income_frequencies[, 1]) * 100, 1))
 
 
 # final version of calculated table
-data <- d %>% add_row(
+final_inco <- transform_inco %>% add_row(
   income = "Total",
-  N = sum(d$N),
-  Percent = round(sum(d$Percent),2),
-  "Percent of Cases" = round(sum(d$`Percent of Cases`),2),
+  N = sum(transform_inco$N),
+  Percent = round(sum(transform_inco$Percent),2),
+  "Percent of Cases" = round(sum(transform_inco$`Percent of Cases`),2),
 )
 
 # converting into percentage
-data$Percent <- paste0(sprintf("%.1f", data$Percent),"%")
-data$`Percent of Cases` <- paste0(sprintf("%.1f", data$`Percent of Cases`),"%")
+final_inco$Percent <- paste0(sprintf("%.1f", final_inco$Percent),"%")
+final_inco$`Percent of Cases` <- paste0(sprintf("%.1f", final_inco$`Percent of Cases`),"%")
 
-library(gt)
-data %>% gt(rowname_col = 'income') %>% 
+
+final_inco %>% gt(rowname_col = 'income') %>% 
   tab_spanner(label='Response',columns = c('N','Percent')) %>% 
   cols_align(align = "center",columns = c("Percent", "N")) %>% 
   tab_header(title = md("$Income Frequencies")) %>% 
@@ -224,16 +225,68 @@ data %>% gt(rowname_col = 'income') %>%
   )
 
 
-# Task 2
+# Part 2
+# Task 1
 
+data_1 = 'https://data.covid19india.org/v4/min/timeseries.min.json'
+data_2 = 'https://data.covid19india.org/v4/min/data.min.json'
+covid_data_1 <- jsonlite::fromJSON(data_1)
+covid_data_2 <- jsonlite::fromJSON(data_2)
+
+covid_1_parsed <-
+  covid_data_1 %>% enframe() %>% unnest_wider(value) %>% unnest_wider(dates) %>% 
+  pivot_longer(cols = !name,
+               names_to = 'date',
+               values_to = "value") %>% unnest_wider(value) %>%
+  mutate(across(c(delta, delta7, total), ~ map(., ~ set_names(
+    as_tibble(.x), paste0(cur_column(), "_", names(.))
+  )))) %>%
+  unnest_wider(c(delta, delta7, total))
+
+# delta parsed
+covid_1_parsed[150:300,] %>% select(starts_with('delta'))
+
+# delta7 parsed
+covid_1_parsed[900:1200,] %>% select(starts_with('delta'))
+
+# total parsed
+# for delta variants
+covid_1_parsed[789:885,] %>% select(starts_with('total'))
+
+covid_2_parsed <-
+  covid_data_2 %>% enframe() %>% unnest_wider(value) %>%
+  unnest_wider(c(delta, delta21_14, delta7, total), names_sep = "_") %>% select(-c(districts, meta))
+
+covid_2_parsed %>% select(starts_with('delta'))
+
+covid_2_parsed %>% select(starts_with('delta7'))
+
+covid_2_parsed %>% select(starts_with('delta2'))
+
+covid_2_parsed %>% select(starts_with('total'))
+
+merged_df <- merge(covid_1_parsed, covid_2_parsed, by.x = "name", by.y = "name",sort = T)
+
+head(merged_df[7250:7500,])
+
+
+# merge two df with States
+
+# Task 2
 library(RSelenium)
 library(rvest)
 library(netstat)
+
+# load the webdriver for firefox
 rD <- rsDriver(browser="firefox",verbose = F, port = 14420L)
 remDr <- rD[["client"]]
 remDr$navigate("https://aqicn.org/forecast/kathmandu/")
 aqi_html  <- read_html(remDr$getPageSource() %>% unlist())
-aqi_html %>% html_element(".forecast-body-table") %>%  html_nodes("table") %>% html_table() -> forecast_table
+
+aqi_html %>% html_element(".forecast-body-table") %>%  
+  html_nodes("table") %>% 
+  html_table() -> 
+  forecast_table
 
 
 
@@ -264,6 +317,10 @@ aqi_table[3,] <- floor(as.integer(str_extract(as.character(aqi_table[3,]), "\\d+
 lengths <- as.numeric(nchar(aqi_table[4,]))
 aqi_table[4,] <- ifelse(lengths == 2, substr(aqi_table[4,], 1, 1), ifelse(lengths %in% 3:4, substr(aqi_table[4,], 1, 2), ""))
 
+aqi_table
+
+
+# Part 3
 # Load the packages
 library(pdftools)
 library(tm)
@@ -272,8 +329,10 @@ library(tibble)
 library(wordcloud)
 library(Rgraphviz)
 library(graph)
-# top 10 words and counts using bargraph
 library(ggplot2)
+library(magrittr)
+library(tibble)
+
 # Set the working directory to the one containing the PDF files
 setwd("C:/Users/SumanPaudel/Desktop/R For Data Science/Project 2 Unit 2/MDSPRJ2")
 
@@ -322,7 +381,7 @@ tdm <- TermDocumentMatrix(corpus, control = list((wordLenghts=c(1,Inf))))
 remove <- function(x) gsub("values","value",x)
 corpus_copy <-  tm_map(corpus_copy, remove)
 my_tdm <- TermDocumentMatrix(
-  corpus_copy,
+  unlist(corpus_copy),
   control =
     list(
       removePunctuation = TRUE,
@@ -347,11 +406,10 @@ findAssocs(my_tdm, "mining", 0.3)
 
 findAssocs(my_tdm, "learning", 0.35)
 
-findAssocs(my_tdm, "classification", 0.4)
+findAssocs(my_tdm, "data", 0.4)
 
 # top 10 words and their respective counts 
-library(magrittr)
-library(tibble)
+
 df <-
   my_tdm %>%
   as.matrix() %>%
@@ -399,4 +457,16 @@ wordcloud(
 # correlation between top 600 frequent terms
 top_600_frequent_tems <- findFreqTerms(my_tdm, lowfreq = 650)
 plot(my_tdm, terms = top_600_frequent_tems, corThreshold = 0.2, weighting = T)
+
+
+# topic models
+library(topicmodels)
+set.seed(123)
+
+
+lda <- LDA(my_tdm, k=4)
+
+head(terms(lda,3))
+
+head(topics(lda))
 
