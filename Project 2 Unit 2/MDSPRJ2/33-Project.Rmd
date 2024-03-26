@@ -1,10 +1,12 @@
 ---
-title: "**Project 2**"
-author: "**Suman Paudel**"
+title: "**Project 2: Unit 2**"
+author: "**Suman Paudel 33**"
 date: "`r Sys.Date()`"
 output: 
   pdf_document:
-    
+    toc: true
+    toc_depth: 2
+    df_print: kable
     highlight: rstudio
     latex_engine: xelatex
     keep_tex: true
@@ -68,7 +70,7 @@ summary(totalCases_subsetting)
 
 #### **\textcolor{magenta}{Task 2}**
 
-#### **Read the .sav file using foreign library which read.spss function**  
+#### **Read the .sav file using foreign library's read.spss function**  
 
 \
 
@@ -281,8 +283,7 @@ final_inco <- transform_inco %>% add_row(
   income = "Total",
   N = sum(transform_inco$N),
   Percent = round(sum(transform_inco$Percent),2),
-  "Percent of Cases" = round(sum(transform_inco$`Percent of Cases`),2),
-)
+  "Percent of Cases" = round(sum(transform_inco$`Percent of Cases`),2),)
 
 # converting into percentage
 final_inco$Percent <- paste0(sprintf("%.1f", final_inco$Percent),"%")
@@ -292,12 +293,16 @@ final_inco
 ```
 
 #### **Final Table using gt table**
-``` {r cache = TRUE}
+``` {r cache = TRUE, out.width="60%"}
 final_inco %>% gt(rowname_col = 'income') %>% 
   tab_spanner(label='Response',columns = c('N','Percent')) %>% 
-  cols_align(align = "center",columns = c("Percent", "N")) %>% 
+  
   tab_header(title = md("$Income Frequencies")) %>% 
-  tab_footnote(footnote = "a. Dichotomy group tabulated at value 1")
+  tab_footnote(footnote = "a. Dichotomy group tabulated at value 1",
+               placement = c('auto')) %>% tab_options(footnotes.multiline = FALSE)
+
+knitr::include_graphics('inco.png')
+
 ```
 
 \newpage
@@ -305,7 +310,9 @@ final_inco %>% gt(rowname_col = 'income') %>%
 # **\textcolor{orange}{Part 2}**
 #### **\textcolor{magenta}{Task 1}**
 
-**Load the necessary libarary needed for Part 2**
+\
+
+**Load the necessary library needed for Part 2**
 ``` {r cache = TRUE}
 library(jsonlite) #for working with json data
 library(RSelenium) #for web scraping of dynamic table
@@ -529,4 +536,171 @@ library(graph) # plotting network like graph for word association
 library(ggplot2) # for bargraph
 ```
 
+**Load the pdf files and convert it to Corpus**
+``` {r cache = TRUE, out.width="100%"}
+# load the file path in list 
+files <- list.files(pattern = "pdf$")
+```
 
+``` {r cache = TRUE, out.width="100%"}
+# load the pdf files into list
+pdf_files <- lapply(files, pdf_text)
+```
+
+``` {r cache = TRUE, out.width="100%"}
+# create a corpus from vector source i.e from list pdf_files
+corpus <- Corpus(VectorSource(unlist(pdf_files)))
+# copy the loaded corpus
+corpus_copy <- corpus
+```
+
+``` {r cache = TRUE, out.width="100%"}
+# inspect first few texts of corpus
+inspect(corpus[1:2])
+```
+
+**Text Mining Preprocessing**
+- Step 1: Convert all texts to lowercase
+- Step 2: Remove punctuations
+- Step 3: Remove numbers
+- Step 4: Remove stopwords or user defined stopwords
+- Step 5: Stem the corpus
+- Step 6: Remove specific words which doesn't help the corpus
+- Step 7: Create Term Document Matrix
+
+
+``` {r cache = TRUE, out.width="100%"}
+# convert the all texts in lower
+corpus <- tm_map(corpus, tolower)
+inspect(corpus[1:2])
+```
+
+``` {r cache = TRUE, out.width="100%"}
+# remove punctuations
+corpus <- tm_map(corpus, removePunctuation)
+```
+
+``` {r cache = TRUE, out.width="100%"}
+# stem the corpus
+corpus <- tm_map(corpus, stemDocument)
+```
+
+``` {r cache = TRUE, out.width="100%"}
+remove <- function(x) gsub("values","value",x)
+corpus <-  tm_map(corpus, remove)
+```
+
+
+``` {r cache = TRUE, out.width="100%"}
+
+# create Term Document Matrix with word length 1 or many
+tdm <- TermDocumentMatrix(corpus, control = list((wordLenghts=c(1,Inf))))
+
+```
+
+**Best way to create a Term Document Matrix with preprocessing**
+``` {r cache = TRUE, out.width="100%"}
+remove <- function(x) gsub("values","value",x)
+corpus_copy <-  tm_map(corpus_copy, remove)
+my_tdm <- TermDocumentMatrix(
+  unlist(corpus_copy),
+  control =
+    list(
+      removePunctuation = TRUE,
+      stopwords = TRUE,
+      tolower = TRUE,
+      stemming = FALSE,
+      removeNumbers = TRUE,
+      bounds = list(global = c(3, Inf)),
+      wordLenghts = c(1,Inf),
+      removeWords = (c("can","may","used")))
+)
+```
+
+**Most Frequent Terms**
+``` {r cache = TRUE, out.width="100%"}
+
+# finding frequency of words which is at least present 10 times
+low_frequent_terms <- findFreqTerms(my_tdm, lowfreq = 10)
+head(low_frequent_terms)
+# finding frequency of words which is at max present 10 times
+high_frequent_terms <- findFreqTerms(my_tdm, highfreq = 10)
+head(high_frequent_terms)
+```
+
+**Associated terms of the most frequent term**
+
+``` {r cache = TRUE, out.width="100%"}
+
+# associated terms for mining with correlation 0.3
+findAssocs(my_tdm, "mining", 0.3)
+
+# associated terms for mining with learning 0.3
+findAssocs(my_tdm, "learning", 0.35)
+
+# associated terms for mining with data 0.3
+findAssocs(my_tdm, "data", 0.4)
+```
+
+**Top 10 words and their respective counts**
+``` {r cache = TRUE, out.width="100%"}
+
+# top 10 words and their respective counts 
+
+df <-
+  my_tdm %>%
+  as.matrix() %>%
+  rowSums() %>%
+  sort(decreasing = TRUE) %>%
+  head(10) %>%
+  enframe(name = "word", value = "counts")
+
+df
+```
+
+**Bargraph of top 10 words and their respective counts**
+
+``` {r cache = TRUE}
+
+# using ggplot2
+bargraph <- ggplot(df, aes(word, counts)) +
+  geom_bar(stat = "identity", fill = "#E69F00") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Top 10 words by counts.") +
+  geom_text(aes(label = counts), vjust = -0.5) +
+  ylim(0, 10000L)
+
+bargraph
+```
+
+**Correlation between top 600 frequent terms**
+
+``` {r cache = TRUE}
+
+top_600_frequent_tems <- findFreqTerms(my_tdm, lowfreq = 650)
+plot(my_tdm, terms = top_600_frequent_tems, corThreshold = 0.2, weighting = T)
+
+
+```
+
+**Topic Models**
+
+``` {r cache = TRUE}
+
+# topic models
+library(topicmodels)
+set.seed(123)
+
+lda <- LDA(my_tdm, k=4)
+
+```
+
+``` {r cache = TRUE}
+
+# terms
+head(terms(lda,3))
+
+# topics
+head(topics(lda))
+
+```
