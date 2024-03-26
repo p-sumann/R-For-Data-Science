@@ -229,7 +229,7 @@ data_q08 <- data.frame(
 ```{r cache=TRUE}
 # add row for total
 data_q08 <- data_q08 %>% add_row(Levels = "Total", 
-                         Freq = sum(data_q06$Freq), 
+                         Freq = sum(data_q08$Freq), 
                          Percent = sum(data_q08$Percent), 
                          Val_Percent = sum(data_q08$Val_Percent),
                          Cum_Percent = NULL)
@@ -276,7 +276,7 @@ transform_inco
 
 ```
 
-#### **Mathematical Computation**
+###### **Mathematical Computation**
 ``` {r cache = TRUE}
 # final version of calculated table
 final_inco <- transform_inco %>% add_row(
@@ -369,7 +369,7 @@ covid_1_parsed_subset
 covid_1_parsed_subset[80:150,] %>% select(starts_with('delta'))
 
 # delta7 parsed
-covid_1_parsed_subset[345:451,] %>% select(starts_with('delta'))
+covid_1_parsed_subset[345:451,] %>% select(starts_with('delta7'))
 
 # total parsed
 # for delta variants
@@ -458,8 +458,7 @@ knitr::include_graphics('aqi.png')
 `headers <-  aqi_table[1,]` \
 `colnames(aqi_table) <- headers`
 - **Step 7**: Remove the first row of the data frame `aqi_table <- aqi_table[-1,]`
-- **Step 8**: Converted the 'Index' column to row names `aqi_table %>% 
-  column_to_rownames(var = 'Index')`
+- **Step 8**: Converted the 'Index' column to row names `aqi_table %>% column_to_rownames(var = 'Index')`
   
 ``` {r cache = TRUE, out.width="100%"}
 # extract first value from list
@@ -560,10 +559,11 @@ inspect(corpus[1:2])
 ```
 
 **Text Mining Preprocessing**
+
 - Step 1: Convert all texts to lowercase
-- Step 2: Remove punctuations
+- Step 2: Remove punctuation
 - Step 3: Remove numbers
-- Step 4: Remove stopwords or user defined stopwords
+- Step 4: Remove stop words or user defined stop words
 - Step 5: Stem the corpus
 - Step 6: Remove specific words which doesn't help the corpus
 - Step 7: Create Term Document Matrix
@@ -673,7 +673,7 @@ bargraph <- ggplot(df, aes(word, counts)) +
 bargraph
 ```
 
-**Correlation between top 600 frequent terms**
+**Correlation between top 650 frequent terms**
 
 ``` {r cache = TRUE}
 
