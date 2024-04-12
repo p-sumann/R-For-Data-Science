@@ -17,7 +17,7 @@ hist(jason_data_frame$Salary)
 
 
 # average salary by department
-aggregate(Salary ~ Dept, data = jason_data_frame, FUN = max)
+aggregate(Salary ~ Dept, data = jason_data_frame, FUN = mean)
 
 # also using dplyr package
 library(dplyr)
