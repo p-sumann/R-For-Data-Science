@@ -1,0 +1,227 @@
+---
+title: '**33_First_Term**'
+author: "Suman Paudel"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    df_print: paged
+    highlight: tango
+
+---
+
+\
+
+##### <span style="color:#7b9a26"> <b> Question Number 6</b></span>
+**Solution**
+```{r cache=T, warning=FALSE}
+
+# question number 6
+# a
+# column vector X from 1 to 30
+X <- 1:30
+
+
+# b
+# column vector Y of cubes of vector Y
+Y <- X ^ 3
+
+# c
+# converted the the X, Y in dataframe
+DF <- data.frame(X=X,Y=Y)
+
+# d
+# plotted a scatter plot to see relationship between X and Y
+plot(X,Y)
+
+# e
+# Since there was no linear relationship we take log of X and Y
+logX <- log(X)
+logY <- log(Y)
+
+plot(logX, logY)
+
+```
+
+##### <span style="color:#82381F"> <b> Interpretation</b></span>
+- a. Created a vector X with Numbers between 1 and 30
+- b. Created a vector Y with Numbers with cubes of vector 3
+- c. Created a new data.frame called **DF** with vectors X and Y
+- d. Created a scatter plot of X and Y and it is seen that **there no linear relationship between X and Y**.
+- e. Converted the values log to make it linear and then plotted scatter plot again
+
+##### <span style="color:#7b9a26"> <b> Question Number 7</b></span>
+
+\
+
+**Solution**
+```{r cache=T, warning=FALSE}
+# question number 7
+# a
+set.seed(33)
+roll <- function(die=1:6){
+  sample(die, size=2, replace = T)
+}
+
+# b
+# first roll
+roll()
+
+
+# c
+# second roll
+roll()
+
+
+# d
+# third roll
+roll()
+
+# e
+# given a die with sample size two everything we roll we get different rolls in dice
+# mimicing the real world dice game
+```
+
+##### <span style="color:#82381F"> <b> Interpretation</b></span>
+- a. Created a function **roll()** which has arguments as `die = 1:6`, the die is rolled twice with replacement, to achieve that I have used `sample` function.
+- b. Rolled a die first time and result was 2 and 6
+- c. Rolled a die second time and result was 4 and 1
+- d. Rolled a die first time and result was 2 and 4
+- e. Given a die with sample size two everything we roll we get different rolls in dice mimicking the real world dice game. And every time we roll we will different outcomes and also because replacement is set to true we might get same roll twice occasionally as well.
+
+
+##### <span style="color:#7b9a26"> <b> Question Number 8</b></span>
+
+**Solution**
+```{r cache=T, warning=FALSE}
+
+# question number 7 
+
+library(tidyverse, warn.conflicts = F)
+
+# a
+country_data <- tibble(
+  Country = c("USA", "Nepal", "UK", "Germany", "France", "Italy", "Spain", "Japan", "China", "Australia"),
+  Year = c(2020, 2021, 2022, 2020, 2021, 2022, 2020, 2021, 2022, 2020),
+  Cases = c(10000, 12000, 15000, 8000, 9500, 11000, 7500, 8200, 10500, 6000),
+  Population = c(330000000, 37000000, 67000000, 83000000, 67000000, 60000000,
+                 47000000, 126000000, 1400000000, 25000000)
+)
+
+# b
+country_data_long <- country_data %>%
+  pivot_longer(cols = c(Year, Population), names_to = "Year", values_to = "Value")
+
+head(country_data_long,n=10)
+
+
+# c 
+country_data$LnCase <- log(country_data$Cases)
+country_data$LnPop <- log(country_data$Population)
+
+# d
+plot(country_data$Cases, country_data$Population,main = "Cases Vs Population", xlab='Cases',ylab = 'Population')
+plot(country_data$LnCase, country_data$Population,main = "LnCases Vs Population", xlab='LnCases',ylab = 'Population')
+plot(country_data$Cases, country_data$LnPop,main = "Cases Vs LnPopulation",xlab='Cases',ylab = 'LnPopulation')
+plot(country_data$LnCase, country_data$LnPop,main = "LnCases Vs LnPopulation", xlab='LnCases',ylab = 'LnPopulation')
+
+# e
+par(mfrow=c(2,2))
+plot(country_data$Cases, country_data$Population, main = "Cases Vs Population", xlab='Cases',ylab = 'Population')
+plot(country_data$LnCase, country_data$Population,main = "LnCases Vs Population", xlab='LnCases',ylab = 'Population')
+plot(country_data$Cases, country_data$LnPop, main = "Cases Vs LnPopulation",xlab='Cases',ylab = 'LnPopulation')
+plot(country_data$LnCase, country_data$LnPop,main = "LnCases Vs LnPopulation", xlab='LnCases',ylab = 'LnPopulation')
+```
+
+##### <span style="color:#82381F"> <b> Interpretation</b></span>
+- a. Created a tibble `country_data` from tidyverse using 10 variables for **country, year, cases and population**.
+- b. Transformed the created data into long format using `pivot_longer()`, I have taken year and population columns to pivot it longer. Pivot longer increases the number of rows.
+- c. Transformed the cases and population variable in log and assigned them in `LnCase` and `LnPop`.
+- d. Created a scatter plot for all 4 i.e.
+  - Cases and Population
+  - LnCases and Population
+  - Cases and LnPopulation
+  - LnCases and LnPopulation
+- e. plot the 4 plots in single graph window using `par(mfrow=c(2,2))` and grid 2X2.
+
+##### <span style="color:#7b9a26"> <b> Question Number 9</b></span>
+
+**Solution**
+```{r cache=T, warning=FALSE, message=T}
+
+# question number 9
+# a
+df <- mtcars
+hist(df$mpg)
+
+# b
+hist(df$mpg,col = 'blue', breaks=10)
+
+# c
+abline(v=mean(df$mpg), color='red',lwd=3,lty=2)
+
+# d
+qqnorm(df$mpg)
+qqline(df$mpg, col='red', lwd=3)
+
+# e
+plot(density(df$mpg), type='n')
+polygon(density(df$mpg), col='yellow', border = NA)
+
+```
+
+##### <span style="color:#82381F"> <b> Interpretation</b></span>
+- a. Plotted the histogram of mpg variable, by default R took 5 bins with interval of 5.
+- b. Refined the histogram by filling the bars color with blue and created bin size 10.
+- c. Added a vertical abline with mean of mpg variable.
+- d. Created a qqplot to assess the distribution of the mpg variable and added QQ line with red color and it visually almost normally distributed and we can say that it is normally distributed as most of the data are fitted to those red line.
+  - LnCases and LnPopulation
+- e. Plotted a density plot of mpg variable without border and filled it yellow color, the figure shows that data is falls under the area of normal distribution.
+
+
+##### <span style="color:#7b9a26"> <b> Question Number 10</b></span>
+
+**Solution**
+```{r cache=T, warning=FALSE, message=T}
+
+# question number 10
+
+library(igraph, warn.conflicts = F)
+library(Rgraphviz, warn.conflicts = F)
+# a
+g <- graph(c(1,2,3,4))
+
+# b
+plot(g)
+
+
+
+# c
+g1 <- graph(c("Sita","Ram","Sita","Gita","Gita","Sita","Sita",
+              "Gita","Anita","Rita","Ram","Sita"))
+# d
+plot(g1, vertex.color='green',vertex.size=20,edge.size=10,edge.color='red')
+
+# e
+# degree
+igraph::degree(g1)
+
+# closeness
+closeness(g1,mode = 'in')
+
+# betweeness
+betweenness(g1)
+
+```
+
+
+##### <span style="color:#82381F"> <b> Interpretation</b></span>
+- a. define a graph object `g` with (1,2,3,4)
+- b. plotted a graph and we can see that 1 goes to 2 and 3 goes to 4 forming no cycle.
+- c. define a graph object g1 with ("Sita","Ram","Sita","Gita","Gita","Sita","Sita",
+              "Gita","Anita","Rita","Ram","Sita")) as its elements
+- d. plotted a graph with all of the node color as green and node size as 20, edge color as red and link size as 10, we can see that ram has bi direction cycle between him and Sita, Sita has and Gita both of them has bi drection cycle between them, as Anita has direction going from her to Rita 
+- e. 
+  - got the degree which show the adjacent edges between nodes,
+  - got the closeness which shows how many steps are required to access each vertex from given, here I have taken **'in'**
+  - got the betweenness which shows the numbers paths going thorough one particular vertex
+  
