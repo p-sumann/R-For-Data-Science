@@ -191,3 +191,15 @@ plot(mtcars$wt,mtcars$mpg, main = 'Scatter Plot wiht abline', xlab='weight', yla
 reg_mod <- lm(mtcars$mpg ~ mtcars$wt)
 abline(reg_mod, col='red')
 lines(lowess(mtcars$wt,mtcars$mpg),col='blue',lwd=3)
+
+plot(df$hp, df$disp, main =
+       "Scatterplot with model abline",
+     xlab = "Horse power", ylab =
+       "Displacement")
+abline(lm(df$disp ~ df$hp))
+lines(lowess(df$hp, df$disp), col =
+        "red", lwd = 3)
+lines(lowess(df$hp, df$disp, f=1),
+      col = "purple", lwd = 3)
+lines(lowess(df$hp, df$disp, f=0.1),
+        col = "blue", lwd = 3)
