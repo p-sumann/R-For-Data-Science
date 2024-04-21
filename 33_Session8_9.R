@@ -87,6 +87,7 @@ treatment %>% fill(person)
 # summarise() summarise() creates a new data frame. It returns one row for each combination of grouping variables; if there are no grouping variables, the output will have a single row summarising all observations in the input. It will contain one column for each grouping variable and one column for each of the summary statistics that you have specified
 # group_by Most data operations are done on groups defined by variables. group_by() takes an existing tbl and converts it into a grouped tbl where operations are performed "by group". ungroup() removes grouping.
 
+
 library(dplyr)
 library(nycflights13)
 flights
