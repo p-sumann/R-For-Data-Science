@@ -34,7 +34,7 @@ shapiro.test(cars$speed)
 
 # larges sample based
 # kolmogorav-smirnov test of normality
-ks.test(cars$speed)
+# ks.test(cars$speed)
 
 # small sample based 
 # shapiro wil test of normality
@@ -128,6 +128,9 @@ plot(x,y, main=latex2exp::TeX('$\\beta^3,\\beta\\in 1 \\ | dots 10$'))
 
 # Session 15
 # SNA Basics
+library(graph)
+library(igraph)
+library(Rgraphviz)
 
 g <- graph((c(1,2)))
 plot(g)
