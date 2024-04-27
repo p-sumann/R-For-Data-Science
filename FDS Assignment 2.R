@@ -31,8 +31,26 @@ colSums(is.na(auto_data))
 # Impute the missing values
 
 auto_data <- auto_data %>% 
+  mutate(
+    num_doors = ifelse(is.na(num_doors), names(which.max(table(auto_data$num_doors))), num_doors),
+    bore = ifelse(is.na(bore), median(bore, na.rm = TRUE), bore),
+    stroke = ifelse(is.na(stroke), median(stroke, na.rm = TRUE), stroke),
+    horsepower = ifelse(is.na(horsepower), mean(horsepower, na.rm = TRUE), horsepower),
+    peak_rpm = ifelse(is.na(peak_rpm), median(peak_rpm, na.rm = TRUE), peak_rpm),
+    price = ifelse(is.na(price), median(price, na.rm = TRUE), price)
+  )
+
+# Check for missing values
+colSums(is.na(auto_data))
+
+auto_data <- auto_data %>% 
   mutate(normalized_losses = replace_na(normalized_losses, mean(normalized_losses, na.rm = TRUE)))
 
+auto_data$num_doors[is.na(auto_data$num_doors)] <- names(which.max(table(auto_data$num_doors)))
+
+
+# relationship
+plot(auto_data$length, auto_data$width, main='Lenght vs Width', xlab = 'Length', ylab = 'Width')aut
 
 # # Mean price by make
 make_price <- as_tibble(aggregate(price ~ make, auto_data, mean))
@@ -95,3 +113,18 @@ mpg_summary %>%
   geom_text(aes(label = round(mean_mpg, 1)), position = position_dodge(width = 1), vjust = -0.5) + 
   labs(x = "Number of Cylinders", y = "Mean MPG", fill = "MPG Type") + 
   theme_classic()
+
+ggplot(auto_data, aes(x = horsepower, y = price, color = fuel_type)) + 
+  geom_point(alpha = 0.5) + 
+  labs(x = "Horsepower", y = "Price", color = "Fuel Type") + 
+  theme_classic() + 
+  theme(panel.grid.major = element_line(size = 0.5, linetype = "dashed", color = "gray"),
+        panel.grid.minor = element_line(size = 0.5, linetype = "dashed", color = "gray"),
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14, face = "bold"),
+        plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 14, face = "bold")) + 
+  ggtitle("Relationship between Horsepower and Price")
+
+
