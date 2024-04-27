@@ -28,6 +28,11 @@ summary(auto_data)
 # Check for missing values
 colSums(is.na(auto_data))
 
+# Impute the missing values
+
+auto_data <- auto_data %>% 
+  mutate(normalized_losses = replace_na(normalized_losses, mean(normalized_losses, na.rm = TRUE)))
+
 
 # # Mean price by make
 make_price <- as_tibble(aggregate(price ~ make, auto_data, mean))
@@ -59,7 +64,7 @@ ggplot(hp_cyl, aes(x = horsepower, y = num_cylinders)) +
 aggregate(cbind(city_mpg, highway_mpg) ~ fuel_type, auto_data, sd)
 
 aggregate(cbind(city_mpg, highway_mpg) ~ num_cylinders, auto_data, mean)
-# 
+# horsepower vs number of cylinders
 aggregated_data <- as.data.frame(aggregate(horsepower ~ num_cylinders, data = auto_data, FUN = mean))
 # aggregated_data$price <- as.integer(aggregated_data$price)
 ggplot(data = aggregated_data, aes(x = horsepower, y = num_cylinders)) + 
@@ -67,23 +72,15 @@ ggplot(data = aggregated_data, aes(x = horsepower, y = num_cylinders)) +
   theme(axis.text.x = element_text(angle = 40,vjust = 0.5,hjust = 1)) + 
   geom_text(aes(label = horsepower, vjust = 1.5))+ ggtitle("Horsepower by Number of Cylinders") 
 
+# make vs price
 make_price <- as.data.frame(aggregate(make ~ price, data = auto_data, FUN = mean))
 make_price$price <- as.integer(make_price$price)
 ggplot(data = make_price, aes(x = make, y = price)) + 
   geom_bar(stat ='identity',fill = "orange") + 
   theme(axis.text.x = element_text(angle = 40,vjust = 0.5,hjust = 1)) + 
   geom_text(aes(label = price, vjust = 1.5)) + ggtitle("Make by Price") + ylim(0,40000)
-  
 
-# ggplot(mpg_summary, aes(x = fuel_type, y = mean_city_mpg, fill = "City MPG")) +
-#   geom_bar(stat = "identity", position = "dodge", width = 0.4) +
-#   geom_bar(aes(y = mean_highway_mpg, fill = "Highway MPG"), stat = "identity", position = "dodge", width = 0.4) +
-#   labs(x = "Fuel Type", y = "Mean MPG", fill = "MPG Type") +
-#   scale_fill_manual(values = c("City MPG" = "steelblue", "Highway MPG" = "darkorange")) +
-#   theme_minimal() +
-#   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
-
-
+# cylinder vs mpg (city, highway)
 mpg_summary <- auto_data %>%
   group_by(num_cylinders) %>%
   summarize(mean_city_mpg = round(mean(city_mpg)), mean_highway_mpg = round(mean(highway_mpg)))
