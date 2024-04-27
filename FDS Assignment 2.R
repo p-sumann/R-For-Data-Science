@@ -83,3 +83,18 @@ ggplot(data = make_price, aes(x = make, y = price)) +
 #   theme_minimal() +
 #   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
+
+mpg_summary <- auto_data %>%
+  group_by(num_cylinders) %>%
+  summarize(mean_city_mpg = round(mean(city_mpg)), mean_highway_mpg = round(mean(highway_mpg)))
+mpg_summary
+
+mpg_summary %>%
+  pivot_longer(c(mean_city_mpg, mean_highway_mpg), 
+               names_to = "mpg_type", 
+               values_to = "mean_mpg") %>%
+  ggplot(aes(x = num_cylinders, y = mean_mpg, fill = mpg_type)) + 
+  geom_col(position = "dodge") + 
+  geom_text(aes(label = round(mean_mpg, 1)), position = position_dodge(width = 1), vjust = -0.5) + 
+  labs(x = "Number of Cylinders", y = "Mean MPG", fill = "MPG Type") + 
+  theme_classic()
