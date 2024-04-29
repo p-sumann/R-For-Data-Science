@@ -50,7 +50,7 @@ auto_data$num_doors[is.na(auto_data$num_doors)] <- names(which.max(table(auto_da
 
 
 # relationship
-plot(auto_data$length, auto_data$width, main='Lenght vs Width', xlab = 'Length', ylab = 'Width')aut
+plot(auto_data$length, auto_data$width, main='Lenght vs Width', xlab = 'Length', ylab = 'Width')
 
 # # Mean price by make
 make_price <- as_tibble(aggregate(price ~ make, auto_data, mean))
@@ -126,5 +126,98 @@ ggplot(auto_data, aes(x = horsepower, y = price, color = fuel_type)) +
         legend.text = element_text(size = 12),
         legend.title = element_text(size = 14, face = "bold")) + 
   ggtitle("Relationship between Horsepower and Price")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+library(tm)
+library(Rgraphviz)
+library(wordcloud)
+
+text_document <- readLines('himalayan_times.txt')
+
+
+corpus <- Corpus(VectorSource(text_document))
+
+# inspect(corpus)[1:20]
+# 
+# corpus <- tm_map(corpus, tolower)
+# corpus <- tm_map(corpus, removePunctuation)
+# corpus <- tm_map(corpus, removeNumbers)
+# corpus <- tm_map(corpus, stemDocument)
+# my_stopwords <- c("can","may","used")
+# remove stopwords from the corpus
+# corpus <- tm_map(corpus, removeWords, my_stopwords)
+# tdm <- TermDocumentMatrix(corpus, control = list((wordLenghts=c(1,Inf))))
+my_stopwords <- c("can","may","used")
+corpus <- tm_map(corpus, removeWords, my_stopwords)
+my_tdm <- TermDocumentMatrix(
+  corpus,
+  control =
+    list(
+      removePunctuation = TRUE,
+      stopwords = TRUE,
+      tolower = TRUE,
+      stemming = FALSE,
+      removeNumbers = TRUE,
+      bounds = list(global = c(1, Inf)),
+      wordLenghts = c(1,Inf))
+)
+
+
+low_frequent_terms <- findFreqTerms(my_tdm)
+low_frequent_terms
+
+
+
+library(wordcloud)
+mat <- as.matrix(my_tdm)
+
+freq <- mat %>% rowSums() %>% sort(decreasing = T)
+
+df <-
+  my_tdm %>%
+  as.matrix() %>%
+  rowSums() %>%
+  sort(decreasing = TRUE) %>%
+  head(10) %>%
+  enframe(name = "word", value = "counts")
+df
+
+# top 10 words and counts using bargraph
+library(ggplot2)
+ggplot(df, aes(word, counts)) +
+  geom_bar(stat = "identity", fill = "#932421") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Top 10 words by counts.") +
+  geom_text(aes(label = counts), vjust = -0.5)
+
+# plot word cloud
+wordcloud(
+  words = names(freq),
+  freq = freq,
+  random.order = FALSE,
+  colors = brewer.pal(8, "Dark2"),
+  scale = c(4, 0.5),
+  random.color = TRUE,
+)
+
 
 
