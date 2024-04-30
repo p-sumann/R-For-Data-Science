@@ -1,17 +1,14 @@
+# Task 1 Automobile data Set
+
+# load the necessary library
 library(tidyverse, warn.conflicts = T)
 
+
+# load the data set
 auto_data <- read.csv("automobile.data", header = FALSE, na.strings = "?")
 
 
-# change the names of columns of the auto_data dataframe
-
-colnames(auto_data) <- c("symboling", "normalized_losses", "make", "fuel_type", "aspiration", "num_doors", 
-                         "body_style", "drive_wheels", "engine_location", "wheel_base", "length", "width", 
-                         "height", "curb_weight", "engine_type", "num_cylinders", "engine_size", "fuel_system", 
-                         "bore", "stroke", "compression_ratio", "horsepower", "peak_rpm", "city_mpg", 
-                         "highway_mpg", "price")
-
-# Data exploration
+# Basic Data exploration
 
 # Check dimensions
 dim(auto_data)
@@ -21,10 +18,20 @@ head(auto_data)
 
 # Check data types
 str(auto_data)
-spec(auto_data)
 
 # Summary statistics
 summary(auto_data)
+
+
+ # Data Wrangling
+# there was no header in the dataset I had to change the column names
+# change the names of columns of the auto_data dataframe
+colnames(auto_data) <- c("symboling", "normalized_losses", "make", "fuel_type", "aspiration", "num_doors", 
+                         "body_style", "drive_wheels", "engine_location", "wheel_base", "length", "width", 
+                         "height", "curb_weight", "engine_type", "num_cylinders", "engine_size", "fuel_system", 
+                         "bore", "stroke", "compression_ratio", "horsepower", "peak_rpm", "city_mpg", 
+                         "highway_mpg", "price")
+
 
 # Check for missing values
 colSums(is.na(auto_data))
@@ -36,7 +43,7 @@ auto_data <- auto_data %>%
     num_doors = ifelse(is.na(num_doors), names(which.max(table(auto_data$num_doors))), num_doors),
     bore = ifelse(is.na(bore), median(bore, na.rm = TRUE), bore),
     stroke = ifelse(is.na(stroke), median(stroke, na.rm = TRUE), stroke),
-    horsepower = ifelse(is.na(horsepower), mean(horsepower, na.rm = TRUE), horsepower),
+    horsepower = ifelse(is.na(horsepower), median(horsepower, na.rm = TRUE), horsepower),
     peak_rpm = ifelse(is.na(peak_rpm), median(peak_rpm, na.rm = TRUE), peak_rpm),
     price = ifelse(is.na(price), median(price, na.rm = TRUE), price)
 )
@@ -49,11 +56,12 @@ auto_data <- auto_data %>%
 
 auto_data$num_doors[is.na(auto_data$num_doors)] <- names(which.max(table(auto_data$num_doors)))
 
+# Exploratory Data Analysis
 
-# relationship
+# relationship between length and width of a automobile
 plot(auto_data$length, auto_data$width, main='Lenght vs Width', xlab = 'Length', ylab = 'Width')
 
-# # Mean price by make
+# price by make
 make_price <- as_tibble(aggregate(price ~ make, auto_data, mean))
 make_price$price <- as.integer(make_price$price)
 
@@ -67,7 +75,7 @@ ggplot(make_price, aes(x = make, y = price)) +
   ylim(0,40000)+
   labs(x = "Make", y = "Mean Price", title = "Make by Price")
 
-# Median horsepower by number of cylinders
+# relationship between horsepower by number of cylinders
 hp_cyl<- as_tibble(aggregate(horsepower ~ num_cylinders, auto_data, median))
 ggplot(hp_cyl, aes(x = horsepower, y = num_cylinders)) +
   geom_bar(stat = "identity", fill = "#996498") +
@@ -77,19 +85,6 @@ ggplot(hp_cyl, aes(x = horsepower, y = num_cylinders)) +
     axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
     plot.title = element_text(hjust = 0.5))+
   labs(x = "Horse Power", y = "Number of Cylinders", title = "Horsepower by Number of Cylinders")
-
-# 
-# # Standard deviation of mpg by fuel type
-aggregate(cbind(city_mpg, highway_mpg) ~ fuel_type, auto_data, sd)
-
-aggregate(cbind(city_mpg, highway_mpg) ~ num_cylinders, auto_data, mean)
-# horsepower vs number of cylinders
-aggregated_data <- as.data.frame(aggregate(horsepower ~ num_cylinders, data = auto_data, FUN = mean))
-# aggregated_data$price <- as.integer(aggregated_data$horsepower)
-ggplot(data = aggregated_data, aes(x = horsepower, y = num_cylinders)) + 
-  geom_bar(stat ='identity',fill = "orange") + 
-  theme(axis.text.x = element_text(angle = 40,vjust = 0.5,hjust = 1)) + 
-  geom_text(aes(label = horsepower, vjust = 1.5))+ ggtitle("Horsepower by Number of Cylinders") 
 
 # make vs price
 make_price <- as.data.frame(aggregate(make ~ price, data = auto_data, FUN = mean))
@@ -128,14 +123,23 @@ ggplot(auto_data, aes(x = horsepower, y = price, color = fuel_type)) +
         legend.title = element_text(size = 14, face = "bold")) + 
   ggtitle("Relationship between Horsepower and Price")
 
+# relationship between engine size and price with respect to fuel type
+ggplot(data=auto_data, aes(x= price, y= engine_size))+
+  +     geom_point(aes(color=fuel_type, shape=fuel_type))
 
 
+# hypothesis test: does high horsepower means higher price?
+cor.test(auto_data$horsepower,auto_data$price)
 
 
+# hypothesis test: does lengthier car has higher price?
+cor.test(auto_data$length,auto_data$price)
 
+# does engine size impact horse power
+cor.test(auto_data$engine_size,auto_data$horsepower)
 
-
-
+# does engine size impact compression ratio
+cor.test(auto_data$engine_size,auto_data$compression_ratio)
 
 
 
