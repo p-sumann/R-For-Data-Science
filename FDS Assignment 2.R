@@ -21,6 +21,7 @@ head(auto_data)
 
 # Check data types
 str(auto_data)
+spec(auto_data)
 
 # Summary statistics
 summary(auto_data)
@@ -38,7 +39,7 @@ auto_data <- auto_data %>%
     horsepower = ifelse(is.na(horsepower), mean(horsepower, na.rm = TRUE), horsepower),
     peak_rpm = ifelse(is.na(peak_rpm), median(peak_rpm, na.rm = TRUE), peak_rpm),
     price = ifelse(is.na(price), median(price, na.rm = TRUE), price)
-  )
+)
 
 # Check for missing values
 colSums(is.na(auto_data))
@@ -84,7 +85,7 @@ aggregate(cbind(city_mpg, highway_mpg) ~ fuel_type, auto_data, sd)
 aggregate(cbind(city_mpg, highway_mpg) ~ num_cylinders, auto_data, mean)
 # horsepower vs number of cylinders
 aggregated_data <- as.data.frame(aggregate(horsepower ~ num_cylinders, data = auto_data, FUN = mean))
-# aggregated_data$price <- as.integer(aggregated_data$price)
+# aggregated_data$price <- as.integer(aggregated_data$horsepower)
 ggplot(data = aggregated_data, aes(x = horsepower, y = num_cylinders)) + 
   geom_bar(stat ='identity',fill = "orange") + 
   theme(axis.text.x = element_text(angle = 40,vjust = 0.5,hjust = 1)) + 
