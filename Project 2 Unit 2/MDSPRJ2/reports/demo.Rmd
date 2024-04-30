@@ -1,0 +1,23 @@
+---
+output:
+  pdf_document: 
+    highlight: pygments
+  html_document: default
+---
+```{sql eval=FALSE}
+DROP TABLE IF EXISTS Employee;
+CREATE TABLE employee (
+  SSN INT PRIMARY KEY,
+  Ename VARCHAR(100) NOT NULL,
+  Gender CHAR(1) CHECK (Gender IN ('M', 'F')),
+  Bdate Date,
+  Address VARCHAR(100),
+  SALARY NUMERIC(10, 2) DEFAULT 0.00,
+  Ono INT,
+  Years_of_experience INT,
+  FOREIGN KEY(Ono) REFERENCES Office(Onumber)
+);
+
+
+```
+
