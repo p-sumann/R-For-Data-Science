@@ -32,8 +32,43 @@ mlr <- lm(y ~ ., data=df)
 summary(mlr)
 library(car)
 
+# all assumptions of linear regression must be true
+# vif
+cor(train_set)
 vif(mlr)
 
+# blue
+summary(mlr)
+
+# Coefficient of determination > 0.50
+# Multiple R-squared:  0.5914
+
+# Regression ANOVA must be
+# significant statistically
+Anova(mlr)
+
+# Y-intercept (a) an slope (b) must be
+# statistically significant
+summary(mlr)
+
+# now that we have passed the BLUE test/ now we do line test
+# Linearity of residuals: Do it!
+plot(lm1, which=1, col=c("blue")) #sugeestive
+summary(lm1$residuals) # confirmative
+
+# Independence of residuals:
+acf(lm1$residuals)
+library(car)
+durbinWatsonTest(lm1) # confirmation
+
+# Normality of residuals:
+plot(lm1, which=2, col=c("blue"))
+shapiro.test(lm1$residuals)
+# If the p-value > 0.05, residuals follow the normal distributions
+# • If the p-value <= 0.05, residuals do not follow the normal distribution
+
+# If the p-value > 0.05, no autocorrelation
+# • If the p-value <= 0.05, autocorrelation present
 
 
 train_index <- sample(nrow(df), 0.7*nrow(df))
