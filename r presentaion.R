@@ -71,6 +71,22 @@ shapiro.test(lm1$residuals)
 # • If the p-value <= 0.05, autocorrelation present
 
 
+plot(lm1, which=3, col=c("blue"))
+library(lmtest)
+bptest(lm1)
+# If the p-value > 0.05, residual variances are equal (homoscedasticity)
+# • If the p-value <= 0.05, residual variances are not equal (heteroscedasticity)
+
+pred_set <- data.frame(
+  X1 = runif(10, min = -2.5, max = 2.5),
+  X2 = runif(10, min = -2.5, max = 2.5),
+  X3 = runif(10, min = -2.5, max = 2.5),
+  X4 = runif(10, min = -2.5, max = 2.5),
+  X5 = runif(10, min = -2.5, max = 2.5)
+)
+
+predict(mlr, pred_set)
+
 train_index <- sample(nrow(df), 0.7*nrow(df))
 test_index <- setdiff(1:nrow(df), train_index)
 
