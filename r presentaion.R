@@ -202,12 +202,12 @@ train_index <- sample(1:n, 0.7 * n, replace = FALSE)
 df_train <- df[train_index, ]
 df_test <- df[-train_index, ]
 
-# Fit the bivariate and multivariate linear regression models
+# Fit the bivariate linear regression models
 lm1 <- lm(y~X1, data=df_train)
-lm2 <- lm(y~X1, data=df_train)
-lm3 <- lm(y~X1, data=df_train)
-lm4 <- lm(y~X1, data=df_train)
-lm5 <- lm(y~X1, data=df_train)
+lm2 <- lm(y~X2, data=df_train)
+lm3 <- lm(y~X3, data=df_train)
+lm4 <- lm(y~X4, data=df_train)
+lm5 <- lm(y~X5, data=df_train)
 
 lm5
 
