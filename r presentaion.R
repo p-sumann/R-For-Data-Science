@@ -175,7 +175,7 @@ y_test <- y[-train_index]
 
 
 
-set.seed(33)
+set.seed(133)
 # Generate the data
 n <- 200
 p <- 5
@@ -225,7 +225,7 @@ bptest(multivariate_model)
 dwtest(multivariate_model)
 
 # Predict for the test data
-bivariate_pred <- predict(bivariate_model, newdata = df_test)
+# bivariate_pred <- predict(bivariate_model, newdata = df_test)
 multivariate_pred <- predict(multivariate_model, newdata = df_test)
 
 
@@ -277,3 +277,4 @@ results <- data.frame(
   R2 = c(multivariate_r2, knn_r2, svr_r2, ann_r2),
   RMSE = c(multivariate_rmse, knn_rmse, svr_rmse, ann_rmse)
 )
+
