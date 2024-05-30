@@ -76,3 +76,134 @@ ggplot(data = diamonds) +
 # Better for summarizin simple rates,
 # ratios and proportions.
 # exp(mean(log(x)))
+
+# harmonic mean 
+# Better for summarizing 
+# instantaneous rates!
+# harmonic.mean(x)
+
+# moments
+# Skewness – symmetricity
+# Skewness measures the asymmetry of the distribution.
+# Kurtosis measures the "peakedness" or "flatness" of the distribution.
+
+
+# percentile and quintile
+quantile()
+
+
+
+# two variable independent sample test
+
+# normality check
+with(mtcars, shapiro.test(mpg[am==0]))
+with(mtcars, shapiro.test(mpg[am==1]))
+
+# equal variance
+var.test(mpg~am, data = mtcars)
+
+
+# now we can use sample student t-test
+t.test(mpg~am, data = mtcars, var.equal=T)
+
+# conclusion milage is statistically different amoung cars with automatic and manual transmission sytem
+
+# Conclusion: This means that there 
+# are equal proportion of automatic 
+# and manual transmission vehicles 
+# in the sample i.e. “mtcars” data
+
+prop.test(x=c(19,13), n=c(32,32), 
+          alternative="one.sided")
+
+prop.test(x=c(19,13), n=c(32,32), 
+          alternative="two.sided", correct=F)
+
+
+# assumptions of one way anova
+
+# var.test is not useful for > 2  groups
+
+library(car)
+
+with(mtcars, shapiro.test(mpg[gear==3]))
+
+with(mtcars, shapiro.test(mpg[gear==5]))
+
+with(mtcars, shapiro.test(mpg[gear==4]))
+
+# so we can we classical 1 way anova can be used
+
+summary(aov(mpg~gear, data = mtcars))
+# sicne p value is less than 0.05 we have to do post hoc test
+
+TukeyHSD (aov(mpg ~ as.factor(gear), data = mtcars))
+
+
+summary(lm(mpg~gear, data=mtcars))
+        
+
+
+leveneTest(mpg~as.factor(gear), data=mtcars)
+
+
+
+
+plot(mtcars$wt, mtcars$mpg, )
+
+cov(mtcars$wt, mtcars$mpg)
+
+cor.test(mtcars$wt, mtcars$mpg)
+# 
+# This means the true linear correlation 
+# coefficient is NOT zero so computed 
+# sample estimate of this correlation 
+# coefficient as -0.87 is a valid estimate 
+# (Conclusion)
+
+# linear regresion
+
+
+# how to assess it
+
+# for L: Linearity
+# graphical 
+# scatterplot of residual
+# plot(lm1,which=1,col=c('blue'))
+# If the LOESS line lies in the zero line of the y-axis then residuals are linear
+# confirmative
+# summary(lm1$residuals)
+# If the mean of the residuals is zero then the residuals are linear
+
+# for I: Independence
+# graphical 
+# Autocorrelation Function Plot (ACF) of residual
+# acf(lm1$residuals)
+# If the plot shows “ups” and “down” bars on x-axis then no autocorrelation
+# confirmative
+# library(car)
+# durbinWatsonTest(lm1)
+
+# for I: Independence
+# graphical 
+# Histogram/Normal Q-Q plot of residual
+# plot(lm1, which=2, col=c("blue"))
+# IIf histogram is bell-shaped or values line in the diagonal like of the Q-Q plot 
+# then residuals are normally distributed
+# confirmative
+# library(car)
+# shapiro.test(lm1$residuals)
+# If the p-value > 0.05, residuals follow the normal distributio
+
+# for I: Independence
+# graphical 
+# Equal variance of residual
+# plot(lm1, which=3, col=c("blue"))
+# If the values are distributed randomly in the plot then homoscedasticity
+# then residuals have equal variance
+# confirmative
+# library(lmtest)
+# bptest(lm1)
+
+
+
