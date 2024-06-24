@@ -70,3 +70,22 @@ kmeas_iris <- kmeans(iris_1,centers=3,nstart=20)
 kmeas_iris
 
 # confusion matrix for dependent variable
+
+cm <- table(iris$Species,kmeas_iris$cluster)
+cm
+
+accuracy <- sum(diag(cm)/sum(cm))
+
+mce <- 1 - accuracy
+
+accuracy
+mce
+
+par(mfrow=c(1,1))
+plot(iris_1[c("Sepal.Length", 
+              "Sepal.Width")],
+     col = kmeas_iris$cluster,
+     pch = 20,
+     main = "K-means with 3 
+clusters")
+
