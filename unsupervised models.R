@@ -58,4 +58,15 @@ Results with K = 3",
        2)
 
 
-# k
+# k mean clustering with iris dataset
+
+set.seed(33)
+data("iris")
+str(iris)
+
+iris_1 <- iris[,-5]
+
+kmeas_iris <- kmeans(iris_1,centers=3,nstart=20)
+kmeas_iris
+
+# confusion matrix for dependent variable
