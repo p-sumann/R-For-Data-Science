@@ -81,6 +81,7 @@ mce <- 1 - accuracy
 accuracy
 mce
 
+# plot k means
 par(mfrow=c(1,1))
 plot(iris_1[c("Sepal.Length", 
               "Sepal.Width")],
@@ -88,4 +89,30 @@ plot(iris_1[c("Sepal.Length",
      pch = 20,
      main = "K-means with 3 
 clusters")
+points(kmeas_iris$centers[, c("Sepal.Length","Sepal.Width")], 
+        pch = 8, 
+        cex = 3)
+
+
+# clusters with centers
+library(cluster)
+
+
+
+clusplot(
+  iris_1[, c("Sepal.Length", "Sepal.Width")],
+  kmeas_iris$cluster,
+  lines = 0,
+  shade = TRUE,
+  color = TRUE,
+  labels = 2,
+  plotchar = FALSE,
+  span = TRUE,
+  main = paste("Cluster iris"),
+  xlab = 'Sepal.Length',
+  ylab = 'Sepal.Width'
+)
+
+
+
 
