@@ -19,3 +19,43 @@
 # clusters we want and we use 
 # “dendogram” to find the 
 # number of clusters for the data
+
+
+set.seed(33)
+
+x <- matrix(rnorm(50*2),ncol=2)
+x[1:25,1]<-x[1:25,1]+3
+x[1:25,2]<-x[1:25,2]-4
+
+
+par(mfrow=c(1,2))
+km.out1 <- kmeans(x, 2, nstart = 20)
+
+km.out$cluster
+
+plot(
+  x,
+  col = (km.out1$cluster + 1),
+  main = "K-Means Clustering
+Results with K = 2",
+  xlab = "",
+  ylab = "",
+  pch = 20,
+  cex =
+    2
+)
+
+
+# kmean for 3 clusters
+km.out2 <- kmeans(x, 3, nstart = 20)
+km.out
+
+
+plot(x, col = (km.out2$cluster + 1),
+     main = "K-Means Clustering 
+Results with K = 3",
+     xlab = "", ylab = "", pch = 20, cex = 
+       2)
+
+
+# k
