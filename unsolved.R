@@ -826,6 +826,15 @@ t.test(BMI ~ Sex, data = data, var.equal = FALSE)
 
 
 
+
+# second reassment 2081
+# 6. Do the following in R Studio using ggplot2 package with R script to knit PDF output
+# a) Create a dataset with follovang variables age (20-59years). height (l IO - 190 centimeters), weight (40-90 kg)
+# "ith random I SO cases ofeach variable
+# b) Compute body mass Index (B.MI) vanable as BMI - [(wetght in kg)/ (height in centimeter squared))
+# c) Create body mass index categories. <IS, 18-24.25-30, -309 label them as "lmderweight". "mrmal",
+# "overv.eight" and "obese" respectively using dplyr package
+# d) Show the percentage distribution of labelled BMI vanable with pie chart using ggplot2
 # Q.6)
 # a)
 set.seed(22)
@@ -916,6 +925,297 @@ ggplot(bmi_summary, aes(x = "", y = Frequency, fill = Category)) +
   theme(legend.position = "right") +
   geom_text(aes(label = paste0(round(Percentage, 1), "%")),
             position = position_stack(vjust = 0.5))
+
+
+# very imp
+
+# 
+# 7. Do the following in R Studio using "airquality" dataset of R •anth R script to knit PDF output:
+#   a)
+# b)
+# c)
+# d)
+# Perform test of normality of "Wind" variable by each categones of "Month" variable interpret the results
+# carefully
+# Perform test of equality of variancé on "Wind" variable by each categories of Month vanable and interpret the
+# result carefully
+# Perform the best independent sample statistical test for this data now and interpret the result carefully
+# Perform the post-hoc test for this data and interpret the results carefully
+
+# Q.7) 
+
+data <- airquality
+
+# Chaning the Month variable as a factor variable
+data$Month <- as.factor(data$Month)
+
+
+
+## a) Perform goodness-of-fit test on Wind variable by Month variable to check if it follows normal distribution or not
+
+
+## If the sample size for each category is less than 100, it's appropriate to use the Shapiro-Wilk test for normality, especially if you're interested in testing the normality assumption within each group separately.
+library(dplyr)
+
+per_month_count <- data %>% group_by(Month) %>% summarize(count= n())
+
+per_month_count
+
+## Since wind variable has laround 30 to 31 data points per each month so it is appropriate to use Shapiro-Wilk test for normality test.
+
+## Shapiro Wilk Test Of Normality
+##  H0: The sample data comes from a normally distributed population.
+##  H1: The sample data does not come from a normally distributed population.
+## If the p-value obtained from the Shapiro-Wilk test is less than or equal to α (p ≤ 0.05),
+## you reject the null hypothesis. This suggests that the sample data significantly deviates
+## from a normal distribution.
+## If the p-value is greater than α (p > 0.05), you fail to reject the null hypothesis.
+## This suggests that there is no significant evidence to say that the sample data is not 
+## normally distributed.
+
+
+
+# Function to perform Shapiro-Wilk test for normality within each group
+shapiro_within_month <- function(data) {
+  result <- tapply(data$Wind, data$Month, shapiro.test)
+  return(result)
+}
+
+# Perform Shapiro-Wilk test for each month
+shapiro_results <- shapiro_within_month(data)
+
+# View the results
+print(shapiro_results)
+
+## Since the p-value is greater than 0.05 for every months, then we can say that the data comes from a normal distribution.
+## Thus, we can say that wind variable by each month follows a normal distribution.
+
+
+
+## b)	Perform a test of equality of variance on "Wind" variable by each categories of the Month variable and interpret the results.
+
+# Levene's test for homogeneity of variances
+
+## H0: The variances of wind speed are equal across all categories of the "Month" variable.
+## H1: The variances of wind speed are not equal across all categories of the "Month" variable.
+
+library(car)
+# Perform Levene's test
+levene_result <- leveneTest(Wind ~ Month, data = data)
+
+# View the test result
+print(levene_result)
+## Since the p-value is 0.9467 which is way greater than 0.05 so we fail to reject the null hypothesis.
+## That means the variances of wind speed are equal across all categories of the "Month" variable.
+
+
+## c) Perform the best independent sample statistical test for this data now and interpret the result carefully?
+
+#### Since, wind variable is normally distributed across each month and the variances of wind speed are
+#### equal across all cateogries of the "Month" variable, we can apply Classical One-Way Anova test.
+
+## Applying One Way ANOVA
+## H0: There are no differences in the means of the "Wind" variable in different months.
+## H1: There is a difference in the means of the "Wind" variable in different months.
+
+summary(aov(Wind ~ Month, data = data))
+
+#### Since the p-value (0.00879) is less than the common significance level of 0.05, we reject the null hypothesis.
+#### This suggests that there is a statistically significant difference in mean wind speed across different months.
+
+#### This means, post-hoc test or pairwise comparison is required!
+
+# d) Perform the post-hoc test for this data and interpret the results carefully.
+#### For classical 1-way ANOVA, Tukey HSD is the best post-hoc test!
+#### This will help in identifying which months have significantly different mean wind speeds from each other.
+
+#### H0: There is no significant difference in mean wind speed between the two months being compared.
+#### H1: There is a significant difference in mean wind speed between the two months being compared.
+
+#### When the p-value is greater than 0.05, we fail to reject the null hypothesis. This means 
+#### that we do not have sufficient evidence to conclude that there is a statistically 
+#### significant difference in mean wind speed between the two groups.
+#### When the p-value is less than 0.05, we reject the null hypothesis. This means that we
+#### have sufficient evidence to conclude that there is a statistically significant difference
+#### in mean wind speed between the two groups.
+TukeyHSD (aov(Wind ~ Month, data = data))
+
+
+#### Since, adjusted p value for june and may (6-5) is 0.53 which is greater than 0.05, that means the
+#### there is no significant difference in windspeed betweeen these two months.
+#### From the above table, we can say that there is a significant difference in windspeeds in
+#### July-May (7-5) and August-May(8-5) but in all other months there is no such difference in windspeeds.
+
+summary(lm(Wind ~ Month, data = data))
+
+#### The coefficients for both July and August are negative and statistically significant, indicating that mean wind speed in both months is significantly lower compared to May.
+
+
+# Conclusion
+#### Both Tukey's HSD test and the linear regression model suggest that July and August have statistically significant differences in mean wind speed compared to May.
+#### According to Tukey's HSD test, the adjusted p-values for both comparisons are less than 0.05, indicating significant differences.
+#### In the linear regression model, the coefficients for July and August are negative and statistically significant at α = 0.05, further confirming lower mean wind speeds in these months compared to May.
+
+
+# 
+# 8. Do the follo'wing in Studio using "Arrests" dåtaset of cai package with R script to knit PDF outiut
+# a) Divide the Arrests data into train and test datasets with 7030 random splits
+# b) Fit a supervised logistic regression and naive Bayes classification models on train data with "released" as
+# dependent variable and all other variables as independent variable
+# c) Predict the released variable in the test datasets of both the models and interpret the result carefully
+# d) Compare and decide which classification model is better for this data
+
+# Q8) 
+
+library(car)
+library(dplyr)
+
+data <- Arrests
+
+
+### taking colour, age, sex, employed and citizen as independent variable and released as dependent variable
+### Converting the target variable into numeric values and then again converting them as factor variables.
+
+data$released <- ifelse(data$released == "Yes", 1, 0)
+
+data$released <- as.factor(data$released)
+
+final_data <- select(data, "released", "colour", "age", 
+                     "sex", "employed", "citizen")
+
+table(final_data$colour)
+
+## Converting categorical variables colour into binary intergers and then as factors
+final_data$colour <- ifelse(final_data$colour == "Black", 0, 1)
+final_data$colour <- as.factor(final_data$colour)
+
+### Converting categorical variables gender female as 0 and male as 1
+final_data$sex <- ifelse(final_data$sex == "Female", 0, 1)
+final_data$sex <- as.factor(final_data$sex)
+
+### Converting categorical variables employed  no as 0 and yes as 1
+final_data$employed <- ifelse(final_data$employed == "No", 0, 1)
+final_data$employed <- as.factor(final_data$employed)
+
+### Converting categorical variables citizen no as 0 and yes as 1
+final_data$citizen <- ifelse(final_data$citizen == "No", 0, 1)
+final_data$citizen <- as.factor(final_data$citizen)
+
+
+
+
+
+library(ggplot2)
+
+##
+create_plot <- function(x, y, title) {
+  ggplot(data, aes(x = !!x, y = !!y)) +
+    geom_point(color = 'red') +
+    labs(title = title) +
+    theme_bw()
+}
+
+plot1<- create_plot(final_data$released, final_data$colour, "released vs colour")
+plot2<- create_plot(final_data$released, final_data$age, "released vs age")
+plot3<- create_plot(final_data$released, final_data$sex, "released vs sex")
+plot4<- create_plot(final_data$released, final_data$employed, "released vs employed")
+plot5<- create_plot(final_data$released, final_data$citizen, "released vs citizen")
+
+
+library(gridExtra)
+
+
+
+grid.arrange(plot1, plot2, plot3, plot4, plot5, 
+             nrow = 3, ncol = 2)
+
+
+### From this graph, we can see that there exist non linear relationship between the target variable and independent variable.
+
+
+### Apply multivariate logistic regression
+
+model.lr <- glm(released~., data = final_data,
+                family = 'binomial'
+)
+
+
+summary(model.lr)
+
+### Checking whether there exist mulitcollinearity in the features.
+### TO check it, we have VIF(Variance Inflation Factor).
+### IF the VIF value of the feautures in a model is greater than 2, then we can remove such feature as it suffers from multicolinearity issue.
+vif(model.lr)
+
+### Since, the vif of all of these features are less than 2, we can say that these features are not collinear to each other.
+
+## Divide the data into train and test sets using 70:30 random splits
+set.seed(22)
+
+ind <- sample(2, size = nrow(final_data), replace = T, 
+              prob = c(0.7, 0.3))
+
+
+
+
+train.data <- final_data[ind == 1,]
+test.data <- final_data[ind == 2, ]
+
+
+## Now only applying logistic regression on the training dataset
+model.lr <- glm(released~., data = train.data,
+                family = 'binomial'
+)
+
+
+#### Making predictions on the test datasets
+
+predictions <- predict(model.lr, test.data)
+
+
+predictions <- ifelse(predictions > 0.5, 1, 0)
+
+
+lr_pred_df<- data.frame(actual = test.data$released, 
+                        predicted = predictions)
+
+
+head(lr_pred_df, 10)
+
+
+### Based on the predicted results, we can say that the model is pgiving more postive(1) predictions correct than 0 predictions correct.
+
+### Confusion Matrix
+
+library(caret)
+
+
+confusionMatrix(as.factor(predictions), test.data$released)
+
+### The accuracy of the logistic regression model is 0.8296 and specificity is 0.98 and sensitivity is 0.06.
+
+## naive bayes algorithm
+library(e1071)
+
+
+model.nb <- naiveBayes(released~., data = train.data)
+
+
+
+predictions <- predict(model.nb, test.data)
+
+nb_pred_df<- data.frame(actual = test.data$released, 
+                        predicted = predictions)
+
+
+head(nb_pred_df, 10)
+
+### Based on the predicted results, we can say that the model is pgiving more postive(1) predictions correct than 0 predictions correct.
+
+
+confusionMatrix(as.factor(predictions), test.data$released)
+
+### The accuracy of the naive bayes model is 0.8277 and specificity is 0.98 and sensitivity is 0.066.
 
 
 
