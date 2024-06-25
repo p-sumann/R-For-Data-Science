@@ -113,10 +113,52 @@ shapiro.test(data)
 # # Perform a two-sample t-test
 # t.test(group1, group2)
 
-
+# Residual analysis: Residual analysis is a method used to assess the fit of a statistical
+# model by examining the residuals, which are the differences between the observed and predicted values. 
 set.seed(123)
 x <- rnorm(100, mean = 50, sd = 10)
 y <- 2 * x + rnorm(100, mean = 0, sd = 5)
 
 # Fit a linear regression model
 model <- lm(y ~ x)
+# residuals <- residuals(model) or model$residuals
+
+5.
+# Describe decision tree classification model with focus on:
+#   a) Bagging
+# b) Improved bagging
+# c) Boosting
+# 
+# Bagging (Bootstrap Aggregating): Bagging is a technique used to improve the 
+# accuracy and stability of decision tree models by reducing overfitting and variance.
+# In bagging, multiple decision trees are trained on different subsets of the training data, 
+# which are created by randomly sampling with replacement (bootstrap sampling). 
+
+library(randomForest)
+
+# Generate a random sample of data
+set.seed(123)
+data <- data.frame(x = rnorm(100), y = factor(rbinom(100, 1, 0.5)))
+model <- randomForest(y ~ x, data = data, ntree = 100)
+# 
+# Improved bagging: Improved bagging techniques, such as random forests with extremely 
+# randomized trees (ERT) or totally randomized trees (TRT), aim to further reduce the
+# correlation between the trees in the ensemble and improve the model's performance
+
+library(extraTrees)
+
+# Train an improved bagging model using extremely randomized trees
+model <- extraTrees(y ~ x, data = data, ntree = 100, mtry = 1, numRandomCuts = 1)
+predict(model, newdata = new_data)
+
+# Boosting: Boosting is a technique used to improve the accuracy of decision tree models by 
+# iteratively training weak learners (decision trees with a limited number of splits) and combining 
+# them into a strong learner.
+
+
+# Load the gbm package
+library(gbm)
+
+# Train a boosting model using gradient boosting machines
+model <- gbm(y ~ x, data = data, n.trees = 100, interaction.depth = 1, shrinkage = 0.1)
+# predict(model, newdata = new_data, n.trees = 100)
