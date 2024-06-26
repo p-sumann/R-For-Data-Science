@@ -162,3 +162,6 @@ library(gbm)
 # Train a boosting model using gradient boosting machines
 model <- gbm(y ~ x, data = data, n.trees = 100, interaction.depth = 1, shrinkage = 0.1)
 # predict(model, newdata = new_data, n.trees = 100)
+
+
+
