@@ -3,8 +3,9 @@ title: "Class 5 Roll Number"
 author: "Suman Paudel"
 date: "2024-02-24"
 output:
-  pdf_document: default
-  html_document: default
+  pdf_document:
+    highlight: 1
+  
 ---
 
 ```{r setup, include=FALSE}
@@ -38,12 +39,3 @@ x <- 1:100
 plot(x)
 ```
 
-```{r die}
-die <- rnorm(199)
-die
-```
-
-```{r z}
-z <- 1:1e+05
-z
-```

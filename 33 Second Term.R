@@ -244,3 +244,7 @@ plot(iris_data[c("Sepal.Length",
        main = "K-means with 3 
 clusters")
 # we can see that there is 3 differenct cluster
+
+
+# second assesment 2081
+
